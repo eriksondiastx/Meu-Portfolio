@@ -53,7 +53,7 @@ section {
 }
 
 .navbar a {
-  font-size: 1.7rem;
+  font-size: 20px;
   color: var(--text-color);
   margin-left: 4rem;
   transition: 0.3s;
@@ -98,7 +98,7 @@ span {
 }
 
 .inicio-content p {
-  font-size: 1.6rem;
+  font-size: 25px;
 }
 
 .social-media a {
@@ -121,7 +121,7 @@ span {
   background: var(--main-color);
   border-radius: 4rem;
   box-shadow: 0 0 1rem var(--main-color);
-  font-size: 1.6rem;
+  font-size: 20px;
   color: var(--second-bg-color);
   letter-spacing: 0.1rem;
   font-weight: 600;
@@ -159,10 +159,11 @@ span {
 }
 
 .sobre-content p {
-  font-size: 1.6rem;
+  font-size: 25px;
   margin: 2rem 0 3rem;
 }
 
+/***SESSÃO CURSOS***/
 .cursos .heading {
   margin-bottom: 5rem;
 }
@@ -172,16 +173,18 @@ span {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 2rem; /*Espaço estre as boxes*/
+  padding: 20px 0;
 }
 
 .cursos-container .cursos-box {
-  flex: 1 1 30rem;
+  flex: 1 1 calc(25% - 20px);
   background: var(--second-bg-color);
   padding: 3rem 2rem 4rem;
   border-radius: 2rem;
   text-align: center;
   border: 0.2rem solid var(--bg-color);
+  min-width: 250px; /* evita que fique muito pequeno em telas menores */
   transition: 0.5s ease;
 }
 
