@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Erikson Teixeira Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!--Box icons-->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!--Custom css-->
@@ -13,31 +16,58 @@
 <body>
     <!--Header Design-->
     <header class="header">
-        <a href="#" class="logo">Meu Portfólio</a>
-
+        <!--Navbar start-->
+        <style>
+            /* Garante que a navbar esteja sobre a imagem */
+            .navbar {
+                transition: all 0.4s ease-in-out;
+            }
+            /* Cor de fundo ao rolar a página */
+            .navbar.scrolled {
+                background-color: rgba(0, 0, 0, 0.8) !important;
+                backdrop-filter: blur(10px);
+            }
+        </style>
+        
+    
         <i class='bx bx-menu' id="menu-icon"></i>
 
-        <nav class="navbar">
-            <a href="#inicio">Início</a>
-            <a href="#sobre">Sobre</a>
-            <a href="#cursos">Cursos</a>
-            <a href="#portfolio">Portfolio</a>
-            <a href="#contacto">Contactos</a>
+        <nav class="navbar navbar-expand-lg position-absolute w-100">
+            <div class="btn-hambur container">
+                <h3 href="#" class="logo navbar-brand text-white">Meu Portfólio</h3>
+                <!-- Botão hamburguer -->
+                <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+                aria-expanded="false" aria-label="Abrir Menu">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto" >
+                    <li class="nav-item"><a class="nav-link " href="#inicio">Início</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#sobre">Sobre</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#cursos">Cursos</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#projectos">Projectos</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#contacto">Contactos</a></li>
+                </ul>
+            </div>   
+            
         </nav>
         
     </header>
 
     <!--home section design-->
-    <section class="inicio" id="inicio">
-        <div class="inicio-content">
-            <h3>Olá, chamo-me</h3>
-            <h1>Erikson Dias Teixeira</h1>
-            <h3>E eu sou <span>Engenheiro Informático</span></h3>
-            <p>Apaixonado por tecnologia e por computadores desde os 13 anos de idade,<br> 
-              a minha jornada começou após ter feito o curso de<br> Informática na Óptica do Usuário,
-                 no então renomado Centro de Formação São Domingos, em Luanda.
-                  <br>Desde então, já sabia que carreira pretendia seguir<br> e também o que queria ser no futuro. <br>
-                <h3>&lt;Engenharia Informática/&gt;.</h3><br> 
+    <section class="inicio container-fluid " id="inicio">
+        <div class="inicio-content row align-items-center">
+            <div class="inicio-text col-lg-14 col-md-12 order-lg-2 order-1">
+                <h3>Olá, <span>chamo-me</span></h3>
+                <h1>Erikson Inácio Dias Teixeira</h1>
+                <h3>Sou <span>Engenheiro Informático</span></h3>
+                <p>Apaixonado por tecnologia e por computadores desde os 13 anos de idade, 
+                    a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário,
+                    no então renomado Centro de Formação São Domingos, em Luanda.
+                    <br>Desde então, já sabia que carreira pretendia seguir.<br>
+                <h3>&lt; <span>Engenharia Informática</span> /&gt;.</h3><br> 
                 </p>
             <div class="social-media">
                 <a href="#"><i class='bx bxl-facebook'></i></a>
@@ -47,9 +77,11 @@
             </div>
             <a href="#" class="btn">Download CV</a>    
     
+            </div>
+            
         </div>
 
-        <div class="inicio-img">
+        <div class="inicio-img col-lg-5 col-md-12 order-lg-2 order-1">
             <img src="imagem/Erikson Profile.png" alt="Foto de perfil">
         </div>
     </section>
@@ -58,21 +90,29 @@
         <section class="sobre" id="sobre">
             <div class="sobre-img">
                 <img src="imagem/Erikson Profile2.png" alt="Sobre">
-            </div>
 
+                <div class="social-media">
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-twitter'></i></a>
+                    <a href="#"><i class='bx bxl-instagram-alt'></i></a>
+                    
+                </div>
+            </div>
+            
             <div class="sobre-content">
                 <h2 class="heading">Sobre <span>Mim</span></h2>
-                <h3>#############</h3>
                 <p>Natural de Angola, Província de Luanda, Nascido aos 12 de Setembro de 1993,<br>
                     O primeiro filho de três (3) irmãos.<br>
                     Pai: Mateus Inácio Teixeira;<br>
                     Mãe: Ana Tuti Dias Ntonha Teixeira.<br>
-                    <p></p>
+                    <p>Actualmente trilhando o caminho como <span>desenvolvedor Front-End.</span></p>
                     <p>Sempre procurando ser melhor do que fui no dia anterior.</p>
 
                 </p>
-                <a href="#" class="btn">Leia Mais</a>
+
+               
             </div>
+            
         </section>
 
         <!--Courses section design-->
@@ -80,102 +120,116 @@
             <h2 class="heading">Cursos <span>Feitos</span></h2>
             
             <div class="cursos-container">
-                <div class="cursos-box">
+                <div class="cursos-box col-sm-12">
                     <i class='bx bx-code-alt'></i>
                     <h3>Informática<br> para Usuário</h3>
-                    <p>Como desenvolvedor web participei dos seguintes cursos e ou formações, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
-                    <a href="#" class="btn">Leia mais</a>
+                    <p>O primeiro curso que fiz, aos 13 anos de idade, no Centro de Formação São Domingos. <br>
+                        Luanda/Angola.</p>
+                    <a href="#" class="btn">Ver Certificado</a>
                 </div>
 
-                <div class="cursos-box">
+                <div class="cursos-box col-sm-12">
                     <i class='bx bxs-paint' ></i>
                     <h3>Contabilidade<br> Informatizada</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
-                    <a href="#" class="btn">Leia mais</a>
+                    <p>Curso feito durante época de pausa escolar, no Istituto Médio de Economia do Kilamba Kiaxi (IMEKK). <br>
+                    Luanda/Angola</p>
+                    <a href="#" class="btn">Ver Certificado</a>
                 </div>
                 
-                <div class="cursos-box">
+                <div class="cursos-box col-sm-12">
                     <i class='bx bx-bar-chart-alt'></i>
-                    <h3>Pedagogia<br> e Didática</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
-                    <a href="#" class="btn">Leia mais</a>
+                    <h3>Pedagogia<br> e <br>Didática</h3>
+                    <p>Curso feito durante época de pausa escolar, a escola Cheguevara. <br>
+                    Luanda/Angola</p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <a href="#" class="btn">Ver Certificado</a>
                 </div>
-                <div class="cursos-box">
+                <div class="cursos-box col-sm-12">
                     <i class='bx bx-bar-chart-alt'></i>
                     <h3>Redes <br>de Computadores</h3>
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
-                    <a href="#" class="btn">Leia mais</a>
-                </div>
-                <div class="cursos-box">
+                    <a href="#" class="btn">Ver Certificado</a>
+                </div> 
+                <div class="cursos-box col-sm-12">
                     <i class='bx bx-bar-chart-alt'></i>
                     <h3>Montagem e Reparação <br>e Computadores</h3>
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
-                    <a href="#" class="btn">Leia mais</a>
+                    <a href="#" class="btn">Ver Certificado</a>
                 </div>
-                <div class="cursos-box">
+                <div class="cursos-box col-sm-12">
                     <i class='bx bx-bar-chart-alt'></i>
                     <h3>Electrônica <br>Analógica</h3>
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
-                    <a href="#" class="btn">Leia mais</a>
+                    <a href="#" class="btn">Ver Certificado</a>
                 </div>
 
             </div>
         </section>
 
         <!--portfolio section design-->
-        <section class="portfolio" id="portfolio">
-            <h2 class="heading">Meus<span>Projectos</span></h2>
+        <section class="portfolio" id="projectos">
+            <h2 class="heading">Meus<span> Projectos Dev.Web</span></h2>
             <div class="portfolio-container">
-                <div class="portfolio-box">
+                <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio1.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>Web Design</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad.</p>
+                        <h4>Currículum Online</h4>
+                        <p>Um projecto do meu currículum, disponibilizado online através do GitHub Pages. <br>
+                        </p>
                         <a href="#"><i class='bx bx-link-external'></i></a>
+                        <a href="#" class="btn2">Acessar</a>
                     </div>
                 </div>
 
-                <div class="portfolio-box">
+                <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio2.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>Web Design</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad.</p>
+                        <h4>Portfólio</h4>
+                        <p>O projecto do meu portfólio, na qual estão tendo acesso.<br>
+                        Disponibilizado online através do GitHub Pages.</p>
                         <a href="#"><i class='bx bx-link-external'></i></a>
+                        <a href="#" class="btn2">Acessar</a>
                     </div>
                 </div>
-                <div class="portfolio-box">
+                <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio3.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>Web Design</h4>
+                        <h4>Calculadora</h4>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad.</p>
                         <a href="#"><i class='bx bx-link-external'></i></a>
+                        <a href="#" class="btn2">Acessar</a>
                     </div>
                 </div>
 
-                <div class="portfolio-box">
+                <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio4.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>Web Design</h4>
+                        <h4>Gestão Escolar</h4>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad.</p>
                         <a href="#"><i class='bx bx-link-external'></i></a>
+                        <a href="#" class="btn2">Acessar</a>
                     </div>
                 </div>
 
-                <div class="portfolio-box">
+                <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio5.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>Web Design</h4>
+                        <h4>Gestor de Cantinas</h4>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad.</p>
                         <a href="#"><i class='bx bx-link-external'></i></a>
+                        <a href="#" class="btn2">Acessar</a>
                     </div>
                 </div>
 
-                <div class="portfolio-box">
+                <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio6.jpg" alt="">
                     <div class="portfolio-layer">
                         <h4>Web Design</h4>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad.</p>
                         <a href="#"><i class='bx bx-link-external'></i></a>
+                        <a href="#" class="btn2">Acessar</a>
                     </div>
                 </div>
                 
@@ -184,6 +238,9 @@
 
     <!--Custom js-->
     <script src="js/script.js"></script>
-    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

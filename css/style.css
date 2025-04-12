@@ -16,7 +16,9 @@
   --text-color: #fff;
   --main-color: #0ef;
 }
-
+a {
+  text-decoration: none !important;
+}
 html {
   font-size: 62.5%;
   overflow-x: hidden;
@@ -37,7 +39,7 @@ section {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 2rem 9%;
+  padding: 10px 10px 3%;
   background: var(--bg-color);
   display: flex;
   justify-content: space-between;
@@ -52,18 +54,89 @@ section {
   cursor: default;
 }
 
-.navbar a {
+.navbar {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  padding-right: 50px;
+}
+.navbar-toggler {
+  outline: none !important;
+  border: none !important;
+  color: white !important; /* Garante que a cor do botão seja branca */
+  background-color: white !important; /* Fundo branco */
+  padding: 10px; /* Ajuste para dar mais espaço ao botão */
+  display: flex; /* Para alinhar o conteúdo dentro */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  border-radius: 5px; /* Adiciona bordas arredondadas (opcional) */
+}
+.btn-hambur {
+  align-content: end;
+  margin-right: 0px;
+}
+.navbar-toggler-icon {
+  filter: invert(1); /* Torna o ícone branco */
+  background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.navbar .nav-link {
   font-size: 20px;
   color: var(--text-color);
   margin-left: 4rem;
-  transition: 0.3s;
+  transition: all 0.3s ease-in-out;
+
+  padding: 8px 8px; /* Adiciona espaço para um efeito mais visível */
+  text-align: center;
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
 }
 
-.navbar a:hover,
-.navbar a:active {
+.navbar .nav-link:hover {
   color: var(--main-color);
 
-  text-shadow: 0 0 2rem var(--text-color);
+  text-shadow: 0 0 5px 3px var(--text-color);
+  text-decoration: underline var(--main-color);
+}
+.nav-item ul {
+  text-align: center;
+}
+
+/* Adiciona transição suave e padding nos itens do dropdown */
+.dropdown-item {
+  font-size: 20px;
+  transition: all 0.3s ease-in-out;
+  padding: 10px 10px; /* Aumenta o padding para destacar o efeito */
+}
+
+/* Efeito de arredondamento + fundo ao passar o mouse */
+.dropdown-item:hover {
+  background-color: var(--main-color); /* Fundo leve ao passar o mouse */
+  border-radius: 5%; /* Igual ao efeito rounded-pill */
+  transform: scale(1.05); /* Leve aumento */
+}
+
+/* Quando o menu estiver aberto */
+.navbar-collapse.show {
+  margin-top: 5px;
+  margin-left: 30px;
+  background-color: white; /* Fundo branco ao abrir */
+  padding: 10px; /* Ajuste opcional para espaçamento interno */
+  border-radius: 5px; /* Borda arredondada opcional */
+  width: 100%;
+  height: 100%;
+}
+.navbar-collapse.show .nav-link {
+  color: black !important; /* Define a cor do texto background-color: var(--main-color); /* Fundo leve ao passar o mouse */
+
+  border-radius: 5px; /* Igual ao efeito rounded-pill */
+  margin-left: 0px;
+  margin-right: 0px;
+  transition: all 0.3s ease-in-out;
+}
+.navbar-collapse.show .nav-link:hover {
+  background-color: var(--main-color); /* Fundo leve ao passar o mouse */
 }
 
 #menu-icon {
@@ -73,11 +146,21 @@ section {
 }
 
 .inicio {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 50px;
 }
 
+.inicio-content {
+  flex: 1 1 calc(25% - 20px);
+  padding-top: 100px;
+  padding-left: 100px;
+}
+
+.inicio-img {
+}
 .inicio-img img {
   width: 25vw;
 }
@@ -96,7 +179,10 @@ span {
   font-weight: 700;
   line-height: 1.3;
 }
-
+.inicio-text {
+  padding-left: 60px;
+  margin-right: 50%;
+}
 .inicio-content p {
   font-size: 25px;
 }
@@ -120,7 +206,7 @@ span {
   padding: 1rem 2.8rem;
   background: var(--main-color);
   border-radius: 4rem;
-  box-shadow: 0 0 1rem var(--main-color);
+  box-shadow: 0 0 5px 3px var(--main-color);
   font-size: 20px;
   color: var(--second-bg-color);
   letter-spacing: 0.1rem;
@@ -132,6 +218,45 @@ span {
   box-shadow: none;
 }
 
+.btn2 {
+  display: inline-block;
+  padding: 1rem 2.8rem;
+  background: 1px var(--text-color);
+  border-radius: 4rem;
+
+  font-size: 20px;
+  color: var(--second-bg-color);
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  transition: 0.5s ease;
+}
+
+.btn2:hover:hover {
+  box-shadow: 0 0 5px 3px var(--second-bg-color);
+  color: var(--main-color);
+}
+
+@media (max-width: 991px) {
+  /* Para dispositivos móveis */
+  .header {
+    padding: 10px 10px 7%;
+  }
+  .inicio-content {
+    text-align: center; /* Centraliza o texto */
+  }
+  .inicio .row {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-items: center;
+    align-content: center;
+    text-align: center;
+  }
+  .buttons {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 .sobre {
   display: flex;
   justify-content: center;
@@ -140,6 +265,9 @@ span {
   background: var(--second-bg-color);
 }
 
+.sobre-img {
+  justify-items: center;
+}
 .sobre-img img {
   width: 25vw;
 }
@@ -216,22 +344,30 @@ span {
 }
 
 .portfolio-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 2.5rem;
+  flex-wrap: wrap;
+  gap: 2rem; /*Espaço estre as boxes*/
 }
 
 .portfolio-container .portfolio-box {
+  flex: 1 1 calc(25% - 20px);
   position: relative;
   border-radius: 2rem;
   box-shadow: 0 0 1rem var(--bg-color);
   overflow: hidden;
   display: flex;
+  min-width: 250px; /* evita que fique muito pequeno */
+  transition: 0.5s ease;
+}
+.portfolio-container .portfolio-box:hover {
+  border-color: var(--main-color);
+  transform: scale(1.03);
 }
 
 .portfolio-box img {
-  width: 100%;
+  width: 140%;
 }
 
 .portfolio-box .portfolio-layer {
@@ -254,7 +390,7 @@ span {
 }
 
 .portfolio-layer p {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   margin: 0.3rem 0 1rem;
 }
 
