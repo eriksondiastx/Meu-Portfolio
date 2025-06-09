@@ -48,7 +48,7 @@
                     <li class="nav-item"><a class="nav-link " href="#sobre">Sobre</a></li>
                     <li class="nav-item"><a class="nav-link " href="#cursos">Cursos</a></li>
                     <li class="nav-item"><a class="nav-link " href="#projectos">Projectos</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#contacto">Contactos</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#contactos">Contactos</a></li>
                 </ul>
             </div>   
             
@@ -62,7 +62,7 @@
             <div class="inicio-text col-lg-14 col-md-12 order-lg-2 order-1">
                 <h3>Olá, <span>chamo-me</span></h3>
                 <h1>Erikson Inácio Dias Teixeira</h1>
-                <h3>Sou <span>Desenvolvedor Front-End</span></h3>
+                <h3>Sou <span class="text sec-text">Desenvolvedor Front-End</span></h3>
                 <p>Apaixonado por tecnologia e por computadores desde os 13 anos de idade, 
                     a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário,
                     no então renomado Centro de Formação São Domingos, em Luanda.
@@ -70,10 +70,10 @@
                 <h3>&lt; <span>Engenharia Informática</span> /&gt;.</h3><br> 
                 </p>
             <div class="social-media">
-                <a href="#"><i class='bx bxl-facebook'></i></a>
+                <a href="https://www.facebook.com/erikson.teixeira.73/"  target="_blank"><i class='bx bxl-facebook'></i></a>
                 <a href="#"><i class='bx bxl-twitter'></i></a>
-                <a href="#"><i class='bx bxl-instagram-alt'></i></a>
-                <a href="www.linkedin.com/in/erikson-teixeira-b912b3145"><i class='bx bxl-linkedin'></i></i></a>
+                <a href="https://www.instagram.com/eriksonteixeira/"  target="_blank"><i class='bx bxl-instagram-alt'></i></a>
+                <a href="https://www.linkedin.com/in/erikson-teixeira-b912b3145"  target="_blank"><i class='bx bxl-linkedin'></i></i></a>
             </div>
             <a href="cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf" class="btn">Download CV</a>    
     
@@ -245,7 +245,54 @@
                 
             </div>
         </section>
+        <footer>
+  <div class="contactos" id="contactos">
+    <h2 class="heading">Meus <span>Contactos</span></h2>
 
+    <div class="contato-container">
+      <div class="contato-item">
+        <i class="bi bi-envelope"></i>
+        <span>Email:</span>
+        <p><a href="mailto:eriksondiastx@gmail.com">eriksondiastx@gmail.com</a></p>
+      </div>
+
+      <div class="contato-item">
+        <i class="bi bi-phone"></i>
+        <span>Telefone / WhatsApp:</span>
+        <p><a href="https://wa.me/244949100325" target="_blank">+244 949 100 325</a></p>
+      </div>
+
+      <div class="contato-item">
+        <i class="bi bi-geo-alt"></i>
+        <span>Localização:</span>
+        <p>Luanda, Angola</p>
+      </div>
+
+    </div>
+  </div>
+</footer>
+<!--Multi Typing Text-->
+    <script>
+      const text = document.querySelector(".sec-text");
+
+      const textLoad = () => {
+        setTimeout(() => {
+          text.textContent = "Front-End Dev.";
+        }, 0);
+        setTimeout(() => {
+          text.textContent = "Professor.";
+        }, 4000);
+        setTimeout(() => {
+          text.textContent = "Criador de conteúdo.";
+        }, 8000); //1s = 1000 miliseconds
+        setTimeout(() => {
+          text.textContent = "Designer.";
+        }, 12000);
+      };
+
+      textLoad();
+      setInterval(textLoad, 12000);
+    </script>
     <!--Custom js-->
     <script src="js/script.js"></script>
     <!-- Bootstrap JS -->

@@ -182,9 +182,34 @@ span {
 .inicio-text {
   padding-left: 60px;
   margin-right: 50%;
+  overflow: hidden;
+}
+.inicio-text .text {
+  position: relative;
 }
 .inicio-content p {
   font-size: 25px;
+}
+
+.inicio-text .text.sec-text::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--bg-color);
+  border-left: 2px solid var(--text-color);
+  animation: animate 4s steps(12) infinite;
+}
+@keyframes animate {
+  40%,
+  60% {
+    left: calc(100% + 4px);
+  }
+  100% {
+    left: 0%;
+  }
 }
 
 .social-media a {
@@ -390,11 +415,50 @@ span {
 }
 
 .portfolio-layer p {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   margin: 0.3rem 0 1rem;
 }
 
 .portfolio-layer a {
   display: inline-flex;
   justify-content: center;
+}
+
+footer {
+  padding-top: 50px;
+}
+.contato-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.contato-item {
+  flex: 1 1 200px;
+  max-width: 250px;
+  text-align: center;
+}
+
+.contato-item span,
+p {
+  font-size: 1.6rem;
+}
+
+.contato-item i {
+  font-size: 24px;
+  color: #007bff; /* cor dos ícones */
+  margin-bottom: 8px;
+  display: block;
+}
+
+.contato-item a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.contato-item a:hover {
+  color: #007bff;
+  text-decoration: underline;
 }
