@@ -160,9 +160,24 @@ section {
 }
 
 .inicio-img {
+  display: flex;
+  /* background: #007bff; */
+  padding-left: 70px;
 }
 .inicio-img img {
-  width: 25vw;
+  width: 20vw;
+}
+.inicio-img {
+  animation: pulse 3s infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 .inicio-content h3 {
@@ -295,6 +310,20 @@ span {
 }
 .sobre-img img {
   width: 25vw;
+}
+.Profile2 {
+  animation: bounce 2s infinite;
+}
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
 }
 
 .heading {
