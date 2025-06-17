@@ -289,7 +289,7 @@ span {
   .header {
     padding: 10px 10px 7%;
   }
-  .inicio-content {
+  .inicio {
     text-align: center; /* Centraliza o texto */
   }
   .inicio .row {
@@ -303,23 +303,23 @@ span {
     display: flex;
     justify-content: center;
   }
-  .inicio-content h1 {
+  .inicio h1 {
     font-size: 4.5rem;
   }
-  .inicio-content h3 {
+  .inicio h3 {
     font-size: 2.8rem;
   }
-  .inicio-content p {
+  .inicio p {
     font-size: 20px;
   }
-  .sobre-content p {
+  .sobre p {
     font-size: 20px;
   }
 }
 /* Responsividade */
 @media (max-width: 768px) {
   /* Smartphones grandes e tablets pequenos */
-  .inicio-content {
+  .inicio {
     text-align: center; /* Centraliza o texto */
   }
 
@@ -335,16 +335,16 @@ span {
   .tecnologias-container {
     gap: 3rem;
   }
-  .inicio-content h1 {
+  .inicio h1 {
     font-size: 3.8rem;
   }
-  .inicio-content h3 {
+  .inicio h3 {
     font-size: 2.4rem;
   }
-  .inicio-content p {
+  .inicio p {
     font-size: 18px;
   }
-  .sobre-content p {
+  .sobre p {
     font-size: 18px;
   }
   .heading {
@@ -356,16 +356,16 @@ span {
 
 @media (max-width: 576px) {
   /* Smartphones pequenos */
-  .inicio-content h1 {
+  .inicio h1 {
     font-size: 3rem;
   }
-  .inicio-content h3 {
+  .inicio h3 {
     font-size: 2rem;
   }
-  .inicio-content p {
+  .inicio p {
     font-size: 16px;
   }
-  .sobre-content p {
+  .sobre p {
     font-size: 16px;
   }
   .social-media a {
