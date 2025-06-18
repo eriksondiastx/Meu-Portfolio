@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+/***SEÇÃO TECNOLOGIAS***/
+.tecnologias {
+  background: var(--bg-color);
+  padding: 10rem 9% 2rem;
+}
+
+.tecnologias .heading {
+  margin-bottom: 5rem;
+}
+
+.tecnologias-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.tech-category {
+  background: var(--second-bg-color);
+  padding: 3rem;
+  border-radius: 2rem;
+  border: 0.2rem solid transparent;
+  transition: 0.5s ease;
+}
+
+.tech-category:hover {
+  border-color: var(--main-color);
+  transform: translateY(-5px);
+}
+
+.category-title {
+  font-size: 2.8rem;
+  color: var(--main-color);
+  margin-bottom: 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.category-title i {
+  font-size: 3rem;
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.tech-item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background: var(--bg-color);
+  border-radius: 1rem;
+  transition: 0.3s ease;
+}
+
+.tech-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(14, 255, 240, 0.2);
+}
+
+.tech-icon {
+  min-width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--main-color);
+  border-radius: 50%;
+  font-size: 2.5rem;
+  color: var(--bg-color);
+}
+
+.tech-info {
+  flex: 1;
+}
+
+.tech-info h4 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.skill-bar {
+  width: 100%;
+  height: 10px;
+  background: var(--second-bg-color);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.skill-progress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--main-color), #00d4ff);
+  border-radius: 5px;
+  width: 0%;
+  transition: width 2s ease-in-out;
+  position: relative;
+}
+
+.skill-progress.animate {
+  animation: fillBar 2s ease-in-out forwards;
+}
+
+.skill-percentage {
+  position: absolute;
+  right: 10px;
+  top: -25px;
+  font-size: 1.2rem;
+  color: var(--main-color);
+  font-weight: 600;
+}
+
+.tech-info p {
+  font-size: 1.4rem;
+  color: var(--main-color);
+  font-weight: 500;
+}
+
+/* Animação das barras de progresso */
+@keyframes fillBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--skill-width);
+  }
+}

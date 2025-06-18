@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+.inicio {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10rem 9% 2rem;
+}
+
+/* .inicio-content {
+  flex: 1 1 calc(25% - 20px);
+  padding-top: 100px;
+  padding-left: 100px;
+} */
+
+/* .inicio-img {
+  display: flex;
+  
+  padding-left: 70px;
+} */
+
+/* Ajustes para a imagem na seção Início */
+.inicio-img img {
+  width: 100%; /* Garante que a imagem ocupe a largura da coluna */
+  max-width: 350px; /* Limita o tamanho máximo da imagem em telas grandes */
+  height: auto; /* Mantém a proporção */
+  display: block; /* Remove espaço extra abaixo da imagem */
+  margin: 0 auto; /* Centraliza a imagem dentro da sua coluna */
+}
+
+.inicio-img {
+  animation: pulse 3s infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.inicio h3 {
+  font-size: 3.2rem;
+  font-weight: 700;
+}
+
+span {
+  color: var(--main-color);
+}
+
+.inicio h2 {
+  font-size: 4.6rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.inicio-text {
+  /* padding-left: 100px; */
+  /* margin-right: 50%;
+  overflow: hidden; */
+}
+.inicio-text .text {
+  position: relative;
+}
+.inicio p {
+  font-size: 25px;
+}
+
+.inicio-text .text.sec-text::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--bg-color);
+  border-left: 2px solid var(--text-color);
+  animation: animate 4s steps(12) infinite;
+}
+@keyframes animate {
+  40%,
+  60% {
+    left: calc(100% + 4px);
+  }
+  100% {
+    left: 0%;
+  }
+}
+
+.social-media a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 4rem;
+  height: 4rem;
+  background: transparent;
+  border: 0.2rem solid var(--main-color);
+  border-radius: 50%;
+  font-size: 2rem;
+  color: var(--main-color);
+  margin: 3rem 1.5rem 3rem 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 1rem 2.8rem;
+  background: var(--main-color);
+  border-radius: 4rem;
+  box-shadow: 0 0 5px 3px var(--main-color);
+  font-size: 20px;
+  color: var(--second-bg-color);
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  transition: 0.5s ease;
+}
+
+.btn:hover {
+  box-shadow: none;
+}
+
+.btn2 {
+  display: inline-block;
+  padding: 1rem 2.8rem;
+  background: 1px var(--text-color);
+  border-radius: 4rem;
+
+  font-size: 20px;
+  color: var(--second-bg-color);
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  transition: 0.5s ease;
+}
+
+.btn2:hover:hover {
+  box-shadow: 0 0 5px 3px var(--second-bg-color);
+  color: var(--main-color);
+}

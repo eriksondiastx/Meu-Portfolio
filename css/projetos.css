@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+/*SESSSO PROJETOS*/
+.portfolio {
+  background: var(--second-bg-color);
+}
+
+.portfolio h2 {
+  margin-bottom: 4rem;
+}
+
+.portfolio-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem; /*Espaço estre as boxes*/
+}
+
+.portfolio-container .portfolio-box {
+  flex: 1 1 calc(25% - 20px);
+  position: relative;
+  border-radius: 2rem;
+  box-shadow: 0 0 1rem var(--bg-color);
+  overflow: hidden;
+  display: flex;
+  min-width: 250px; /* evita que fique muito pequeno */
+  transition: 0.5s ease;
+}
+.portfolio-container .portfolio-box:hover {
+  border-color: var(--main-color);
+  transform: scale(1.03);
+}
+
+.portfolio-box img {
+  width: 180%;
+}
+
+.portfolio-box .portfolio-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), var(--bg-color));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 0 4rem;
+}
+
+.portfolio-layer h4 {
+  font-size: 3rem;
+}
+
+.portfolio-layer p {
+  font-size: 1.6rem;
+  margin: 0.3rem 0 1rem;
+}
+
+.portfolio-layer a {
+  display: inline-flex;
+  justify-content: center;
+}

@@ -1,0 +1,277 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+/***SEÇÃO EXPERIÊNCIAS PROFISSIONAIS***/
+.experiencias {
+  background: var(--second-bg-color);
+  padding: 10rem 9% 2rem;
+}
+
+.experiencias .heading {
+  margin-bottom: 5rem;
+}
+
+.timeline {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+  background: var(--main-color);
+  border-radius: 2px;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 5rem;
+  width: 100%;
+}
+
+.timeline-item:nth-child(odd) .timeline-content {
+  margin-left: 0;
+  margin-right: 55%;
+  text-align: right;
+}
+
+.timeline-item:nth-child(even) .timeline-content {
+  margin-left: 55%;
+  margin-right: 0;
+  text-align: left;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background: var(--main-color);
+  border: 4px solid var(--bg-color);
+  border-radius: 50%;
+  z-index: 2;
+  top: 30px;
+}
+
+.timeline-date {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  background: var(--main-color);
+  color: var(--bg-color);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  font-size: 1.4rem;
+  white-space: nowrap;
+}
+
+.timeline-content {
+  background: var(--bg-color);
+  padding: 3rem;
+  border-radius: 1rem;
+  border: 2px solid transparent;
+  margin-top: 4rem;
+  transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+  border-color: var(--main-color);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(14, 255, 240, 0.2);
+}
+
+.company-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.company-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--main-color);
+  flex-shrink: 0;
+}
+
+.company-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.company-info h3 {
+  font-size: 2.4rem;
+  color: var(--main-color);
+  margin-bottom: 0.5rem;
+}
+
+.company-name {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.company-location {
+  font-size: 1.4rem;
+  color: var(--main-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.job-description {
+  margin-bottom: 2rem;
+}
+
+.job-description h4 {
+  font-size: 1.8rem;
+  color: var(--main-color);
+  margin-bottom: 1rem;
+}
+
+.job-description ul {
+  list-style: none;
+  padding: 0;
+}
+
+.job-description li {
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.job-description li::before {
+  content: "▶";
+  color: var(--main-color);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.work-gallery h4 {
+  font-size: 1.8rem;
+  color: var(--main-color);
+  margin-bottom: 1.5rem;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 16/9;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(14, 255, 240, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.1);
+}
+
+.gallery-overlay i {
+  font-size: 3rem;
+  color: var(--bg-color);
+}
+
+/* Lightbox (modal de imagem em tela cheia) */
+.lightbox-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
+
+/* Botão de fechar o Lightbox */
+.close-lightbox {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Estilo para a imagem dentro do modal Bootstrap */
+.modal-image-full {
+  max-width: 100%; /* Garante que a imagem não ultrapasse a largura do modal-body */
+  max-height: 85vh; /* Limita a altura da imagem para caber na tela, deixando espaço para o cabeçalho e rodapé do modal */
+  object-fit: contain; /* ESSENCIAL: Redimensiona a imagem para caber dentro do contêiner, mantendo sua proporção original e sem cortar */
+  display: block; /* Remove qualquer espaço extra que possa aparecer abaixo da imagem */
+  margin: 0 auto; /* Centraliza a imagem horizontalmente dentro do modal-body */
+}
+
+/* Ajustes para o modal em si (cores e bordas) */
+.modal-content.bg-dark {
+  background-color: var(
+    --second-bg-color
+  ) !important; /* Usa a cor de fundo do seu tema */
+  border: none; /* Remove a borda padrão do modal */
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Adiciona uma linha sutil no cabeçalho */
+}
+
+.modal-title {
+  color: var(
+    --main-color
+  ) !important; /* Usa a cor principal do seu tema para o título */
+}
+
+.btn-close.btn-close-white {
+  filter: invert(
+    1
+  ); /* Garante que o ícone 'X' de fechar seja branco para contraste */
+}
