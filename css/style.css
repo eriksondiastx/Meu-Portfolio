@@ -145,6 +145,26 @@ section {
   display: none;
 }
 
+/* Estilo para o botão de troca de idioma */
+.language-toggle {
+  background: rgba(14, 255, 240, 0.1) !important;
+  border: 1px solid var(--main-color) !important;
+  border-radius: 20px !important;
+  padding: 8px 15px !important;
+  margin-left: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.language-toggle:hover {
+  background: var(--main-color) !important;
+  color: var(--bg-color) !important;
+  transform: scale(1.05);
+}
+
+.language-toggle i {
+  margin-right: 5px;
+}
+
 /* Ajustes de fonte para responsividade (se necessário, adicione mais breakpoints) */
 @media (max-width: 991px) {
   /* Tablets e menores */
