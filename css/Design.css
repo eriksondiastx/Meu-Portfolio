@@ -1,0 +1,154 @@
+/* Seção Design Projects */
+.design-projects {
+  padding: 10rem 9% 2rem;
+  background: var(--second-bg-color);
+}
+
+.design-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.design-card {
+  background: var(--bg-color);
+  border-radius: 2rem;
+  padding: 3rem;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(14, 255, 240, 0.1);
+  transition: all 0.3s ease;
+}
+
+.design-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 3rem rgba(14, 255, 240, 0.2);
+}
+
+.design-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.client-logo {
+  flex-shrink: 0;
+}
+
+.client-logo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--main-color);
+}
+
+.project-info h3 {
+  font-size: 2.4rem;
+  color: var(--main-color);
+  margin-bottom: 0.5rem;
+}
+
+.client-name {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.project-type,
+.project-year {
+  font-size: 1.4rem;
+  color: var(--text-color);
+  opacity: 0.8;
+  margin-bottom: 0.3rem;
+}
+
+.project-type i,
+.project-year i {
+  color: var(--main-color);
+  margin-right: 0.5rem;
+}
+
+.project-description {
+  margin-bottom: 2rem;
+}
+
+.project-description p {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tag {
+  background: rgba(14, 255, 240, 0.1);
+  color: var(--main-color);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border: 1px solid rgba(14, 255, 240, 0.3);
+}
+
+.design-gallery h4 {
+  font-size: 2rem;
+  color: var(--main-color);
+  margin-bottom: 1.5rem;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .design-projects {
+    padding: 8rem 5% 2rem;
+  }
+
+  .design-card {
+    padding: 2rem;
+  }
+
+  .design-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .client-logo img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .project-info h3 {
+    font-size: 2rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .design-card {
+    padding: 1.5rem;
+  }
+
+  .project-tags {
+    justify-content: center;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
