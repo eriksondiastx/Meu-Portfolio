@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Erikson Teixeira</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin-panel.css">
+</head>
+<body>
+    <!-- Verificação de login -->
+    <script>
+        if(!localStorage.getItem('adminLoggedIn')) {
+            window.location.href = 'admin-login.html';
+        }
+    </script>
+
+    <div class="sidebar col-md-3">
+        <h4 class="text-center mb-4">Painel Admin</h4>
+        <a href="#" class="active" data-section="home"><i class="bi bi-house"></i> Início</a>
+        <a href="#" data-section="sobre"><i class="bi bi-person"></i> Sobre</a>
+        <a href="#" data-section="tecnologias"><i class="bi bi-code-slash"></i> Tecnologias</a>
+        <a href="#" data-section="cursos"><i class="bi bi-book"></i> Cursos</a>
+        <a href="#" data-section="experiencias"><i class="bi bi-briefcase"></i> Experiências</a>
+        <a href="#" data-section="projetos"><i class="bi bi-folder"></i> Projetos</a>
+        <a href="#" data-section="design"><i class="bi bi-palette"></i> Design</a>
+        <a href="#" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Sair</a>
+    </div>
+
+    <div class="main-content">
+        <!-- Seção Início -->
+        <div id="home" class="section-content active">
+            <h2>Bem-vindo ao Painel Administrativo</h2>
+            <p>Selecione uma seção no menu lateral para editar o conteúdo do seu portfólio.</p>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="bi bi-person display-4 text-primary"></i>
+                            <h5 class="card-title">Informações Pessoais</h5>
+                            <p class="card-text">Gerencie seus dados pessoais e de contato</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="bi bi-briefcase display-4 text-success"></i>
+                            <h5 class="card-title">Experiências</h5>
+                            <p class="card-text">Adicione e edite suas experiências profissionais</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="bi bi-folder display-4 text-warning"></i>
+                            <h5 class="card-title">Projetos</h5>
+                            <p class="card-text">Gerencie seus projetos e portfólio</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção Sobre -->
+        <div id="sobre" class="section-content">
+            <h2>Editar Informações Pessoais</h2>
+            <form id="sobreForm">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome Completo</label>
+                    <input type="text" class="form-control" id="nome" value="Erikson Inácio Dias Teixeira">
+                </div>
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Título Profissional</label>
+                    <input type="text" class="form-control" id="titulo" value="Desenvolvedor Front-End">
+                </div>
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição Pessoal</label>
+                    <textarea class="form-control" id="descricao" rows="5">Apaixonado por tecnologia e por computadores desde os 13 anos de idade...</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="facebook" class="form-label">Facebook</label>
+                    <input type="text" class="form-control" id="facebook" value="https://www.facebook.com/erikson.teixeira.73/">
+                </div>
+                <div class="mb-3">
+                    <label for="instagram" class="form-label">Instagram</label>
+                    <input type="text" class="form-control" id="instagram" value="https://www.instagram.com/eriksonteixeira/">
+                </div>
+                <div class="mb-3">
+                    <label for="linkedin" class="form-label">LinkedIn</label>
+                    <input type="text" class="form-control" id="linkedin" value="https://www.linkedin.com/in/erikson-teixeira-b912b3145">
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            </form>
+        </div>
+
+        <!-- Seção Tecnologias -->
+        <div id="tecnologias" class="section-content">
+            <h2>Gerenciar Tecnologias</h2>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Tecnologias Atuais</h5>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addTechModal">
+                        <i class="bi bi-plus"></i> Adicionar Tecnologia
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="tecnologiasList">
+                        <!-- Lista de tecnologias será carregada aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção Cursos -->
+        <div id="cursos" class="section-content">
+            <h2>Gerenciar Cursos</h2>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Cursos Realizados</h5>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+                        <i class="bi bi-plus"></i> Adicionar Curso
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="cursosList">
+                        <!-- Lista de cursos será carregada aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção Experiências -->
+        <div id="experiencias" class="section-content">
+            <h2>Gerenciar Experiências Profissionais</h2>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Experiências</h5>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addExperienceModal">
+                        <i class="bi bi-plus"></i> Adicionar Experiência
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="experienciasList">
+                        <!-- Lista de experiências será carregada aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção Projetos -->
+        <div id="projetos" class="section-content">
+            <h2>Gerenciar Projetos</h2>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Projetos</h5>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                        <i class="bi bi-plus"></i> Adicionar Projeto
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="projetosList">
+                        <!-- Lista de projetos será carregada aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção Design -->
+        <div id="design" class="section-content">
+            <h2>Gerenciar Projetos de Design</h2>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Projetos de Design</h5>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addDesignModal">
+                        <i class="bi bi-plus"></i> Adicionar Projeto
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="designList">
+                        <!-- Lista de projetos de design será carregada aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Tecnologia -->
+    <div class="modal fade" id="addTechModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Adicionar Tecnologia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTechForm">
+                        <div class="mb-3">
+                            <label for="techName" class="form-label">Nome da Tecnologia</label>
+                            <input type="text" class="form-control" id="techName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="techCategory" class="form-label">Categoria</label>
+                            <select class="form-control" id="techCategory" required>
+                                <option value="frontend">Front-End</option>
+                                <option value="backend">Back-End & Databases</option>
+                                <option value="tools">Ferramentas & Outros</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="techLevel" class="form-label">Nível (%)</label>
+                            <input type="number" class="form-control" id="techLevel" min="0" max="100" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="techDescription" class="form-label">Descrição do Nível</label>
+                            <input type="text" class="form-control" id="techDescription" placeholder="Ex: Básico, Intermediário, Avançado">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveTechBtn">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Curso -->
+    <div class="modal fade" id="addCourseModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Adicionar Curso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCourseForm">
+                        <div class="mb-3">
+                            <label for="courseName" class="form-label">Nome do Curso</label>
+                            <input type="text" class="form-control" id="courseName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="courseDescription" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="courseDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="courseCertificate" class="form-label">Link do Certificado</label>
+                            <input type="text" class="form-control" id="courseCertificate">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveCourseBtn">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/admin-panel.js">  
+    </script>
+</body>
+</html>
