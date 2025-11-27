@@ -134,3 +134,123 @@
             
             loadData();
         });
+        // No admin-panel.html, adicione estas funções:
+
+// Salvar experiência
+document.getElementById('saveExperienceBtn').addEventListener('click', function() {
+    const periodo = document.getElementById('experiencePeriod').value;
+    const cargo = document.getElementById('experiencePosition').value;
+    const empresa = document.getElementById('experienceCompany').value;
+    const localizacao = document.getElementById('experienceLocation').value;
+    const responsabilidades = document.getElementById('experienceResponsibilities').value.split('\n');
+    
+    const experiencias = JSON.parse(localStorage.getItem('experiencias')) || [];
+    experiencias.push({ periodo, cargo, empresa, localizacao, responsabilidades });
+    localStorage.setItem('experiencias', JSON.stringify(experiencias));
+    
+    bootstrap.Modal.getInstance(document.getElementById('addExperienceModal')).hide();
+    document.getElementById('addExperienceForm').reset();
+    loadData();
+});
+
+// Salvar projeto
+document.getElementById('saveProjectBtn').addEventListener('click', function() {
+    const nome = document.getElementById('projectName').value;
+    const descricao = document.getElementById('projectDescription').value;
+    const imagem = document.getElementById('projectImage').value;
+    const link = document.getElementById('projectLink').value;
+    const status = document.getElementById('projectStatus').value;
+    
+    const projetos = JSON.parse(localStorage.getItem('projetos')) || [];
+    projetos.push({ nome, descricao, imagem, link, status });
+    localStorage.setItem('projetos', JSON.stringify(projetos));
+    
+    bootstrap.Modal.getInstance(document.getElementById('addProjectModal')).hide();
+    document.getElementById('addProjectForm').reset();
+    loadData();
+});
+
+// Salvar projeto de design
+document.getElementById('saveDesignBtn').addEventListener('click', function() {
+    const nome = document.getElementById('designName').value;
+    const tipo = document.getElementById('designType').value;
+    const descricao = document.getElementById('designDescription').value;
+    const ano = document.getElementById('designYear').value;
+    const tags = document.getElementById('designTags').value.split(',');
+    
+    const design = JSON.parse(localStorage.getItem('design')) || [];
+    design.push({ nome, tipo, descricao, ano, tags });
+    localStorage.setItem('design', JSON.stringify(design));
+    
+    bootstrap.Modal.getInstance(document.getElementById('addDesignModal')).hide();
+    document.getElementById('addDesignForm').reset();
+    loadData();
+});
+
+// Atualize a função loadData para incluir as novas seções:
+function loadData() {
+    // ... código existente ...
+    
+    // Carregar experiências
+    const experiencias = JSON.parse(localStorage.getItem('experiencias')) || [];
+    const experienciasList = document.getElementById('experienciasList');
+    experienciasList.innerHTML = '';
+    
+    experiencias.forEach((exp, index) => {
+        const expItem = document.createElement('div');
+        expItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
+        expItem.innerHTML = `
+            <div>
+                <h6 class="mb-0">${exp.cargo} - ${exp.empresa}</h6>
+                <small class="text-muted">${exp.periodo} - ${exp.localizacao}</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary me-1 edit-experience" data-index="${index}">Editar</button>
+                <button class="btn btn-sm btn-outline-danger delete-experience" data-index="${index}">Excluir</button>
+            </div>
+        `;
+        experienciasList.appendChild(expItem);
+    });
+    
+    // Carregar projetos
+    const projetos = JSON.parse(localStorage.getItem('projetos')) || [];
+    const projetosList = document.getElementById('projetosList');
+    projetosList.innerHTML = '';
+    
+    projetos.forEach((proj, index) => {
+        const projItem = document.createElement('div');
+        projItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
+        projItem.innerHTML = `
+            <div>
+                <h6 class="mb-0">${proj.nome}</h6>
+                <small class="text-muted">${proj.descricao.substring(0, 100)}...</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary me-1 edit-project" data-index="${index}">Editar</button>
+                <button class="btn btn-sm btn-outline-danger delete-project" data-index="${index}">Excluir</button>
+            </div>
+        `;
+        projetosList.appendChild(projItem);
+    });
+    
+    // Carregar projetos de design
+    const design = JSON.parse(localStorage.getItem('design')) || [];
+    const designList = document.getElementById('designList');
+    designList.innerHTML = '';
+    
+    design.forEach((des, index) => {
+        const desItem = document.createElement('div');
+        desItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
+        desItem.innerHTML = `
+            <div>
+                <h6 class="mb-0">${des.nome}</h6>
+                <small class="text-muted">${des.tipo} - ${des.ano}</small>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary me-1 edit-design" data-index="${index}">Editar</button>
+                <button class="btn btn-sm btn-outline-danger delete-design" data-index="${index}">Excluir</button>
+            </div>
+        `;
+        designList.appendChild(desItem);
+    });
+}
