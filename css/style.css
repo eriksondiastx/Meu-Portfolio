@@ -196,6 +196,7 @@ section {
   padding: 3px 8px !important;
   margin-left: 2rem !important;
   transition: all 0.3s ease !important;
+  display: inline-flex;
 }
 
 .language-toggle:hover {
@@ -463,3 +464,4 @@ p {
   color: #007bff;
   text-decoration: underline;
 }
+
