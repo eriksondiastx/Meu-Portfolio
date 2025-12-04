@@ -254,3 +254,681 @@ function loadData() {
         designList.appendChild(desItem);
     });
 }
+// Alternar entre link e upload de ficheiro
+document.querySelectorAll('input[name="certificateType"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const linkField = document.getElementById('linkField');
+        const fileField = document.getElementById('fileField');
+        
+        if (this.value === 'link') {
+            linkField.style.display = 'block';
+            fileField.style.display = 'none';
+            document.getElementById('courseCertificateFile').value = '';
+            document.getElementById('filePreview').innerHTML = '';
+        } else {
+            linkField.style.display = 'none';
+            fileField.style.display = 'block';
+            document.getElementById('courseCertificateLink').value = '';
+        }
+    });
+});
+
+// Preview do ficheiro selecionado
+document.getElementById('courseCertificateFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById('filePreview');
+    
+    if (file) {
+        // Validar tamanho do ficheiro (5MB máximo)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('O ficheiro é muito grande. Por favor, selecione um ficheiro até 5MB.');
+            this.value = '';
+            preview.innerHTML = '';
+            return;
+        }
+        
+        // Validar tipo de ficheiro
+        const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        if (!validTypes.includes(file.type)) {
+            alert('Tipo de ficheiro não suportado. Por favor, selecione PDF, JPG, PNG ou DOC.');
+            this.value = '';
+            preview.innerHTML = '';
+            return;
+        }
+        
+        // Mostrar preview
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                    <div class="border p-2 rounded">
+                        <img src="${e.target.result}" class="img-thumbnail" style="max-height: 150px;">
+                        <div class="mt-1">
+                            <small class="text-muted">${file.name} (${(file.size / 1024).toFixed(2)} KB)</small>
+                        </div>
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `
+                <div class="border p-2 rounded">
+                    <i class="bi bi-file-earmark-text display-4 text-primary"></i>
+                    <div class="mt-1">
+                        <small class="text-muted">${file.name} (${(file.size / 1024).toFixed(2)} KB)</small>
+                    </div>
+                </div>
+            `;
+        }
+    } else {
+        preview.innerHTML = '';
+    }
+});
+
+// Função para converter ficheiro para Base64
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+// Salvar curso (modificado para suportar ficheiros)
+document.getElementById('saveCourseBtn').addEventListener('click', async function() {
+    const name = document.getElementById('courseName').value;
+    const description = document.getElementById('courseDescription').value;
+    const year = document.getElementById('courseYear').value;
+    const institution = document.getElementById('courseInstitution').value;
+    
+    const certificateType = document.querySelector('input[name="certificateType"]:checked').value;
+    
+    let certificate = '';
+    let fileData = null;
+    
+    if (certificateType === 'link') {
+        certificate = document.getElementById('courseCertificateLink').value;
+    } else {
+        const fileInput = document.getElementById('courseCertificateFile');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            try {
+                // Converter ficheiro para Base64
+                fileData = await fileToBase64(file);
+                certificate = file.name; // Guardamos o nome do ficheiro
+            } catch (error) {
+                console.error('Erro ao processar ficheiro:', error);
+                alert('Erro ao processar o ficheiro. Tente novamente.');
+                return;
+            }
+        }
+    }
+    
+    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+    
+    // Criar objeto do curso
+    const curso = {
+        name,
+        description,
+        year,
+        institution,
+        certificate,
+        certificateType,
+        fileData // Guardamos os dados do ficheiro em Base64
+    };
+    
+    cursos.push(curso);
+    localStorage.setItem('cursos', JSON.stringify(cursos));
+    
+    // Fechar modal e recarregar dados
+    bootstrap.Modal.getInstance(document.getElementById('addCourseModal')).hide();
+    document.getElementById('addCourseForm').reset();
+    document.getElementById('filePreview').innerHTML = '';
+    document.getElementById('linkField').style.display = 'block';
+    document.getElementById('fileField').style.display = 'none';
+    document.getElementById('certificateLink').checked = true;
+    
+    loadData();
+    
+    alert('Curso adicionado com sucesso!');
+});
+
+// Atualizar a função loadData para mostrar os cursos com ficheiros
+function loadData() {
+    // ... código existente para outras seções ...
+    
+    // Carregar cursos
+    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+    const cursosList = document.getElementById('cursosList');
+    cursosList.innerHTML = '';
+    
+    if (cursos.length === 0) {
+        cursosList.innerHTML = '<p class="text-muted text-center">Nenhum curso adicionado ainda.</p>';
+        return;
+    }
+    
+    cursos.forEach((curso, index) => {
+        const cursoItem = document.createElement('div');
+        cursoItem.className = 'd-flex justify-content-between align-items-center p-3 border-bottom';
+        
+        // Ícone baseado no tipo de certificado
+        let certificateIcon = 'bi bi-link-45deg';
+        let certificateText = 'Link externo';
+        
+        if (curso.certificateType === 'file') {
+            certificateIcon = 'bi bi-file-earmark';
+            certificateText = 'Ficheiro local';
+        }
+        
+        cursoItem.innerHTML = `
+            <div class="flex-grow-1">
+                <h6 class="mb-1">${curso.name}</h6>
+                <small class="text-muted d-block">${curso.description.substring(0, 100)}${curso.description.length > 100 ? '...' : ''}</small>
+                <div class="mt-1">
+                    <small class="text-muted">
+                        <i class="bi bi-calendar"></i> ${curso.year} 
+                        ${curso.institution ? `• <i class="bi bi-building"></i> ${curso.institution}` : ''}
+                        • <i class="${certificateIcon}"></i> ${certificateText}
+                    </small>
+                </div>
+            </div>
+            <div class="ms-3">
+                <button class="btn btn-sm btn-outline-primary me-1 view-course" data-index="${index}" title="Ver detalhes">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary me-1 edit-course" data-index="${index}" title="Editar">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-course" data-index="${index}" title="Excluir">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `;
+        cursosList.appendChild(cursoItem);
+    });
+    
+    // Adicionar event listeners para os novos botões
+    document.querySelectorAll('.view-course').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            viewCourse(index);
+        });
+    });
+    
+    document.querySelectorAll('.edit-course').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            editCourse(index);
+        });
+    });
+    
+    document.querySelectorAll('.delete-course').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            deleteCourse(index);
+        });
+    });
+}
+
+// Função para visualizar curso
+function viewCourse(index) {
+    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+    const curso = cursos[index];
+    
+    let certificateContent = '';
+    if (curso.certificateType === 'link') {
+        certificateContent = `<a href="${curso.certificate}" target="_blank" class="btn btn-sm btn-outline-primary">Abrir Certificado</a>`;
+    } else {
+        // Para ficheiros, criamos um link para download
+        certificateContent = `
+            <button class="btn btn-sm btn-outline-primary download-file" data-index="${index}">
+                <i class="bi bi-download"></i> Download do Certificado
+            </button>
+        `;
+    }
+    
+    const modalHTML = `
+        <div class="modal fade" id="viewCourseModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">${curso.name}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p><strong>Descrição:</strong></p>
+                                <p>${curso.description}</p>
+                                
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <p><strong>Ano:</strong> ${curso.year}</p>
+                                    </div>
+                                    ${curso.institution ? `
+                                    <div class="col-md-6">
+                                        <p><strong>Instituição:</strong> ${curso.institution}</p>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-award display-4 text-warning"></i>
+                                        <h6 class="mt-2">Certificado</h6>
+                                        ${certificateContent}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary edit-course-from-view" data-index="${index}">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remover modal anterior se existir
+    const existingModal = document.getElementById('viewCourseModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Adicionar novo modal ao DOM
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Mostrar modal
+    const viewModal = new bootstrap.Modal(document.getElementById('viewCourseModal'));
+    viewModal.show();
+    
+    // Adicionar event listener para o botão de download
+    const downloadBtn = document.querySelector('.download-file');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function() {
+            downloadCertificate(index);
+        });
+    }
+    
+    // Adicionar event listener para editar a partir da visualização
+    document.querySelector('.edit-course-from-view').addEventListener('click', function() {
+        viewModal.hide();
+        editCourse(index);
+    });
+}
+
+// Função para fazer download do certificado
+function downloadCertificate(index) {
+    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+    const curso = cursos[index];
+    
+    if (curso.certificateType === 'file' && curso.fileData) {
+        // Criar link de download
+        const link = document.createElement('a');
+        link.href = curso.fileData;
+        link.download = curso.certificate;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+}
+
+// Função para excluir curso
+function deleteCourse(index) {
+    if (confirm('Tem certeza que deseja excluir este curso?')) {
+        const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+        cursos.splice(index, 1);
+        localStorage.setItem('cursos', JSON.stringify(cursos));
+        loadData();
+        alert('Curso excluído com sucesso!');
+    }
+}
+
+// Função para editar curso (será implementada posteriormente)
+function editCourse(index) {
+    alert('Funcionalidade de edição será implementada em breve!');
+    // Aqui você pode implementar a lógica para editar um curso existente
+}
+// Alternar entre link e upload de ficheiro
+document.querySelectorAll('input[name="certificateType"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const linkField = document.getElementById('linkField');
+        const fileField = document.getElementById('fileField');
+        
+        if (this.value === 'link') {
+            linkField.style.display = 'block';
+            fileField.style.display = 'none';
+            document.getElementById('courseCertificateFile').value = '';
+            document.getElementById('filePreview').innerHTML = '';
+        } else {
+            linkField.style.display = 'none';
+            fileField.style.display = 'block';
+            document.getElementById('courseCertificateLink').value = '';
+        }
+    });
+});
+
+// Preview do ficheiro selecionado
+document.getElementById('courseCertificateFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById('filePreview');
+    
+    if (file) {
+        // Validar tamanho do ficheiro (5MB máximo)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('O ficheiro é muito grande. Por favor, selecione um ficheiro até 5MB.');
+            this.value = '';
+            preview.innerHTML = '';
+            return;
+        }
+        
+        // Validar tipo de ficheiro
+        const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        if (!validTypes.includes(file.type)) {
+            alert('Tipo de ficheiro não suportado. Por favor, selecione PDF, JPG, PNG ou DOC.');
+            this.value = '';
+            preview.innerHTML = '';
+            return;
+        }
+        
+        // Mostrar preview
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                    <div class="border p-2 rounded">
+                        <img src="${e.target.result}" class="img-thumbnail" style="max-height: 150px;">
+                        <div class="mt-1">
+                            <small class="text-muted">${file.name} (${(file.size / 1024).toFixed(2)} KB)</small>
+                        </div>
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `
+                <div class="border p-2 rounded">
+                    <i class="bi bi-file-earmark-text display-4 text-primary"></i>
+                    <div class="mt-1">
+                        <small class="text-muted">${file.name} (${(file.size / 1024).toFixed(2)} KB)</small>
+                    </div>
+                </div>
+            `;
+        }
+    } else {
+        preview.innerHTML = '';
+    }
+});
+
+// Função para converter ficheiro para Base64
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+// Salvar curso (modificado para suportar ficheiros)
+document.getElementById('saveCourseBtn').addEventListener('click', async function() {
+    const name = document.getElementById('courseName').value;
+    const description = document.getElementById('courseDescription').value;
+    const year = document.getElementById('courseYear').value;
+    const institution = document.getElementById('courseInstitution').value;
+    
+    const certificateType = document.querySelector('input[name="certificateType"]:checked').value;
+    
+    let certificate = '';
+    let fileData = null;
+    
+    if (certificateType === 'link') {
+        certificate = document.getElementById('courseCertificateLink').value;
+    } else {
+        const fileInput = document.getElementById('courseCertificateFile');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            try {
+                // Converter ficheiro para Base64
+                fileData = await fileToBase64(file);
+                certificate = file.name; // Guardamos o nome do ficheiro
+            } catch (error) {
+                console.error('Erro ao processar ficheiro:', error);
+                alert('Erro ao processar o ficheiro. Tente novamente.');
+                return;
+            }
+        }
+    }
+    
+    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+    
+    // Criar objeto do curso
+    const curso = {
+        name,
+        description,
+        year,
+        institution,
+        certificate,
+        certificateType,
+        fileData // Guardamos os dados do ficheiro em Base64
+    };
+    
+    cursos.push(curso);
+    localStorage.setItem('cursos', JSON.stringify(cursos));
+    
+    // Fechar modal e recarregar dados
+    bootstrap.Modal.getInstance(document.getElementById('addCourseModal')).hide();
+    document.getElementById('addCourseForm').reset();
+    document.getElementById('filePreview').innerHTML = '';
+    document.getElementById('linkField').style.display = 'block';
+    document.getElementById('fileField').style.display = 'none';
+    document.getElementById('certificateLink').checked = true;
+    
+    loadData();
+    
+    alert('Curso adicionado com sucesso!');
+});
+
+// Atualizar a função loadData para mostrar os cursos com ficheiros
+function loadData() {
+    // ... código existente para outras seções ...
+    
+    // Carregar cursos
+    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+    const cursosList = document.getElementById('cursosList');
+    cursosList.innerHTML = '';
+    
+    if (cursos.length === 0) {
+        cursosList.innerHTML = '<p class="text-muted text-center">Nenhum curso adicionado ainda.</p>';
+        return;
+    }
+    
+    cursos.forEach((curso, index) => {
+        const cursoItem = document.createElement('div');
+        cursoItem.className = 'd-flex justify-content-between align-items-center p-3 border-bottom';
+        
+        // Ícone baseado no tipo de certificado
+        let certificateIcon = 'bi bi-link-45deg';
+        let certificateText = 'Link externo';
+        
+        if (curso.certificateType === 'file') {
+            certificateIcon = 'bi bi-file-earmark';
+            certificateText = 'Ficheiro local';
+        }
+        
+        cursoItem.innerHTML = `
+            <div class="flex-grow-1">
+                <h6 class="mb-1">${curso.name}</h6>
+                <small class="text-muted d-block">${curso.description.substring(0, 100)}${curso.description.length > 100 ? '...' : ''}</small>
+                <div class="mt-1">
+                    <small class="text-muted">
+                        <i class="bi bi-calendar"></i> ${curso.year} 
+                        ${curso.institution ? `• <i class="bi bi-building"></i> ${curso.institution}` : ''}
+                        • <i class="${certificateIcon}"></i> ${certificateText}
+                    </small>
+                </div>
+            </div>
+            <div class="ms-3">
+                <button class="btn btn-sm btn-outline-primary me-1 view-course" data-index="${index}" title="Ver detalhes">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary me-1 edit-course" data-index="${index}" title="Editar">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-course" data-index="${index}" title="Excluir">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `;
+        cursosList.appendChild(cursoItem);
+    });
+    
+    // Adicionar event listeners para os novos botões
+    document.querySelectorAll('.view-course').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            viewCourse(index);
+        });
+    });
+    
+    document.querySelectorAll('.edit-course').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            editCourse(index);
+        });
+    });
+    
+    document.querySelectorAll('.delete-course').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            deleteCourse(index);
+        });
+    });
+}
+
+// Função para visualizar curso
+function viewCourse(index) {
+    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+    const curso = cursos[index];
+    
+    let certificateContent = '';
+    if (curso.certificateType === 'link') {
+        certificateContent = `<a href="${curso.certificate}" target="_blank" class="btn btn-sm btn-outline-primary">Abrir Certificado</a>`;
+    } else {
+        // Para ficheiros, criamos um link para download
+        certificateContent = `
+            <button class="btn btn-sm btn-outline-primary download-file" data-index="${index}">
+                <i class="bi bi-download"></i> Download do Certificado
+            </button>
+        `;
+    }
+    
+    const modalHTML = `
+        <div class="modal fade" id="viewCourseModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">${curso.name}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p><strong>Descrição:</strong></p>
+                                <p>${curso.description}</p>
+                                
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <p><strong>Ano:</strong> ${curso.year}</p>
+                                    </div>
+                                    ${curso.institution ? `
+                                    <div class="col-md-6">
+                                        <p><strong>Instituição:</strong> ${curso.institution}</p>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-award display-4 text-warning"></i>
+                                        <h6 class="mt-2">Certificado</h6>
+                                        ${certificateContent}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary edit-course-from-view" data-index="${index}">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remover modal anterior se existir
+    const existingModal = document.getElementById('viewCourseModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Adicionar novo modal ao DOM
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Mostrar modal
+    const viewModal = new bootstrap.Modal(document.getElementById('viewCourseModal'));
+    viewModal.show();
+    
+    // Adicionar event listener para o botão de download
+    const downloadBtn = document.querySelector('.download-file');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function() {
+            downloadCertificate(index);
+        });
+    }
+    
+    // Adicionar event listener para editar a partir da visualização
+    document.querySelector('.edit-course-from-view').addEventListener('click', function() {
+        viewModal.hide();
+        editCourse(index);
+    });
+}
+
+// Função para fazer download do certificado
+function downloadCertificate(index) {
+    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+    const curso = cursos[index];
+    
+    if (curso.certificateType === 'file' && curso.fileData) {
+        // Criar link de download
+        const link = document.createElement('a');
+        link.href = curso.fileData;
+        link.download = curso.certificate;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+}
+
+// Função para excluir curso
+function deleteCourse(index) {
+    if (confirm('Tem certeza que deseja excluir este curso?')) {
+        const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
+        cursos.splice(index, 1);
+        localStorage.setItem('cursos', JSON.stringify(cursos));
+        loadData();
+        alert('Curso excluído com sucesso!');
+    }
+}
+
+// Função para editar curso (será implementada posteriormente)
+function editCourse(index) {
+    alert('Funcionalidade de edição será implementada em breve!');
+    // Aqui você pode implementar a lógica para editar um curso existente
+}

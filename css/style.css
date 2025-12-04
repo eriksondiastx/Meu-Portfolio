@@ -50,7 +50,7 @@ section {
 .logo {
   font-size: 2.5rem;
   color: var(--text-color);
-  font-weight: 600;
+  font-weight: 500;
   cursor: default;
 }
 
@@ -60,6 +60,7 @@ section {
   top: 0;
   z-index: 1000;
   padding-right: 50px;
+  transition: all 0.4s ease-in-out;
 }
 .navbar-toggler {
   outline: none !important;
@@ -72,6 +73,13 @@ section {
   justify-content: center; /* Centraliza horizontalmente */
   border-radius: 5px; /* Adiciona bordas arredondadas (opcional) */
 }
+
+
+ /*.navbar.scrolled {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            backdrop-filter: blur(10px);
+        }*/
+        
 .btn-hambur {
   align-content: end;
   margin-right: 0px;
@@ -84,7 +92,7 @@ section {
 .navbar .nav-link {
   font-size: 20px;
   color: var(--text-color);
-  margin-left: 4rem;
+  margin-left: 2rem;
   transition: all 0.3s ease-in-out;
 
   padding: 8px 8px; /* Adiciona espaço para um efeito mais visível */
@@ -102,6 +110,7 @@ section {
 .nav-item ul {
   text-align: center;
 }
+
 
 /* Adiciona transição suave e padding nos itens do dropdown */
 .dropdown-item {
@@ -145,24 +154,59 @@ section {
   display: none;
 }
 
+/* Estilo do botão de login */
+        .login-btn {
+            /* The `background: linear-gradient(45deg, #0c2461, #1e3799);` property is creating a
+            linear gradient background for an element. */
+            /*background: linear-gradient(45deg, #0c2461, #1e3799);*/
+            border: none;
+            border-radius: 25px;
+            padding: 8px 20px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        /*.login-btn:hover {
+            background: linear-gradient(45deg, #1e3799, #0c2461);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        */
+        .login-btn i {
+          
+          margin-right: 15px;
+        }
+        
+        /* Para mobile */
+        @media (max-width: 991px) {
+            .login-btn {
+                margin: 10px 0;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
 /* Estilo para o botão de troca de idioma */
 .language-toggle {
   background: rgba(14, 255, 240, 0.1) !important;
   border: 1px solid var(--main-color) !important;
   border-radius: 20px !important;
-  padding: 8px 15px !important;
-  margin-left: 1rem !important;
+  padding: 3px 8px !important;
+  margin-left: 2rem !important;
   transition: all 0.3s ease !important;
 }
 
 .language-toggle:hover {
   background: var(--main-color) !important;
   color: var(--bg-color) !important;
-  transform: scale(1.05);
+  
 }
 
 .language-toggle i {
-  margin-right: 5px;
+  margin-right: 10px;
+  
 }
 
 /* Ajustes de fonte para responsividade (se necessário, adicione mais breakpoints) */

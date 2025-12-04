@@ -19,3 +19,9 @@ body {
             color: #0c2461;
             font-weight: bold;
         }
+
+        .btn-voltar {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
