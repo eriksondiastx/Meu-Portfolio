@@ -1,5 +1,5 @@
 body {
-            background: linear-gradient(135deg, #0c2461, #1e3799);
+            background: linear-gradient(135deg, #323946, #1f242d);
             height: 100vh;
             display: flex;
             align-items: center;
@@ -16,7 +16,7 @@ body {
         .logo {
             text-align: center;
             margin-bottom: 30px;
-            color: #0c2461;
+            color: #1f242d;
             font-weight: bold;
         }
 

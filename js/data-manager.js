@@ -275,20 +275,7 @@ function getDefaultDesign() {
                 "imagem/design/fusao de ideias2.jpg",
                 "imagem/design/fusao de ideias4.jpg"
             ]
-        },
-        {
-            nome: "Siafrica",
-            tipo: "Rebranding",
-            descricao: "Modernização completa da identidade visual, incluindo novo logotipo, paleta de cores e aplicações em diversos materiais.",
-            ano: "2023",
-            tags: ["Rebranding", "Logo", "Papelaria"],
-            imagens: [
-                "imagem/design/siafrica0.jpg",
-                "imagem/design/siafrica1.jpg",
-                "imagem/design/siafrica2.jpg",
-                "imagem/design/siafrica3.jpg"
-            ]
-        }
+        }       
     ];
 }
 // Animação das barras de progresso

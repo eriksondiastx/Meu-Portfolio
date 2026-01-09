@@ -106,18 +106,18 @@ span {
 .btn {
   display: inline-block;
   padding: 1rem 2.8rem;
-  background: var(--main-color);
+  background: var(--second-bg-color);
+  box-shadow: 0 0 1px 2px var(--main-color);
   border-radius: 4rem;
-  box-shadow: 0 0 5px 3px var(--main-color);
   font-size: 20px;
-  color: var(--second-bg-color);
+  color: var(--text-color);
   letter-spacing: 0.1rem;
   font-weight: 600;
   transition: 0.5s ease;
 }
 
 .btn:hover {
-  box-shadow: none;
+  box-shadow: 0 0 6px 3px var(--main-color);
 }
 
 .btn2 {
