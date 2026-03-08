@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Erikson Teixeira Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -35,24 +38,24 @@
 
         <nav class="navbar navbar-expand-lg position-absolute w-100">
             <div class="btn-hambur container">
-                <h3 href="#" class="logo navbar-brand text-white">Portfólio</h3>
+                <h3 href="#" class="logo navbar-brand text-white" data-i18n="brand_title">Portfólio</h3>
                 <!-- Botão hamburguer -->
                 <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
-                aria-expanded="false" aria-label="Abrir Menu">
+                aria-expanded="false" aria-label="Abrir Menu" data-i18n-aria="nav_open_menu">
                 <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto" >
-                    <li class="nav-item"><a class="nav-link " href="#inicio">Início</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#sobre">Sobre</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#tecnologias">Tecnologias</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#cursos">Cursos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#experiencias">Experiências</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#projectos">Projectos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#design">Design</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#contactos">Contactos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#inicio" data-i18n="nav_home">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#sobre" data-i18n="nav_about">Sobre</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tecnologias" data-i18n="nav_tech">Tecnologias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#cursos" data-i18n="nav_courses">Cursos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experiencias" data-i18n="nav_experience">Experiências</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projectos" data-i18n="nav_projects">Projectos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#design" data-i18n="nav_design">Design</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contactos" data-i18n="nav_contact">Contactos</a></li>
                     <!-- Botão de Login -->
                 <li class="nav-item">
                     <a class="nav-link login-btn" href="admin/admin-login.html">
@@ -62,8 +65,8 @@
 
                 <!-- NOVO: Link para troca de idioma -->
                 <li class="nav-item">
-                    <a class="nav-link language-toggle" href="index-english.html">
-                    <i class="bi bi-translate"></i> EN
+                    <a class="nav-link language-toggle" href="#" id="languageToggle">
+                    <i class="bi bi-translate"></i> <span data-i18n="lang_toggle">EN</span>
                     </a>
                 </li>
             </ul>
@@ -74,26 +77,27 @@
 </header>
 
     <!--home section design-->
-<section class="inicio container-fluid" id="inicio">
+<section class="inicio container-fluid" id="inicio" data-aos="fade-up">
     <div class="row align-items-center justify-content-center">
         <!-- Texto (coluna da esquerda no desktop, topo no mobile) -->
         <div class="inicio-text col-lg-7 col-md-12 order-lg-1 order-2 text-center text-lg-start">
-            <h3>Olá, <span>chamo-me</span></h3>
-            <h2 class="">Erikson Inácio Dias Teixeira</h2>
-            <h3>Sou <span class="text sec-text">Desenvolvedor Front-End</span></h3>
-            <p>Apaixonado por tecnologia e por computadores desde os 13 anos de idade, 
+            <h3 data-i18n-html="home_greeting">Olá, <span>chamo-me</span></h3>
+            <!-- CODEX: IDs para atualização dinâmica -->
+            <h2 id="homeName" class="animate__animated animate__fadeInUp">Erikson Inácio Dias Teixeira</h2>
+            <h3><span data-i18n="home_role_prefix">Sou</span> <span id="homeRole" class="text sec-text">Desenvolvedor Front-End</span></h3>
+            <p id="homeDescription" data-i18n-html="home_description">Apaixonado por tecnologia e por computadores desde os 13 anos de idade, 
                 a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário,
                 no então renomado Centro de Formação São Domingos, em Luanda.
                 <br>Desde então, já sabia que carreira pretendia seguir.<br>
-            <h3>&lt; <span>Engenharia Informática</span> /&gt;.</h3><br> 
             </p>
+            <h3 id="homeDegree" data-i18n-html="home_degree">&lt; <span>Engenharia Informática</span> /&gt;.</h3><br>
             <div class="social-media">
                 <a href="https://www.facebook.com/erikson.teixeira.73/"  target="_blank"><i class='bx bxl-facebook'></i></a>
                 <a href="#"><i class='bx bxl-twitter'></i></a>
                 <a href="https://www.instagram.com/eriksonteixeira/"  target="_blank"><i class='bx bxl-instagram-alt'></i></a>
                 <a href="https://www.linkedin.com/in/erikson-teixeira-b912b3145"  target="_blank"><i class='bx bxl-linkedin'></i></i></a>
             </div>
-            <a href="cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf" class="btn">Download CV</a>    
+            <a id="homeCvLink" href="cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf" class="btn" data-i18n="home_download_cv">Download CV</a>    
         </div>
         
         <!-- Imagem (coluna da direita no desktop, abaixo no mobile) -->
@@ -105,38 +109,41 @@
 
     <!--Design da sessão "Sobre"-->
 <section class="sobre container-fluid" id="sobre">
+    <!-- CODEX: vídeo de fundo da seção sobre -->
+    <video class="sobre-bg-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <source src="imagem/buraconegro/buraconegro.mp4" type="video/mp4">
+    </video>
     <div class="row align-items-center justify-content-center flex-column-reverse flex-lg-row">
         <!-- Imagem (coluna da esquerda no desktop, topo no mobile) -->
         <div class="sobre-img col-lg-5 col-md-8 col-sm-10 text-center mb-4 mb-lg-0">
-            <img class="Profile2 img-fluid" src="imagem/Erikson Profile2.png" alt="Sobre">
+            <!-- img class="Profile2 img-fluid" src="imagem/Erikson Profile2.png" alt="Sobre"-->
             <div class="social-media mt-3">
-                <a href="https://www.facebook.com/erikson.teixeira.73/"  target="_blank"><i class='bx bxl-facebook'></i></a>
-                <a href="#"><i class='bx bxl-twitter'></i></a>
-                <a href="https://www.instagram.com/eriksonteixeira/"  target="_blank"><i class='bx bxl-instagram-alt'></i></a>
+                
             </div>
         </div>
         
         <!-- Conteúdo (coluna da direita no desktop, abaixo no mobile) -->
         <div class="sobre-content col-lg-7 col-md-12 text-center text-lg-start">
-            <h2 class="heading text-center text-lg-start">Sobre <span>Mim</span></h2>
-            <p>Natural de Angola, Província de Luanda, Nascido aos 12 de Setembro de 1993,<br>
+            <h2 class="heading text-center text-lg-start" data-i18n-html="about_heading">Sobre <span>Mim</span></h2>
+            <!-- CODEX: Ajuste de parágrafos para facilitar atualização dinâmica -->
+            <p data-i18n-html="about_intro">Natural de Angola, Província de Luanda, Nascido aos 12 de Setembro de 1993,<br>
                 O primeiro filho de três (3) irmãos.<br>
                 Pai: Mateus Inácio Teixeira;<br>
                 Mãe: Ana Tuti Dias Ntonha Teixeira.<br>
-                <p>Actualmente trilhando o caminho como <span>desenvolvedor Front-End.</span></p>
-                <p>Sempre procurando ser melhor do que fui no dia anterior.</p>
-            </p>               
+            </p>
+            <p data-i18n-html="about_career">Actualmente trilhando o caminho como <span id="aboutRole">desenvolvedor Front-End.</span></p>
+            <p data-i18n="about_motto">Sempre procurando ser melhor do que fui no dia anterior.</p>              
         </div>
     </div>
 </section>
         <!--Tecnologias section design-->
 <section class="tecnologias" id="tecnologias">
-    <h2 class="heading">Domínio de <span>Tecnologias</span></h2>
+    <h2 class="heading" data-i18n-html="tech_heading">Domínio de <span>Ferramentas</span></h2>
     
     <div class="tecnologias-container">
         <!-- Front-End -->
         <div class="tech-category">
-            <h3 class="category-title"><i class="bi bi-code-slash"></i> Front-End</h3>
+            <h3 class="category-title"><i class="bi bi-code-slash"></i> <span data-i18n="tech_category_frontend">Front-End</span></h3>
             <div class="tech-grid">
                 <div class="tech-item">
                     <div class="tech-icon">
@@ -149,7 +156,7 @@
                                 <span class="skill-percentage">80%</span>
                             </div>
                         </div>
-                        <p>Avançado</p>
+                        <p data-i18n="tech_level_advanced">Avançado</p>
                     </div>
                 </div>
 
@@ -164,7 +171,7 @@
                                 <span class="skill-percentage">70%</span>
                             </div>
                         </div>
-                        <p>Avançado</p>
+                        <p data-i18n="tech_level_advanced">Avançado</p>
                     </div>
                 </div>
 
@@ -179,7 +186,7 @@
                                 <span class="skill-percentage">20%</span>
                             </div>
                         </div>
-                        <p>Básico</p>
+                        <p data-i18n="tech_level_basic">Básico</p>
                     </div>
                 </div>
 
@@ -194,7 +201,7 @@
                                 <span class="skill-percentage">50%</span>
                             </div>
                         </div>
-                        <p>Intermediário</p>
+                        <p data-i18n="tech_level_intermediate">Intermediário</p>
                     </div>
                 </div>
 
@@ -209,7 +216,7 @@
                                 <span class="skill-percentage">10%</span>
                             </div>
                         </div>
-                        <p>Iniciante</p>
+                        <p data-i18n="tech_level_beginner">Iniciante</p>
                     </div>
                 </div>
             </div>
@@ -217,7 +224,7 @@
 
         <!-- Back-End & Databases -->
         <div class="tech-category">
-            <h3 class="category-title"><i class="bi bi-server"></i> Back-End & Databases</h3>
+            <h3 class="category-title"><i class="bi bi-server"></i> <span data-i18n="tech_category_backend">Back-End & Databases</span></h3>
             <div class="tech-grid">
                 <div class="tech-item">
                     <div class="tech-icon">
@@ -230,7 +237,7 @@
                                 <span class="skill-percentage">50%</span>
                             </div>
                         </div>
-                        <p>Intermediário</p>
+                        <p data-i18n="tech_level_intermediate">Intermediário</p>
                     </div>
                 </div>
 
@@ -245,7 +252,7 @@
                                 <span class="skill-percentage">30%</span>
                             </div>
                         </div>
-                        <p>Básico</p>
+                        <p data-i18n="tech_level_basic">Básico</p>
                     </div>
                 </div>
             </div>
@@ -253,7 +260,7 @@
 
         <!-- Ferramentas & Outros -->
         <div class="tech-category">
-            <h3 class="category-title"><i class="bi bi-tools"></i> Ferramentas & Outros</h3>
+            <h3 class="category-title"><i class="bi bi-tools"></i> <span data-i18n="tech_category_tools">Ferramentas & Outros</span></h3>
             <div class="tech-grid">
                 <div class="tech-item">
                     <div class="tech-icon">
@@ -266,7 +273,7 @@
                                 <span class="skill-percentage">40%</span>
                             </div>
                         </div>
-                        <p>Intermediário</p>
+                        <p data-i18n="tech_level_intermediate">Intermediário</p>
                     </div>
                 </div>
 
@@ -281,7 +288,7 @@
                                 <span class="skill-percentage">80%</span>
                             </div>
                         </div>
-                        <p>Avançado</p>
+                        <p data-i18n="tech_level_advanced">Avançado</p>
                     </div>
                 </div>
 
@@ -296,7 +303,7 @@
                                 <span class="skill-percentage">30%</span>
                             </div>
                         </div>
-                        <p>Básico</p>
+                        <p data-i18n="tech_level_basic">Básico</p>
                     </div>
                 </div>
 
@@ -311,7 +318,7 @@
                                 <span class="skill-percentage">80%</span>
                             </div>
                         </div>
-                        <p>Avançado</p>
+                        <p data-i18n="tech_level_advanced">Avançado</p>
                     </div>
                 </div>
 
@@ -326,7 +333,7 @@
                                 <span class="skill-percentage">40%</span>
                             </div>
                         </div>
-                        <p>Intermediário</p>
+                        <p data-i18n="tech_level_intermediate">Intermediário</p>
                     </div>
                 </div>
 
@@ -341,7 +348,7 @@
                                 <span class="skill-percentage">20%</span>
                             </div>
                         </div>
-                        <p>Intermediário</p>
+                        <p data-i18n="tech_level_intermediate">Intermediário</p>
                     </div>
                 </div>
 
@@ -353,62 +360,62 @@
 
         <!--Courses section design-->
         <section class="cursos" id="cursos">
-            <h2 class="heading">Cursos <span>Feitos</span></h2>
+            <h2 class="heading" data-i18n-html="courses_heading">Cursos <span>Feitos</span></h2>
             
             <div class="cursos-container">
                 <div class="cursos-box col-sm-12">
                     <i class="bi bi-book-half"></i>
-                    <h3>Informática<br> para Usuário</h3>
-                    <p>O primeiro curso que fiz, aos 13 anos de idade, no Centro de Formação São Domingos. <br>
+                    <h3 data-i18n-html="course_1_title">Informática<br> para Usuário</h3>
+                    <p data-i18n-html="course_1_desc">O primeiro curso que fiz, aos 13 anos de idade, no Centro de Formação São Domingos. <br>
                         Luanda/Angola.</p>
-                    <a href="#" class="btn">Ver Certificado</a>
+                    <a href="#" class="btn" data-i18n="course_view_cert">Ver Certificado</a>
                 </div>
 
                 <div class="cursos-box col-sm-12">
                     <i class="bi bi-book-half"></i>
-                    <h3>Contabilidade<br> Informatizada</h3>
-                    <p>Curso feito durante época de pausa escolar, no Istituto Médio de Economia do Kilamba Kiaxi (IMEKK). <br>
+                    <h3 data-i18n-html="course_2_title">Contabilidade<br> Informatizada</h3>
+                    <p data-i18n-html="course_2_desc">Curso feito durante época de pausa escolar, no Istituto Médio de Economia do Kilamba Kiaxi (IMEKK). <br>
                     Luanda/Angola</p>
-                    <a href="certificados/Certificado_Contabilidade Informatizada.pdf" class="btn">Ver Certificado</a>
+                    <a href="certificados/Certificado_Contabilidade Informatizada.pdf" class="btn" data-i18n="course_view_cert">Ver Certificado</a>
                 </div>
                 
                 <div class="cursos-box col-sm-12">
                     <i class="bi bi-book-half"></i>
-                    <h3>Pedagogia<br> e <br>Didática</h3>
-                    <p>Curso feito durante época de pausa escolar, a escola Cheguevara. <br>
+                    <h3 data-i18n-html="course_3_title">Pedagogia<br> e <br>Didática</h3>
+                    <p data-i18n-html="course_3_desc">Curso feito durante época de pausa escolar, a escola Cheguevara. <br>
                     Luanda/Angola</p>
                     
-                    <a href="certificados/Certificado_Pedagogia e Didática.pdf" class="btn">Ver Certificado</a>
+                    <a href="certificados/Certificado_Pedagogia e Didática.pdf" class="btn" data-i18n="course_view_cert">Ver Certificado</a>
                 </div>
                 <div class="cursos-box col-sm-12">
                     <i class="bi bi-book-half"></i>
-                    <h3>Redes <br>de Computadores</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
-                    <a href="certificados/Certificado_Redes de Computadores.pdf" class="btn">Ver Certificado</a>
+                    <h3 data-i18n-html="course_4_title">Redes <br>de Computadores</h3>
+                    <p data-i18n-html="course_4_desc">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
+                    <a href="certificados/Certificado_Redes de Computadores.pdf" class="btn" data-i18n="course_view_cert">Ver Certificado</a>
                 </div> 
                 <div class="cursos-box col-sm-12">
                     <i class="bi bi-book-half"></i>
-                    <h3>Montagem e Reparação <br>de Computadores</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
-                    <a href="certificados/Certificado Hardware.pdf" class="btn">Ver Certificado</a>
+                    <h3 data-i18n-html="course_5_title">Montagem e Reparação <br>de Computadores</h3>
+                    <p data-i18n-html="course_5_desc">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
+                    <a href="certificados/Certificado Hardware.pdf" class="btn" data-i18n="course_view_cert">Ver Certificado</a>
                 </div>
                 <div class="cursos-box col-sm-12">
                     <i class="bi bi-book-half"></i>
-                    <h3>Electrônica <br>Analógica</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
-                    <a href="certificados/Certificado_Eletrônica Analógica.pdf" class="btn">Ver Certificado</a>
+                    <h3 data-i18n-html="course_6_title">Electrônica <br>Analógica</h3>
+                    <p data-i18n-html="course_6_desc">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
+                    <a href="certificados/Certificado_Eletrônica Analógica.pdf" class="btn" data-i18n="course_view_cert">Ver Certificado</a>
                 </div>
                 <div class="cursos-box col-sm-12">
                     <i class="bi bi-book-half"></i>
-                    <h3>Electrônica <br>Digital</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
-                    <a href="certificados/Certificado_Eletrônica Digital.pdf" class="btn">Ver Certificado</a>
+                    <h3 data-i18n-html="course_7_title">Electrônica <br>Digital</h3>
+                    <p data-i18n-html="course_7_desc">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi eveniet quas expedita quos cumque, fugiat sapiente magni quis quisquam est.</p>
+                    <a href="certificados/Certificado_Eletrônica Digital.pdf" class="btn" data-i18n="course_view_cert">Ver Certificado</a>
                 </div>
                 <div class="cursos-box col-sm-12">
                     <i class="bi bi-book-half"></i>
-                    <h3>Iniciação Bancária <br>para Assistente de Clientes</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-                    <a href="certificados/Certificado_CIBAC.pdf" class="btn">Ver Certificado</a>
+                    <h3 data-i18n-html="course_8_title">Iniciação Bancária <br>para Assistente de Clientes</h3>
+                    <p data-i18n-html="course_8_desc">Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+                    <a href="certificados/Certificado_CIBAC.pdf" class="btn" data-i18n="course_view_cert">Ver Certificado</a>
                 </div>
 
             </div>
@@ -416,48 +423,48 @@
 
         <!--Experiências Profissionais section design-->
 <section class="experiencias" id="experiencias">
-    <h2 class="heading">Minhas <span>Experiências</span></h2>
+    <h2 class="heading" data-i18n-html="experience_heading">Minhas <span>Experiências</span></h2>
     
     <div class="timeline">
         <!-- Experiência 1 -->
         <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-date">2025 - Presente</div>
+            <div class="timeline-date" data-i18n="exp1_date">2025 - Presente</div>
             <div class="timeline-content">
                 <div class="company-header">
                     <div class="company-logo">
                         <img src="imagem/empresas/front-end.jpeg" alt="Front-End">
                     </div>
                     <div class="company-info">
-                        <h3>Desenvolvedor Front-End Freelancer</h3>
+                        <h3 data-i18n="exp1_title">Desenvolvedor Front-End Freelancer</h3>
                         <p class="company-name">Trabalho Autônomo</p>
                         <p class="company-location"><i class="bi bi-geo-alt"></i> Luanda, Angola</p>
                     </div>
                 </div>
                 
                 <div class="job-description">
-                    <h4>Responsabilidades:</h4>
+                    <h4 data-i18n="exp_responsibilities">Responsabilidades:</h4>
                     <ul>
-                        <li>Desenvolvimento de websites responsivos usando HTML5, CSS3 e JavaScript</li>
-                        <li>Criação de interfaces modernas com Bootstrap e frameworks CSS</li>
-                        <li>Implementação de designs fornecidos pelos clientes</li>
-                        <li>Otimização de sites para SEO e performance</li>
-                        <li>Manutenção e atualização de websites existentes</li>
+                        <li data-i18n="exp1_r1">Desenvolvimento de websites responsivos usando HTML5, CSS3 e JavaScript</li>
+                        <li data-i18n="exp1_r2">Criação de interfaces modernas com Bootstrap e frameworks CSS</li>
+                        <li data-i18n="exp1_r3">Implementação de designs fornecidos pelos clientes</li>
+                        <li data-i18n="exp1_r4">Otimização de sites para SEO e performance</li>
+                        <li data-i18n="exp1_r5">Manutenção e atualização de websites existentes</li>
                     </ul>
                 </div>
 
                 <!-- Galeria de fotos (opcional) -->
                 <div class="work-gallery">
-                    <h4>Evidências do trabalho:</h4>
+                    <h4 data-i18n="exp_work_evidence">Evidências do trabalho:</h4>
                     <div class="gallery-grid">
                         <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modal1">
-                            <img src="imagem/trabalhos/freelancer1.jpg" alt="Projeto Freelancer 1">
+                            <img src="imagem/portfolio1.jpg" alt="Projeto Freelancer 1">
                             <div class="gallery-overlay">
                                 <i class="bi bi-zoom-in"></i>
                             </div>
                         </div>
                         <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modal2">
-                            <img src="imagem/trabalhos/freelancer2.jpg" alt="Projeto Freelancer 2">
+                            <img src="imagem/portfolio2.jpg" alt="Projeto Freelancer 2">
                             <div class="gallery-overlay">
                                 <i class="bi bi-zoom-in"></i>
                             </div>
@@ -470,43 +477,43 @@
         <!-- Experiência 2 -->
         <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-date">2024 - 2025</div>
+            <div class="timeline-date" data-i18n="exp2_date">2024 - 2025</div>
             <div class="timeline-content">
                 <div class="company-header">
                     <div class="company-logo">
                         <img src="imagem/empresas/Alexa.jpeg" alt="Alexa">
                     </div>
                     <div class="company-info">
-                        <h3>Secretário</h3>
+                        <h3 data-i18n="exp2_title">Secretário</h3>
                         <p class="company-name">Alexa Gestão de Taxi</p>
                         <p class="company-location"><i class="bi bi-geo-alt"></i> Kilamba, Luanda, Angola</p>
                     </div>
                 </div>
                 
                 <div class="job-description">
-                    <h4>Responsabilidades:</h4>
+                    <h4 data-i18n="exp_responsibilities">Responsabilidades:</h4>
                     <ul>
-                        <li>Organização de documentos administrativos</li>
-                        <li>Pagamento(recarga) de saldo para os motoristas na plataforma(Yango</li>
-                        <li>Depósitos bancários</li>
-                        <li>Compra dos materiais para manutenção das viaturas</li>
-                        <li>Marketing da marca para angariação de parceiros</li>
-                        <li>Emitir relatórios de actividades</li>
+                        <li data-i18n="exp2_r1">Organização de documentos administrativos</li>
+                        <li data-i18n="exp2_r2">Pagamento(recarga) de saldo para os motoristas na plataforma(Yango</li>
+                        <li data-i18n="exp2_r3">Depósitos bancários</li>
+                        <li data-i18n="exp2_r4">Compra dos materiais para manutenção das viaturas</li>
+                        <li data-i18n="exp2_r5">Marketing da marca para angariação de parceiros</li>
+                        <li data-i18n="exp2_r6">Emitir relatórios de actividades</li>
                     </ul>
                 </div>
 
                 <!-- Galeria de fotos (opcional) -->
                 <div class="work-gallery">
-                    <h4>Evidências do trabalho:</h4>
+                    <h4 data-i18n="exp_work_evidence">Evidências do trabalho:</h4>
                     <div class="gallery-grid">
                         <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modal1">
-                            <img src="imagem/trabalhos/freelancer1.jpg" alt="Projeto Freelancer 1">
+                            <img src="imagem/portfolio1.jpg" alt="Projeto Freelancer 1">
                             <div class="gallery-overlay">
                                 <i class="bi bi-zoom-in"></i>
                             </div>
                         </div>
                         <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modal2">
-                            <img src="imagem/trabalhos/freelancer2.jpg" alt="Projeto Freelancer 2">
+                            <img src="imagem/portfolio2.jpg" alt="Projeto Freelancer 2">
                             <div class="gallery-overlay">
                                 <i class="bi bi-zoom-in"></i>
                             </div>
@@ -519,36 +526,36 @@
          <!-- Experiência 3 -->
         <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-date">2022 - 2024</div>
+            <div class="timeline-date" data-i18n="exp3_date">2022 - 2024</div>
             <div class="timeline-content">
                 <div class="company-header">
                     <div class="company-logo">
                         <img src="imagem/empresas/Egate-Logo.jpeg" alt="Egate Cloud">
                     </div>
                     <div class="company-info">
-                        <h3>Técnico de Suporte em TI</h3>
+                        <h3 data-i18n="exp3_title">Técnico de Suporte em TI</h3>
                         <p class="company-name">Egate Cloud</p>
                         <p class="company-location"><i class="bi bi-geo-alt"></i> São Paulo, Luanda, Angola</p>
                     </div>
                 </div>
                 
                 <div class="job-description">
-                    <h4>Responsabilidades:</h4>
+                    <h4 data-i18n="exp_responsibilities">Responsabilidades:</h4>
                     <ul>
-                        <li>Suporte técnico a usuários finais</li>
-                        <li>Suporte técnico a usuários finais na empresa Sociedade de Desenvolvimento da Barra do Dande(SDB)</li>
-                        <li>Auxílio ao Engº Amandio Zumba na gestão de sistemas da SDB </li>
-                        <li>Implementar e normas de Segurança da Informação na empresa</li>
-                        <li>Instalação e configuração de software</li>
-                        <li>Manutenção preventiva e corretiva de computadores</li>
-                        <li>Configuração de redes locais</li>
-                        <li>Treinamento básico para usuários</li>
+                        <li data-i18n="exp3_r1">Suporte técnico a usuários finais</li>
+                        <li data-i18n="exp3_r2">Suporte técnico a usuários finais na empresa Sociedade de Desenvolvimento da Barra do Dande(SDB)</li>
+                        <li data-i18n="exp3_r3">Auxílio ao Engº Amandio Zumba na gestão de sistemas da SDB </li>
+                        <li data-i18n="exp3_r4">Implementar e normas de Segurança da Informação na empresa</li>
+                        <li data-i18n="exp3_r5">Instalação e configuração de software</li>
+                        <li data-i18n="exp3_r6">Manutenção preventiva e corretiva de computadores</li>
+                        <li data-i18n="exp3_r7">Configuração de redes locais</li>
+                        <li data-i18n="exp3_r8">Treinamento básico para usuários</li>
                         
                     </ul>
                 </div>
 
                 <div class="work-gallery">
-                    <h4>Trabalho técnico:</h4>
+                    <h4 data-i18n="exp3_gallery">Trabalho técnico:</h4>
                     <div class="gallery-grid">
                         <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modalEgate1">
                             <img src="imagem/trabalhos/Egate1.jpg" alt="Suporte técnico 1">
@@ -594,37 +601,37 @@
         <!-- Experiência 4 -->
         <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-date">2020 - 2022</div>
+            <div class="timeline-date" data-i18n="exp4_date">2020 - 2022</div>
             <div class="timeline-content">
                 <div class="company-header">
                     <div class="company-logo">
                         <img src="imagem/empresas/StAndrews.jpg" alt="Escola">
                     </div>
                     <div class="company-info">
-                        <h3>Professor de Informática</h3>
+                        <h3 data-i18n="exp4_title">Professor de Informática</h3>
                         <p class="company-name">ATL StAndrews English School</p>
                         <p class="company-location"><i class="bi bi-geo-alt"></i> Luanda, Angola</p>
                     </div>
                 </div>
                 
                 <div class="job-description">
-                    <h4>Responsabilidades:</h4>
+                    <h4 data-i18n="exp_responsibilities">Responsabilidades:</h4>
                     <ul>
-                        <li>Lecionar a disciplina de Informática para crianças e adolescentes</li>
-                        <li>Lecionar a disciplina de Artes Plásticas</li>
-                        <li>Auxíliar os alunos na resolução das tarefas escolares</li>
-                        <li>Preparação de material didático e avaliações</li>
-                        <li>Acompanhamento do progresso dos alunos</li>
-                        <li>Ensino de pacote Office (Word, Excel, PowerPoint)</li>
-                        <li>Criação de actividades para datas comemorativas</li>
-                        <li>Auxílio ao coordenador na gestão de disciplinas e professores</li>
-                        <li>Suporte técnico das TICs do centro</li>
+                        <li data-i18n="exp4_r1">Lecionar a disciplina de Informática para crianças e adolescentes</li>
+                        <li data-i18n="exp4_r2">Lecionar a disciplina de Artes Plásticas</li>
+                        <li data-i18n="exp4_r3">Auxíliar os alunos na resolução das tarefas escolares</li>
+                        <li data-i18n="exp4_r4">Preparação de material didático e avaliações</li>
+                        <li data-i18n="exp4_r5">Acompanhamento do progresso dos alunos</li>
+                        <li data-i18n="exp4_r6">Ensino de pacote Office (Word, Excel, PowerPoint)</li>
+                        <li data-i18n="exp4_r7">Criação de actividades para datas comemorativas</li>
+                        <li data-i18n="exp4_r8">Auxílio ao coordenador na gestão de disciplinas e professores</li>
+                        <li data-i18n="exp4_r9">Suporte técnico das TICs do centro</li>
                         
                     </ul>
                 </div>
 
                 <div class="work-gallery">
-                    <h4>Momentos em sala de aula:</h4>
+                    <h4 data-i18n="exp4_gallery">Momentos em sala de aula:</h4>
                     <div class="gallery-grid">
                         <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modalStandrews1">
                             <img class="lightbox-trigger" src="imagem/trabalhos/StAndrews1.jpg" alt="Sala de aula 1">
@@ -679,7 +686,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalEgate1">Egate Cloud</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/Egate1.jpg" class="img-fluid modal-image-full" alt="Egatecloud1">
@@ -692,7 +699,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalEgate2">Egate Cloud</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/egate2.jpg" class="img-fluid modal-image-full" alt="EgateCloud2">
@@ -705,7 +712,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalEgate3">Egate Cloud</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/egate3.jpg" class="img-fluid modal-image-full" alt="EgateCloud3">
@@ -718,7 +725,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalEgate4">Egate Cloud</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/egate4.jpg" class="img-fluid modal-image-full" alt="EgateCloud4">
@@ -731,10 +738,10 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalEgate5">Egate Cloud</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
-                <img src="imagem/trabalhos/egate5.jpg" class="img-fluid modal-image-full" alt="EgateCloud5">
+                <img src="imagem/trabalhos/egate6.jpg" class="img-fluid modal-image-full" alt="EgateCloud5">
             </div>
         </div>
     </div>
@@ -744,7 +751,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalEgate6">Egate Cloud</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/egate6.jpg" class="img-fluid modal-image-full" alt="EgateCloud6">
@@ -759,7 +766,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalStandrews1">St Andrews English School</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/StAndrews1.jpg" class="img-fluid modal-image-full" alt="StAndrews1">
@@ -772,7 +779,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalStandrews2">St Andrews English School</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/StAndrews2.jpg" class="img-fluid modal-image-full" alt="StAndrews2">
@@ -785,7 +792,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalStandrews3">St Andrews English School</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/StAndrews3.jpg" class="img-fluid modal-image-full" alt="StAndrews3">
@@ -798,7 +805,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalStandrews4">St Andrews English School</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/StAndrews4.jpg" class="img-fluid modal-image-full" alt="StAndrews4">
@@ -811,7 +818,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalStandrews5">St Andrews English School</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/StAndrews5.jpg" class="img-fluid modal-image-full" alt="StAndrews5">
@@ -824,7 +831,7 @@
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white" id="modalStandrews6">St Andrews English School</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/trabalhos/StAndrews6.jpg" class="img-fluid modal-image-full" alt="StAndrews6">
@@ -837,24 +844,24 @@
 
         <!--portfolio section design-->
 <section class="portfolio" id="projectos">
-    <h2 class="heading">Meus<span> Projectos Dev.Web</span></h2>
+    <h2 class="heading" data-i18n-html="projects_heading">Meus <span>Projectos</span></h2>
         <div class="portfolio-container">
             <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio1.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>Currículum Online</h4>
-                        <p>Um projecto simples do meu currículum, disponibilizado online através do GitHub Pages. <br><span>Concluído</span>
+                        <h4 data-i18n="project_1_title">Currículum Online</h4>
+                        <p data-i18n-html="project_1_desc">Um projecto simples do meu currículum, disponibilizado online através do GitHub Pages. <br><span>Concluído</span>
                         </p>
                        <i class="bi bi-code-slash"></i>
-                        <a href="#" class="btn2">Acessar</a>
+                        <a href="#" class="btn2" data-i18n="project_access">Acessar</a>
                     </div>
                 </div>
 
                 <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio2.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>Portfólio</h4>
-                        <p>O projecto do meu portfólio, na qual estão tendo acesso.<br>
+                        <h4 data-i18n="project_2_title">Portfólio</h4>
+                        <p data-i18n-html="project_2_desc">O projecto do meu portfólio, na qual estão tendo acesso.<br>
                         Disponibilizado online através do GitHub Pages. <br><span>Em desenvolvimento...</span></p>
                         <i class="bi bi-code-slash"></i>
                         <!-- <a href="#" class="btn2">Acessar</a> -->
@@ -863,40 +870,40 @@
                 <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio3.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>Calculadora</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>Em desenvolvimento...</span></p>
+                        <h4 data-i18n="project_3_title">Calculadora</h4>
+                        <p data-i18n-html="project_3_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>Em desenvolvimento...</span></p>
                         <i class="bi bi-code-slash"></i>
-                        <a href="#" class="btn2">Acessar</a>
+                        <a href="#" class="btn2" data-i18n="project_access">Acessar</a>
                     </div>
                 </div>
 
                 <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio4.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>LisBeauty</h4>
-                        <p>Este é um projecto que eu fiz para a divulgação do negócio da minha esposa. <br><span>Em desenvolvimento...</span></p>
+                        <h4 data-i18n="project_4_title">LisBeauty</h4>
+                        <p data-i18n-html="project_4_desc">Este é um projecto que eu fiz para a divulgação do negócio da minha esposa. <br><span>Em desenvolvimento...</span></p>
                         <i class="bi bi-code-slash"></i>
-                        <a href="https://eriksondiastx.github.io/Lisbeauty/" class="btn2">Acessar</a>
+                        <a href="https://eriksondiastx.github.io/Lisbeauty/" class="btn2" data-i18n="project_access">Acessar</a>
                     </div>
                 </div>
 
                 <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio5.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>Gestor de Cantinas</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>Em desenvolvimento...</span></p>
+                        <h4 data-i18n="project_5_title">Gestor de Cantinas</h4>
+                        <p data-i18n-html="project_5_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>Em desenvolvimento...</span></p>
                         <i class="bi bi-code-slash"></i>
-                        <a href="#" class="btn2">Acessar</a>
+                        <a href="#" class="btn2" data-i18n="project_access">Acessar</a>
                     </div>
                 </div>
 
                 <div class="portfolio-box cursos-box">
                     <img src="imagem/portfolio6.jpg" alt="">
                     <div class="portfolio-layer">
-                        <h4>Web Design</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>Em desenvolvimento...</span></p>
+                        <h4 data-i18n="project_6_title">Web Design</h4>
+                        <p data-i18n-html="project_6_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>Em desenvolvimento...</span></p>
                         <i class="bi bi-code-slash"></i>
-                        <a href="#" class="btn2">Acessar</a>
+                        <a href="#" class="btn2" data-i18n="project_access">Acessar</a>
                     </div>
                 </div>
                 
@@ -905,8 +912,6 @@
 
        <!--Design Projects section-->
 <section class="design-projects" id="design">
-    <h2 class="heading mb-5">Meus Projetos de <span>Design Gráfico</span></h2>
-
     <div class="design-container">
 
         <!-- Projeto 1 - TxArt -->
@@ -916,25 +921,25 @@
                     <img src="imagem/clientes/TxArt-Logo.png" alt="TxArt Logo">
                 </div>
                 <div class="project-info">
-                    <h3>Identidade e Posts</h3>
+                    <h3 data-i18n="design1_title">Identidade e Posts</h3>
                     <p class="client-name">TxArt</p>
-                    <p class="project-type"><i class="bi bi-palette"></i> Branding & Identidade Visual</p>
+                    <p class="project-type"><i class="bi bi-palette"></i> <span data-i18n="design1_type">Branding & Identidade Visual</span></p>
                     <p class="project-year"><i class="bi bi-calendar"></i> 2019</p>
                 </div>
             </div>
             
             <div class="project-description">
-                <p>Desenvolvimento completo de identidade visual para página online, incluindo logotipo, cartão de visita e posts.</p>
+                <p data-i18n="design1_desc">Desenvolvimento completo de identidade visual para página online, incluindo logotipo, cartão de visita e posts.</p>
                 
                 <div class="project-tags">
-                    <span class="tag">Logo Design</span>
-                    <span class="tag">Material Gráfico</span>
-                    <span class="tag">Design</span>
+                    <span class="tag" data-i18n="design1_tag1">Logo Design</span>
+                    <span class="tag" data-i18n="design1_tag2">Material Gráfico</span>
+                    <span class="tag" data-i18n="design1_tag3">Design</span>
                 </div>
             </div>
 
             <div class="design-gallery">
-                <h4>Galeria do Projeto:</h4>
+                <h4 data-i18n="design_gallery">Galeria do Projeto:</h4>
                 <div class="gallery-grid">
                     <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modalDesign1_1">
                         <img src="imagem/design/txart1.jpg" alt="Logo TxArt">
@@ -1022,28 +1027,28 @@
         <div class="design-card">
             <div class="design-header">
                 <div class="client-logo">
-                    <img src="imagem/clientes/cliente2-logo.png" alt="Projeto Estamos Juntos">
+                    <img src="imagem/clientes/cliente2-logo.png" onerror="this.src='imagem/clientes/TxArt-Logo.png'" alt="Projeto Estamos Juntos">
                 </div>
                 <div class="project-info">
-                    <h3>Campanha Publicitária</h3>
+                    <h3 data-i18n="design2_title">Campanha Publicitária</h3>
                     <p class="client-name">Projeto Estamos Juntos</p>
-                    <p class="project-type"><i class="bi bi-megaphone"></i> Publicidade & Marketing</p>
+                    <p class="project-type"><i class="bi bi-megaphone"></i> <span data-i18n="design2_type">Publicidade & Marketing</span></p>
                     <p class="project-year"><i class="bi bi-calendar"></i> 2024</p>
                 </div>
             </div>
             
             <div class="project-description">
-                <p>Criação de campanha publicitária completa para ONG, incluindo peças para redes sociais, banners e material impresso.</p>
+                <p data-i18n="design2_desc">Criação de campanha publicitária completa para ONG, incluindo peças para redes sociais, banners e material impresso.</p>
                 
                 <div class="project-tags">
-                    <span class="tag">Social Media</span>
-                    <span class="tag">Banners</span>
-                    <span class="tag">Impressos</span>
+                    <span class="tag" data-i18n="design2_tag1">Social Media</span>
+                    <span class="tag" data-i18n="design2_tag2">Banners</span>
+                    <span class="tag" data-i18n="design2_tag3">Impressos</span>
                 </div>
             </div>
 
             <div class="design-gallery">
-                <h4>Galeria do Projeto:</h4>
+                <h4 data-i18n="design_gallery">Galeria do Projeto:</h4>
                 <div class="gallery-grid">
                     <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modalDesign2_1">
                         <img src="imagem/design/fusao de ideias1.jpg" alt="Fusão de Ideias 1">
@@ -1074,25 +1079,25 @@
                     <img src="imagem/clientes/siafrica.jpg" alt="BeautyStyle">
                 </div>
                 <div class="project-info">
-                    <h3>Redesign de Marca</h3>
+                    <h3 data-i18n="design3_title">Redesign de Marca</h3>
                     <p class="client-name">Siafrica</p>
-                    <p class="project-type"><i class="bi bi-brush"></i> Rebranding</p>
+                    <p class="project-type"><i class="bi bi-brush"></i> <span data-i18n="design3_type">Rebranding</span></p>
                     <p class="project-year"><i class="bi bi-calendar"></i> 2023</p>
                 </div>
             </div>
             
             <div class="project-description">
-                <p>Modernização completa da identidade visual, incluindo novo logotipo, paleta de cores e aplicações em diversos materiais.</p>
+                <p data-i18n="design3_desc">Modernização completa da identidade visual, incluindo novo logotipo, paleta de cores e aplicações em diversos materiais.</p>
                 
                 <div class="project-tags">
-                    <span class="tag">Rebranding</span>
-                    <span class="tag">Logo</span>
-                    <span class="tag">Papelaria</span>
+                    <span class="tag" data-i18n="design3_tag1">Rebranding</span>
+                    <span class="tag" data-i18n="design3_tag2">Logo</span>
+                    <span class="tag" data-i18n="design3_tag3">Papelaria</span>
                 </div>
             </div>
 
             <div class="design-gallery">
-                <h4>Galeria do Projeto:</h4>
+                <h4 data-i18n="design_gallery">Galeria do Projeto:</h4>
                 <div class="gallery-grid">
                     <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modalDesign3_1">
                         <img src="imagem/design/siafrica0.jpg" alt="Logo Antes">
@@ -1134,8 +1139,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_1Label">TxArt - Logo</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_1Label" data-i18n="modal_design1_1">TxArt - Logo</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart1.jpg" class="img-fluid modal-image-full" alt="TxArt Logo">
@@ -1148,8 +1153,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_2Label">TxArt - Capa para o Facebook</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_2Label" data-i18n="modal_design1_2">TxArt - Capa para o Facebook</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart2.png" class="img-fluid modal-image-full" alt="TxArt Capa Facebook">
@@ -1162,8 +1167,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_3Label">TxArt - Post 11 de Novembro</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_3Label" data-i18n="modal_design1_3">TxArt - Post 11 de Novembro</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart3.jpg" class="img-fluid modal-image-full" alt="TxArt Post 11 Novembro">
@@ -1176,8 +1181,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_4Label">TxArt - Tabela de Preços</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_4Label" data-i18n="modal_design1_4">TxArt - Tabela de Preços</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart4.jpg" class="img-fluid modal-image-full" alt="TxArt Tabela Preços">
@@ -1190,8 +1195,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_5Label">TxArt - Design 5</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_5Label" data-i18n="modal_design1_5">TxArt - Design 5</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart5.jpg" class="img-fluid modal-image-full" alt="TxArt Design 5">
@@ -1204,8 +1209,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_6Label">TxArt - Design 6</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_6Label" data-i18n="modal_design1_6">TxArt - Design 6</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart6.jpg" class="img-fluid modal-image-full" alt="TxArt Design 6">
@@ -1218,8 +1223,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_7Label">TxArt - Design 7</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_7Label" data-i18n="modal_design1_7">TxArt - Design 7</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart7.jpg" class="img-fluid modal-image-full" alt="TxArt Design 7">
@@ -1232,8 +1237,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_8Label">TxArt - Design 8</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_8Label" data-i18n="modal_design1_8">TxArt - Design 8</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart8.jpg" class="img-fluid modal-image-full" alt="TxArt Design 8">
@@ -1246,8 +1251,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_9Label">TxArt - Design 9</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_9Label" data-i18n="modal_design1_9">TxArt - Design 9</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart9.jpg" class="img-fluid modal-image-full" alt="TxArt Design 9">
@@ -1260,8 +1265,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_10Label">TxArt - Design 10</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_10Label" data-i18n="modal_design1_10">TxArt - Design 10</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart10.jpg" class="img-fluid modal-image-full" alt="TxArt Design 10">
@@ -1274,8 +1279,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_11Label">TxArt - Design 11</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_11Label" data-i18n="modal_design1_11">TxArt - Design 11</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart11.jpg" class="img-fluid modal-image-full" alt="TxArt Design 11">
@@ -1288,8 +1293,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_12Label">TxArt - Design 12</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_12Label" data-i18n="modal_design1_12">TxArt - Design 12</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart12.jpg" class="img-fluid modal-image-full" alt="TxArt Design 12">
@@ -1302,8 +1307,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign1_13Label">TxArt - Design 13</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign1_13Label" data-i18n="modal_design1_13">TxArt - Design 13</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/txart13.jpg" class="img-fluid modal-image-full" alt="TxArt Design 13">
@@ -1317,8 +1322,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign2_1Label">Projeto Estamos Juntos - Fusão de Ideias 1</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign2_1Label" data-i18n="modal_design2_1">Projeto Estamos Juntos - Fusão de Ideias 1</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/fusao de ideias1.jpg" class="img-fluid modal-image-full" alt="Fusão de Ideias 1">
@@ -1331,8 +1336,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign2_2Label">Projeto Estamos Juntos - Fusão de Ideias 2</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign2_2Label" data-i18n="modal_design2_2">Projeto Estamos Juntos - Fusão de Ideias 2</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/fusao de ideias2.jpg" class="img-fluid modal-image-full" alt="Fusão de Ideias 2">
@@ -1345,8 +1350,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark">
             <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="modalDesign2_3Label">Projeto Estamos Juntos - Fusão de Ideias 4</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white" id="modalDesign2_3Label" data-i18n="modal_design2_3">Projeto Estamos Juntos - Fusão de Ideias 4</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-i18n-aria="modal_close"></button>
             </div>
             <div class="modal-body text-center">
                 <img src="imagem/design/fusao de ideias4.jpg" class="img-fluid modal-image-full" alt="Fusão de Ideias 4">
@@ -1360,25 +1365,25 @@
 
         <footer>
   <div class="contactos" id="contactos">
-    <h2 class="heading">Meus <span>Contactos</span></h2>
+    <h2 class="heading" data-i18n-html="contact_heading">Meus <span>Contactos</span></h2>
 
     <div class="contato-container">
       <div class="contato-item">
         <i class="bi bi-envelope"></i>
-        <span>Email:</span>
-        <p><a href="mailto:eriksondiastx@gmail.com">eriksondiastx@gmail.com</a></p>
+        <span data-i18n="contact_email_label">Email:</span>
+        <p><a id="contactEmail" href="mailto:eriksondiastx@gmail.com">eriksondiastx@gmail.com</a></p>
       </div>
 
       <div class="contato-item">
         <i class="bi bi-phone"></i>
-        <span>Telefone / WhatsApp:</span>
-        <p><a href="https://wa.me/244949100325" target="_blank">+244 949 100 325</a></p>
+        <span data-i18n="contact_phone_label">Telefone / WhatsApp:</span>
+        <p><a id="contactWhatsappLink" href="https://wa.me/244949100325" target="_blank">+244 949 100 325</a></p>
       </div>
 
       <div class="contato-item">
         <i class="bi bi-geo-alt"></i>
-        <span>Localização:</span>
-        <p>Luanda, Angola</p>
+        <span data-i18n="contact_location_label">Localização:</span>
+        <p id="contactLocation">Luanda, Angola</p>
       </div>
 
     </div>
@@ -1386,25 +1391,43 @@
 </footer>
 <!--Multi Typing Text-->
     <script>
+      // CODEX: Texto rotativo baseado nas configurações salvas no dashboard
       const text = document.querySelector(".sec-text");
 
-      const textLoad = () => {
-        setTimeout(() => {
-          text.textContent = "Front-End Dev.";
-        }, 0);
-        setTimeout(() => {
-          text.textContent = "Professor.";
-        }, 4000);
-        setTimeout(() => {
-          text.textContent = "Criador de conteúdo.";
-        }, 8000); //1s = 1000 miliseconds
-        setTimeout(() => {
-          text.textContent = "Designer Gráfico.";
-        }, 12000);
+      const getRotativeTitles = () => {
+        const fallback = ["Front-End Dev.", "Professor.", "Criador de conteúdo.", "Designer Gráfico."];
+        if (Array.isArray(window.__i18nRotatives) && window.__i18nRotatives.length > 0) {
+          return window.__i18nRotatives;
+        }
+        try {
+          const personalInfo = JSON.parse(localStorage.getItem("personalInfo"));
+          if (personalInfo && personalInfo.titulosRotativos) {
+            const list = personalInfo.titulosRotativos
+              .split(",")
+              .map(item => item.trim())
+              .filter(Boolean);
+            return list.length > 0 ? list : fallback;
+          }
+        } catch (error) {
+          return fallback;
+        }
+        return fallback;
       };
 
-      textLoad();
-      setInterval(textLoad, 12000);
+      const startRotativeText = () => {
+        if (!text) return;
+        const titles = getRotativeTitles();
+        let index = 0;
+        text.textContent = titles[index];
+        if (titles.length > 1) {
+          setInterval(() => {
+            index = (index + 1) % titles.length;
+            text.textContent = titles[index];
+          }, 4000);
+        }
+      };
+
+      startRotativeText();
     </script>
     <!--Custom js-->
     <!-- <script src="js/script.js"></script> -->
@@ -1417,8 +1440,137 @@
 <!-- Script para carregar dados dinâmicos -->
 <script src="js/data-manager.js"></script>
 
+<!-- CODEX: i18n -->
+<script src="js/i18n.js"></script>
+
 <!-- Bootstrap Js - Local -->
 <script src="bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
+
+<!-- CODEX: Transição suave entre os menus e fecho do menu mobile -->
+<script>
+  document.querySelectorAll('.navbar .nav-link[href^="#"]').forEach(link => {
+    link.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      const target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      const navbarCollapse = document.getElementById('navbarNavDropdown');
+      if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+        const bsCollapse = bootstrap.Collapse.getOrCreateInstance(navbarCollapse);
+        bsCollapse.hide();
+      }
+    });
+  });
+
+  // CODEX: Ajuste dinâmico do offset do header
+  const updateHeaderOffset = () => {
+    const header = document.querySelector('.header');
+    const offset = header ? header.offsetHeight + 20 : 120;
+    document.documentElement.style.setProperty('--header-offset', `${offset}px`);
+  };
+
+  updateHeaderOffset();
+  window.addEventListener('resize', updateHeaderOffset);
+</script>
+
+<!-- CODEX: animações de entrada por elemento -->
+<script>
+  let revealObserver = null;
+  let revealElements = [];
+  let revealScrollHandlerBound = false;
+
+  const setupRevealAnimations = () => {
+    const sections = document.querySelectorAll('#inicio, #sobre, #tecnologias, #cursos, #projectos');
+    if (sections.length === 0) return;
+
+    if (revealObserver) {
+      revealObserver.disconnect();
+    }
+
+    const defaultRevealSelector = [
+      '.heading',
+      'h2', 'h3', 'h4',
+      'p', 'li',
+      '.btn', '.btn2',
+      '.social-media a',
+      '.tech-item',
+      '.cursos-box',
+      '.timeline-item',
+      '.portfolio-box',
+      '.design-card',
+      '.contact-item'
+    ].join(', ');
+
+    sections.forEach(section => {
+      section.classList.add('section-visible');
+
+      const leftBlocks = section.querySelectorAll('.inicio-text, .sobre-content');
+      leftBlocks.forEach(el => {
+        el.classList.add('reveal-left');
+        el.classList.remove('reveal-visible');
+      });
+
+      const rightBlocks = section.querySelectorAll('.inicio-img, .sobre-img');
+      rightBlocks.forEach(el => {
+        el.classList.add('reveal-right');
+        el.classList.remove('reveal-visible');
+      });
+
+      const autoTargets = section.querySelectorAll(defaultRevealSelector);
+      autoTargets.forEach(el => {
+        if (!el.classList.contains('reveal-left') && !el.classList.contains('reveal-right')) {
+          el.classList.add('reveal-up');
+        }
+        el.classList.remove('reveal-visible');
+      });
+
+      const staggerGroups = section.querySelectorAll('.tecnologias-container, .cursos-container, .timeline, .portfolio-container, .design-container, .contact-container');
+      staggerGroups.forEach(group => {
+        const items = group.querySelectorAll('.reveal-up, .reveal-left, .reveal-right');
+        items.forEach((item, index) => {
+          item.style.setProperty('--reveal-delay', `${Math.min(index * 80, 520)}ms`);
+        });
+      });
+    });
+
+    revealElements = Array.from(document.querySelectorAll('#inicio .reveal, #inicio .reveal-up, #inicio .reveal-left, #inicio .reveal-right, #sobre .reveal, #sobre .reveal-up, #sobre .reveal-left, #sobre .reveal-right, #tecnologias .reveal, #tecnologias .reveal-up, #tecnologias .reveal-left, #tecnologias .reveal-right, #cursos .reveal, #cursos .reveal-up, #cursos .reveal-left, #cursos .reveal-right, #projectos .reveal, #projectos .reveal-up, #projectos .reveal-left, #projectos .reveal-right'));
+    const revealNow = () => {
+      revealElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.9) {
+          el.classList.add('reveal-visible');
+        }
+      });
+    };
+
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    if (!revealScrollHandlerBound) {
+      window.addEventListener('scroll', revealNow, { passive: true });
+      revealScrollHandlerBound = true;
+    }
+
+    revealNow();
+  };
+
+  window.addEventListener('load', setupRevealAnimations);
+  window.addEventListener('resize', setupRevealAnimations);
+  document.addEventListener('i18n:changed', setupRevealAnimations);
+  document.addEventListener('portfolio:rendered', setupRevealAnimations);
+  setupRevealAnimations();
+</script>
 
 </body>
 </html>

@@ -1,308 +1,602 @@
- // Navegação entre seções
+// CODEX: Script reorganizado para evitar duplicações e centralizar o CRUD do dashboard
+(function () {
+    const STORAGE_KEYS = {
+        personalInfo: 'personalInfo',
+        tecnologias: 'tecnologias',
+        cursos: 'cursos',
+        experiencias: 'experiencias',
+        projetos: 'projetos',
+        design: 'design'
+    };
+
+    // CODEX: Defaults mínimos para manter o painel coerente quando o localStorage estiver vazio
+    const DEFAULTS = {
+        personalInfo: {
+            nome: 'Erikson Inácio Dias Teixeira',
+            titulo: 'Desenvolvedor Front-End',
+            descricao: 'Apaixonado por tecnologia e por computadores desde os 13 anos de idade.',
+            profileImage: 'imagem/default/perfil-default.jpg', // CODEX: imagem do perfil (Profile2)
+            facebook: 'https://www.facebook.com/erikson.teixeira.73/',
+            instagram: 'https://www.instagram.com/eriksonteixeira/',
+            linkedin: 'https://www.linkedin.com/in/erikson-teixeira-b912b3145',
+            email: 'eriksondiastx@gmail.com',
+            telefone: '+244 949 100 325',
+            whatsapp: '244949100325',
+            localizacao: 'Luanda, Angola',
+            cvLink: 'cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf',
+            titulosRotativos: 'Desenvolvedor Front-End, Professor, Criador de conteúdo, Designer Gráfico'
+        },
+        tecnologias: [],
+        cursos: [],
+        experiencias: [],
+        projetos: [],
+        design: []
+    };
+
+    const state = {
+        editing: {
+            tech: null,
+            course: null,
+            experience: null,
+            project: null,
+            design: null
+        },
+        courseFileCache: null,
+        courseFileNameCache: ''
+    };
+
+    function safeParse(value, fallback) {
+        if (!value) return JSON.parse(JSON.stringify(fallback));
+        try {
+            return JSON.parse(value);
+        } catch (error) {
+            return JSON.parse(JSON.stringify(fallback));
+        }
+    }
+
+    function getStored(key, fallback) {
+        return safeParse(localStorage.getItem(key), fallback);
+    }
+
+    function setStored(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    // CODEX: Upload real de ficheiros para o servidor local
+    async function uploadFileToServer(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+        });
+        if (!response.ok) {
+            throw new Error('Falha ao enviar ficheiro.');
+        }
+        return response.json();
+    }
+
+    async function uploadFilesToServer(files) {
+        const uploads = [];
+        for (const file of files) {
+            // eslint-disable-next-line no-await-in-loop
+            const result = await uploadFileToServer(file);
+            uploads.push(result.url);
+        }
+        return uploads;
+    }
+
+    // CODEX: Remoção de ficheiros enviados
+    function isUploadUrl(url) {
+        return typeof url === 'string' && url.startsWith('/imagem/uploads/');
+    }
+
+    async function deleteFileFromServer(url) {
+        if (!isUploadUrl(url)) return;
+        try {
+            await fetch('/api/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url })
+            });
+        } catch (error) {
+            // Ignorar erro para não bloquear a exclusão no painel
+        }
+    }
+
+    async function deleteManyFromServer(urls) {
+        const items = (urls || []).filter(isUploadUrl);
+        for (const url of items) {
+            // eslint-disable-next-line no-await-in-loop
+            await deleteFileFromServer(url);
+        }
+    }
+
+    // CODEX: Envio de auditoria para o servidor
+    async function auditLog(action, entity, payload) {
+        try {
+            await fetch('/api/audit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action, entity, payload })
+            });
+        } catch (error) {
+            // Ignorar erro para não bloquear ações do painel
+        }
+    }
+
+    // CODEX: i18n dinâmico - gerar chave no servidor
+    async function saveI18nText(text) {
+        if (!text || !text.trim()) return null;
+        const lang = localStorage.getItem('lang') === 'en' ? 'en' : 'pt';
+        const response = await fetch('/api/i18n/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                lang,
+                text: text.trim(),
+                autoTranslate: lang === 'pt'
+            })
+        });
+        if (!response.ok) throw new Error('Falha ao salvar i18n.');
+        const data = await response.json();
+        return data.key || null;
+    }
+
+    function wrapI18n(text, key) {
+        if (!key) return text;
+        return { text, i18nKey: key };
+    }
+
+    function unwrapI18n(value) {
+        if (value && typeof value === 'object' && value.text) return value.text;
+        return value || '';
+    }
+
+    function resolveI18nTextArray(items) {
+        if (!Array.isArray(items)) return items;
+        return items.map(item => unwrapI18n(item));
+    }
+
+    // CODEX: Migração automática de textos existentes para i18n
+    async function migrateI18nText(text, fixedKey) {
+        if (!text || !text.trim()) return null;
+        const response = await fetch('/api/i18n/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                lang: 'pt',
+                text: text.trim(),
+                autoTranslate: true,
+                forceKey: fixedKey || undefined
+            })
+        });
+        if (!response.ok) return null;
+        const data = await response.json();
+        return data.key || null;
+    }
+
+    async function migrateArrayTexts(items, keyPrefix) {
+        if (!Array.isArray(items)) return items;
+        const results = [];
+        for (let i = 0; i < items.length; i += 1) {
+            const value = items[i];
+            if (value && typeof value === 'object' && value.i18nKey) {
+                results.push(value);
+            } else {
+                const key = keyPrefix ? `${keyPrefix}_${i + 1}` : undefined;
+                // eslint-disable-next-line no-await-in-loop
+                const i18nKey = await migrateI18nText(String(value || ''), key);
+                results.push(wrapI18n(String(value || ''), i18nKey));
+            }
+        }
+        return results;
+    }
+
+    async function migrateI18nStore() {
+        const migrated = { personalInfo: false, cursos: false, experiencias: false, projetos: false, design: false };
+
+        const personalInfo = getStored(STORAGE_KEYS.personalInfo, DEFAULTS.personalInfo);
+        if (personalInfo) {
+            if (!(personalInfo.titulo && personalInfo.titulo.i18nKey)) {
+                const key = await migrateI18nText(unwrapI18n(personalInfo.titulo), 'profile_title');
+                personalInfo.titulo = wrapI18n(unwrapI18n(personalInfo.titulo), key);
+                migrated.personalInfo = true;
+            }
+            if (!(personalInfo.descricao && personalInfo.descricao.i18nKey)) {
+                const key = await migrateI18nText(unwrapI18n(personalInfo.descricao), 'profile_description');
+                personalInfo.descricao = wrapI18n(unwrapI18n(personalInfo.descricao), key);
+                migrated.personalInfo = true;
+            }
+            setStored(STORAGE_KEYS.personalInfo, personalInfo);
+        }
+
+        const cursos = getStored(STORAGE_KEYS.cursos, DEFAULTS.cursos);
+        if (Array.isArray(cursos)) {
+            for (let i = 0; i < cursos.length; i += 1) {
+                const curso = cursos[i];
+                if (!(curso.name && curso.name.i18nKey)) {
+                    const key = await migrateI18nText(unwrapI18n(curso.name), `course_name_${i + 1}`);
+                    curso.name = wrapI18n(unwrapI18n(curso.name), key);
+                    migrated.cursos = true;
+                }
+                if (!(curso.description && curso.description.i18nKey)) {
+                    const key = await migrateI18nText(unwrapI18n(curso.description), `course_desc_${i + 1}`);
+                    curso.description = wrapI18n(unwrapI18n(curso.description), key);
+                    migrated.cursos = true;
+                }
+            }
+            setStored(STORAGE_KEYS.cursos, cursos);
+        }
+
+        const experiencias = getStored(STORAGE_KEYS.experiencias, DEFAULTS.experiencias);
+        if (Array.isArray(experiencias)) {
+            for (let i = 0; i < experiencias.length; i += 1) {
+                const exp = experiencias[i];
+                if (!(exp.cargo && exp.cargo.i18nKey)) {
+                    const key = await migrateI18nText(unwrapI18n(exp.cargo), `exp_title_${i + 1}`);
+                    exp.cargo = wrapI18n(unwrapI18n(exp.cargo), key);
+                    migrated.experiencias = true;
+                }
+                if (exp.responsabilidades) {
+                    exp.responsabilidades = await migrateArrayTexts(exp.responsabilidades, `exp_${i + 1}_r`);
+                    migrated.experiencias = true;
+                }
+            }
+            setStored(STORAGE_KEYS.experiencias, experiencias);
+        }
+
+        const projetos = getStored(STORAGE_KEYS.projetos, DEFAULTS.projetos);
+        if (Array.isArray(projetos)) {
+            for (let i = 0; i < projetos.length; i += 1) {
+                const proj = projetos[i];
+                if (!(proj.nome && proj.nome.i18nKey)) {
+                    const key = await migrateI18nText(unwrapI18n(proj.nome), `project_title_${i + 1}`);
+                    proj.nome = wrapI18n(unwrapI18n(proj.nome), key);
+                    migrated.projetos = true;
+                }
+                if (!(proj.descricao && proj.descricao.i18nKey)) {
+                    const key = await migrateI18nText(unwrapI18n(proj.descricao), `project_desc_${i + 1}`);
+                    proj.descricao = wrapI18n(unwrapI18n(proj.descricao), key);
+                    migrated.projetos = true;
+                }
+                if (!(proj.status && proj.status.i18nKey)) {
+                    const key = await migrateI18nText(unwrapI18n(proj.status), `project_status_${i + 1}`);
+                    proj.status = wrapI18n(unwrapI18n(proj.status), key);
+                    migrated.projetos = true;
+                }
+            }
+            setStored(STORAGE_KEYS.projetos, projetos);
+        }
+
+        const design = getStored(STORAGE_KEYS.design, DEFAULTS.design);
+        if (Array.isArray(design)) {
+            for (let i = 0; i < design.length; i += 1) {
+                const item = design[i];
+                if (!(item.tipo && item.tipo.i18nKey)) {
+                    const key = await migrateI18nText(unwrapI18n(item.tipo), `design_type_${i + 1}`);
+                    item.tipo = wrapI18n(unwrapI18n(item.tipo), key);
+                    migrated.design = true;
+                }
+                if (!(item.descricao && item.descricao.i18nKey)) {
+                    const key = await migrateI18nText(unwrapI18n(item.descricao), `design_desc_${i + 1}`);
+                    item.descricao = wrapI18n(unwrapI18n(item.descricao), key);
+                    migrated.design = true;
+                }
+                if (item.tags) {
+                    item.tags = await migrateArrayTexts(item.tags, `design_${i + 1}_tag`);
+                    migrated.design = true;
+                }
+            }
+            setStored(STORAGE_KEYS.design, design);
+        }
+
+        if (migrated.personalInfo || migrated.cursos || migrated.experiencias || migrated.projetos || migrated.design) {
+            await auditLog('edit', 'i18n_migration', migrated);
+        }
+
+        return migrated;
+    }
+
+    function showModal(id) {
+        const modalEl = document.getElementById(id);
+        if (!modalEl) return;
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+    }
+
+    function hideModal(id) {
+        const modalEl = document.getElementById(id);
+        if (!modalEl) return;
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+    }
+
+    function initNavigation() {
         document.querySelectorAll('.sidebar a').forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 e.preventDefault();
-                
-                // Remove classe active de todos os links
                 document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
-                // Adiciona classe active ao link clicado
                 this.classList.add('active');
-                
-                // Oculta todas as seções
+
                 document.querySelectorAll('.section-content').forEach(section => {
                     section.classList.remove('active');
                 });
-                
-                // Mostra a seção correspondente
+
                 const sectionId = this.getAttribute('data-section');
-                document.getElementById(sectionId).classList.add('active');
+                if (sectionId) {
+                    document.getElementById(sectionId).classList.add('active');
+                }
             });
         });
+    }
 
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', function() {
+    function initLogout() {
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (!logoutBtn) return;
+        logoutBtn.addEventListener('click', function () {
             localStorage.removeItem('adminLoggedIn');
             window.location.href = 'admin-login.html';
         });
+    }
 
-        // Carregar dados do localStorage
-        function loadData() {
-            // Carregar tecnologias
-            const tecnologias = JSON.parse(localStorage.getItem('tecnologias')) || [];
-            const tecnologiasList = document.getElementById('tecnologiasList');
-            tecnologiasList.innerHTML = '';
-            
-            tecnologias.forEach((tech, index) => {
-                const techItem = document.createElement('div');
-                techItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
-                techItem.innerHTML = `
-                    <div>
-                        <h6 class="mb-0">${tech.name}</h6>
-                        <small class="text-muted">${tech.category} - ${tech.level}% - ${tech.description}</small>
-                    </div>
-                    <div>
-                        <button class="btn btn-sm btn-outline-primary me-1 edit-tech" data-index="${index}">Editar</button>
-                        <button class="btn btn-sm btn-outline-danger delete-tech" data-index="${index}">Excluir</button>
-                    </div>
-                `;
-                tecnologiasList.appendChild(techItem);
-            });
+        // CODEX: Formulário de informações pessoais
+    function loadPersonalInfo() {
+        const personalInfo = getStored(STORAGE_KEYS.personalInfo, DEFAULTS.personalInfo);
 
-            // Carregar cursos
-            const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-            const cursosList = document.getElementById('cursosList');
-            cursosList.innerHTML = '';
-            
-            cursos.forEach((curso, index) => {
-                const cursoItem = document.createElement('div');
-                cursoItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
-                cursoItem.innerHTML = `
-                    <div>
-                        <h6 class="mb-0">${curso.name}</h6>
-                        <small class="text-muted">${curso.description}</small>
-                    </div>
-                    <div>
-                        <button class="btn btn-sm btn-outline-primary me-1 edit-course" data-index="${index}">Editar</button>
-                        <button class="btn btn-sm btn-outline-danger delete-course" data-index="${index}">Excluir</button>
-                    </div>
-                `;
-                cursosList.appendChild(cursoItem);
+        const fields = [
+            'nome', 'titulo', 'descricao', 'facebook', 'instagram', 'linkedin',
+            'email', 'telefone', 'whatsapp', 'localizacao', 'cvLink', 'titulosRotativos',
+            'profileImage'
+        ];
+
+        fields.forEach(field => {
+            const input = document.getElementById(field);
+            if (input) input.value = unwrapI18n(personalInfo[field]);
+        });
+    }
+
+    function initPersonalInfoForm() {
+        const form = document.getElementById('sobreForm');
+        if (!form) return;
+        const removeProfileBtn = document.getElementById('removeProfileImageBtn');
+        const profileInput = document.getElementById('profileImage');
+        const profileUpload = document.getElementById('profileImageUpload');
+
+        if (removeProfileBtn) {
+            removeProfileBtn.addEventListener('click', function () {
+                if (profileInput) profileInput.value = 'imagem/default/perfil-default.jpg';
+                if (profileUpload) profileUpload.value = '';
+                form.dataset.profileRemove = '1'; // CODEX: marca remoção para o submit
             });
         }
 
-        // Salvar tecnologia
-        document.getElementById('saveTechBtn').addEventListener('click', function() {
-            const name = document.getElementById('techName').value;
-            const category = document.getElementById('techCategory').value;
-            const level = document.getElementById('techLevel').value;
-            const description = document.getElementById('techDescription').value;
-            
-            const tecnologias = JSON.parse(localStorage.getItem('tecnologias')) || [];
-            tecnologias.push({ name, category, level, description });
-            localStorage.setItem('tecnologias', JSON.stringify(tecnologias));
-            
-            // Fechar modal e recarregar dados
-            bootstrap.Modal.getInstance(document.getElementById('addTechModal')).hide();
-            document.getElementById('addTechForm').reset();
-            loadData();
-        });
-
-        // Salvar curso
-        document.getElementById('saveCourseBtn').addEventListener('click', function() {
-            const name = document.getElementById('courseName').value;
-            const description = document.getElementById('courseDescription').value;
-            const certificate = document.getElementById('courseCertificate').value;
-            
-            const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-            cursos.push({ name, description, certificate });
-            localStorage.setItem('cursos', JSON.stringify(cursos));
-            
-            // Fechar modal e recarregar dados
-            bootstrap.Modal.getInstance(document.getElementById('addCourseModal')).hide();
-            document.getElementById('addCourseForm').reset();
-            loadData();
-        });
-
-        // Salvar informações pessoais
-        document.getElementById('sobreForm').addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function (e) {
             e.preventDefault();
-            
-            const personalInfo = {
-                nome: document.getElementById('nome').value,
-                titulo: document.getElementById('titulo').value,
-                descricao: document.getElementById('descricao').value,
-                facebook: document.getElementById('facebook').value,
-                instagram: document.getElementById('instagram').value,
-                linkedin: document.getElementById('linkedin').value
-            };
-            
-            localStorage.setItem('personalInfo', JSON.stringify(personalInfo));
+            const previous = getStored(STORAGE_KEYS.personalInfo, DEFAULTS.personalInfo);
+            const personalInfo = {};
+            const fields = [
+                'nome', 'titulo', 'descricao', 'facebook', 'instagram', 'linkedin',
+                'email', 'telefone', 'whatsapp', 'localizacao', 'cvLink', 'titulosRotativos',
+                'profileImage'
+            ];
+            fields.forEach(field => {
+                const input = document.getElementById(field);
+                if (input) personalInfo[field] = input.value.trim();
+            });
+
+            const profileFileInput = document.getElementById('profileImageUpload');
+            const profileFile = profileFileInput && profileFileInput.files.length
+                ? profileFileInput.files[0]
+                : null;
+            if (profileFile) {
+                try {
+                    const upload = await uploadFileToServer(profileFile);
+                    if (previous && previous.profileImage && isUploadUrl(previous.profileImage)) {
+                        await deleteFileFromServer(previous.profileImage);
+                    }
+                    personalInfo.profileImage = upload.url;
+                } catch (error) {
+                    alert('Erro ao enviar a imagem de perfil.');
+                    return;
+                }
+            }
+            // CODEX: fallback para imagem padrão quando vazio
+            if (!personalInfo.profileImage) {
+                if (previous && previous.profileImage && isUploadUrl(previous.profileImage)) {
+                    await deleteFileFromServer(previous.profileImage);
+                }
+                personalInfo.profileImage = 'imagem/default/perfil-default.jpg';
+            }
+            // CODEX: remoção explícita via botão
+            if (form.dataset.profileRemove === '1') {
+                if (previous && previous.profileImage && isUploadUrl(previous.profileImage)) {
+                    await deleteFileFromServer(previous.profileImage);
+                }
+                personalInfo.profileImage = 'imagem/default/perfil-default.jpg';
+                delete form.dataset.profileRemove;
+            }
+
+            try {
+                const tituloKey = await saveI18nText(personalInfo.titulo);
+                const descricaoKey = await saveI18nText(personalInfo.descricao);
+                personalInfo.titulo = wrapI18n(personalInfo.titulo, tituloKey);
+                personalInfo.descricao = wrapI18n(personalInfo.descricao, descricaoKey);
+            } catch (error) {
+                alert('Erro ao salvar tradução. Tente novamente.');
+                return;
+            }
+            setStored(STORAGE_KEYS.personalInfo, personalInfo);
+            auditLog('edit', 'perfil', personalInfo);
             alert('Informações salvas com sucesso!');
+            if (profileFileInput) profileFileInput.value = ''; // CODEX: limpa o upload
+        });
+    }
+
+    // CODEX: Tecnologias
+    function renderTechnologiesList() {
+        const list = document.getElementById('tecnologiasList');
+        if (!list) return;
+
+        const tecnologias = getStored(STORAGE_KEYS.tecnologias, DEFAULTS.tecnologias);
+        list.innerHTML = '';
+
+        if (tecnologias.length === 0) {
+            list.innerHTML = '<p class="text-muted text-center">Nenhuma tecnologia adicionada.</p>';
+            return;
+        }
+
+        tecnologias.forEach((tech, index) => {
+            const techItem = document.createElement('div');
+            techItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
+            techItem.innerHTML = `
+                <div>
+                    <h6 class="mb-0">${tech.name}</h6>
+                    <small class="text-muted">${tech.category} - ${tech.level}% - ${tech.description || ''}</small>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary me-1" data-action="edit-tech" data-index="${index}">Editar</button>
+                    <button class="btn btn-sm btn-outline-danger" data-action="delete-tech" data-index="${index}">Excluir</button>
+                </div>
+            `;
+            list.appendChild(techItem);
         });
 
-        // Carregar informações pessoais ao abrir a página
-        document.addEventListener('DOMContentLoaded', function() {
-            const personalInfo = JSON.parse(localStorage.getItem('personalInfo'));
-            if(personalInfo) {
-                document.getElementById('nome').value = personalInfo.nome || '';
-                document.getElementById('titulo').value = personalInfo.titulo || '';
-                document.getElementById('descricao').value = personalInfo.descricao || '';
-                document.getElementById('facebook').value = personalInfo.facebook || '';
-                document.getElementById('instagram').value = personalInfo.instagram || '';
-                document.getElementById('linkedin').value = personalInfo.linkedin || '';
-            }
-            
-            loadData();
+        list.querySelectorAll('[data-action="edit-tech"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const index = Number(this.getAttribute('data-index'));
+                editTechnology(index);
+            });
         });
-        // No admin-panel.html, adicione estas funções:
 
-// Salvar experiência
-document.getElementById('saveExperienceBtn').addEventListener('click', function() {
-    const periodo = document.getElementById('experiencePeriod').value;
-    const cargo = document.getElementById('experiencePosition').value;
-    const empresa = document.getElementById('experienceCompany').value;
-    const localizacao = document.getElementById('experienceLocation').value;
-    const responsabilidades = document.getElementById('experienceResponsibilities').value.split('\n');
-    
-    const experiencias = JSON.parse(localStorage.getItem('experiencias')) || [];
-    experiencias.push({ periodo, cargo, empresa, localizacao, responsabilidades });
-    localStorage.setItem('experiencias', JSON.stringify(experiencias));
-    
-    bootstrap.Modal.getInstance(document.getElementById('addExperienceModal')).hide();
-    document.getElementById('addExperienceForm').reset();
-    loadData();
-});
+        list.querySelectorAll('[data-action="delete-tech"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const index = Number(this.getAttribute('data-index'));
+                deleteTechnology(index);
+            });
+        });
+    }
 
-// Salvar projeto
-document.getElementById('saveProjectBtn').addEventListener('click', function() {
-    const nome = document.getElementById('projectName').value;
-    const descricao = document.getElementById('projectDescription').value;
-    const imagem = document.getElementById('projectImage').value;
-    const link = document.getElementById('projectLink').value;
-    const status = document.getElementById('projectStatus').value;
-    
-    const projetos = JSON.parse(localStorage.getItem('projetos')) || [];
-    projetos.push({ nome, descricao, imagem, link, status });
-    localStorage.setItem('projetos', JSON.stringify(projetos));
-    
-    bootstrap.Modal.getInstance(document.getElementById('addProjectModal')).hide();
-    document.getElementById('addProjectForm').reset();
-    loadData();
-});
+    function initTechForm() {
+        const saveBtn = document.getElementById('saveTechBtn');
+        if (!saveBtn) return;
+        saveBtn.addEventListener('click', saveTechnology);
+    }
 
-// Salvar projeto de design
-document.getElementById('saveDesignBtn').addEventListener('click', function() {
-    const nome = document.getElementById('designName').value;
-    const tipo = document.getElementById('designType').value;
-    const descricao = document.getElementById('designDescription').value;
-    const ano = document.getElementById('designYear').value;
-    const tags = document.getElementById('designTags').value.split(',');
-    
-    const design = JSON.parse(localStorage.getItem('design')) || [];
-    design.push({ nome, tipo, descricao, ano, tags });
-    localStorage.setItem('design', JSON.stringify(design));
-    
-    bootstrap.Modal.getInstance(document.getElementById('addDesignModal')).hide();
-    document.getElementById('addDesignForm').reset();
-    loadData();
-});
+    function saveTechnology() {
+        const name = document.getElementById('techName').value.trim();
+        const category = document.getElementById('techCategory').value;
+        const level = document.getElementById('techLevel').value.trim();
+        const description = document.getElementById('techDescription').value.trim();
 
-// Atualize a função loadData para incluir as novas seções:
-function loadData() {
-    // ... código existente ...
-    
-    // Carregar experiências
-    const experiencias = JSON.parse(localStorage.getItem('experiencias')) || [];
-    const experienciasList = document.getElementById('experienciasList');
-    experienciasList.innerHTML = '';
-    
-    experiencias.forEach((exp, index) => {
-        const expItem = document.createElement('div');
-        expItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
-        expItem.innerHTML = `
-            <div>
-                <h6 class="mb-0">${exp.cargo} - ${exp.empresa}</h6>
-                <small class="text-muted">${exp.periodo} - ${exp.localizacao}</small>
-            </div>
-            <div>
-                <button class="btn btn-sm btn-outline-primary me-1 edit-experience" data-index="${index}">Editar</button>
-                <button class="btn btn-sm btn-outline-danger delete-experience" data-index="${index}">Excluir</button>
-            </div>
-        `;
-        experienciasList.appendChild(expItem);
-    });
-    
-    // Carregar projetos
-    const projetos = JSON.parse(localStorage.getItem('projetos')) || [];
-    const projetosList = document.getElementById('projetosList');
-    projetosList.innerHTML = '';
-    
-    projetos.forEach((proj, index) => {
-        const projItem = document.createElement('div');
-        projItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
-        projItem.innerHTML = `
-            <div>
-                <h6 class="mb-0">${proj.nome}</h6>
-                <small class="text-muted">${proj.descricao.substring(0, 100)}...</small>
-            </div>
-            <div>
-                <button class="btn btn-sm btn-outline-primary me-1 edit-project" data-index="${index}">Editar</button>
-                <button class="btn btn-sm btn-outline-danger delete-project" data-index="${index}">Excluir</button>
-            </div>
-        `;
-        projetosList.appendChild(projItem);
-    });
-    
-    // Carregar projetos de design
-    const design = JSON.parse(localStorage.getItem('design')) || [];
-    const designList = document.getElementById('designList');
-    designList.innerHTML = '';
-    
-    design.forEach((des, index) => {
-        const desItem = document.createElement('div');
-        desItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
-        desItem.innerHTML = `
-            <div>
-                <h6 class="mb-0">${des.nome}</h6>
-                <small class="text-muted">${des.tipo} - ${des.ano}</small>
-            </div>
-            <div>
-                <button class="btn btn-sm btn-outline-primary me-1 edit-design" data-index="${index}">Editar</button>
-                <button class="btn btn-sm btn-outline-danger delete-design" data-index="${index}">Excluir</button>
-            </div>
-        `;
-        designList.appendChild(desItem);
-    });
-}
-// Alternar entre link e upload de ficheiro
-document.querySelectorAll('input[name="certificateType"]').forEach(radio => {
-    radio.addEventListener('change', function() {
+        if (!name || !category || !level) {
+            alert('Preencha todos os campos obrigatórios.');
+            return;
+        }
+
+        const tecnologias = getStored(STORAGE_KEYS.tecnologias, DEFAULTS.tecnologias);
+
+        const action = state.editing.tech !== null ? 'edit' : 'add';
+        if (state.editing.tech !== null) {
+            tecnologias[state.editing.tech] = { name, category, level, description };
+        } else {
+            tecnologias.push({ name, category, level, description });
+        }
+
+        setStored(STORAGE_KEYS.tecnologias, tecnologias);
+        auditLog(action, 'tecnologia', { name, category, level, description });
+        state.editing.tech = null;
+        document.getElementById('addTechForm').reset();
+        hideModal('addTechModal');
+        renderTechnologiesList();
+    }
+
+    function editTechnology(index) {
+        const tecnologias = getStored(STORAGE_KEYS.tecnologias, DEFAULTS.tecnologias);
+        const tech = tecnologias[index];
+        if (!tech) return;
+
+        state.editing.tech = index;
+        document.getElementById('techName').value = tech.name || '';
+        document.getElementById('techCategory').value = tech.category || 'frontend';
+        document.getElementById('techLevel').value = tech.level || '';
+        document.getElementById('techDescription').value = tech.description || '';
+        showModal('addTechModal');
+    }
+
+    function deleteTechnology(index) {
+        if (!confirm('Tem certeza que deseja excluir esta tecnologia?')) return;
+        const tecnologias = getStored(STORAGE_KEYS.tecnologias, DEFAULTS.tecnologias);
+        const tech = tecnologias[index];
+        tecnologias.splice(index, 1);
+        setStored(STORAGE_KEYS.tecnologias, tecnologias);
+        auditLog('delete', 'tecnologia', tech || {});
+        renderTechnologiesList();
+    }
+
+    // CODEX: Cursos (com suporte a certificado em link ou ficheiro)
+    function initCourseForm() {
+        const saveBtn = document.getElementById('saveCourseBtn');
+        if (saveBtn) saveBtn.addEventListener('click', saveCourse);
+
+        document.querySelectorAll('input[name="certificateType"]').forEach(radio => {
+            radio.addEventListener('change', toggleCertificateFields);
+        });
+
+        const fileInput = document.getElementById('courseCertificateFile');
+        if (fileInput) {
+            fileInput.addEventListener('change', previewCourseFile);
+        }
+    }
+
+    function toggleCertificateFields() {
         const linkField = document.getElementById('linkField');
         const fileField = document.getElementById('fileField');
-        
-        if (this.value === 'link') {
+        const type = document.querySelector('input[name="certificateType"]:checked').value;
+
+        if (type === 'link') {
             linkField.style.display = 'block';
             fileField.style.display = 'none';
-            document.getElementById('courseCertificateFile').value = '';
-            document.getElementById('filePreview').innerHTML = '';
         } else {
             linkField.style.display = 'none';
             fileField.style.display = 'block';
-            document.getElementById('courseCertificateLink').value = '';
         }
-    });
-});
+    }
 
-// Preview do ficheiro selecionado
-document.getElementById('courseCertificateFile').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    const preview = document.getElementById('filePreview');
-    
-    if (file) {
-        // Validar tamanho do ficheiro (5MB máximo)
+    function previewCourseFile(e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById('filePreview');
+        if (!preview) return;
+        preview.innerHTML = '';
+
+        if (!file) return;
+
         if (file.size > 5 * 1024 * 1024) {
-            alert('O ficheiro é muito grande. Por favor, selecione um ficheiro até 5MB.');
-            this.value = '';
-            preview.innerHTML = '';
+            alert('O ficheiro é muito grande. Máximo: 5MB.');
+            e.target.value = '';
             return;
         }
-        
-        // Validar tipo de ficheiro
-        const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+
+        const validTypes = [
+            'application/pdf',
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ];
         if (!validTypes.includes(file.type)) {
-            alert('Tipo de ficheiro não suportado. Por favor, selecione PDF, JPG, PNG ou DOC.');
-            this.value = '';
-            preview.innerHTML = '';
+            alert('Tipo de ficheiro não suportado. Use PDF, JPG, PNG ou DOC.');
+            e.target.value = '';
             return;
         }
-        
-        // Mostrar preview
+
         if (file.type.startsWith('image/')) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (event) {
                 preview.innerHTML = `
                     <div class="border p-2 rounded">
-                        <img src="${e.target.result}" class="img-thumbnail" style="max-height: 150px;">
+                        <img src="${event.target.result}" class="img-thumbnail" style="max-height: 150px;">
                         <div class="mt-1">
                             <small class="text-muted">${file.name} (${(file.size / 1024).toFixed(2)} KB)</small>
                         </div>
@@ -320,615 +614,933 @@ document.getElementById('courseCertificateFile').addEventListener('change', func
                 </div>
             `;
         }
-    } else {
-        preview.innerHTML = '';
     }
-});
 
-// Função para converter ficheiro para Base64
-function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-}
+    async function saveCourse() {
+        const name = document.getElementById('courseName').value.trim();
+        const description = document.getElementById('courseDescription').value.trim();
+        const year = document.getElementById('courseYear').value.trim();
+        const institution = document.getElementById('courseInstitution').value.trim();
+        const certificateType = document.querySelector('input[name="certificateType"]:checked').value;
 
-// Salvar curso (modificado para suportar ficheiros)
-document.getElementById('saveCourseBtn').addEventListener('click', async function() {
-    const name = document.getElementById('courseName').value;
-    const description = document.getElementById('courseDescription').value;
-    const year = document.getElementById('courseYear').value;
-    const institution = document.getElementById('courseInstitution').value;
-    
-    const certificateType = document.querySelector('input[name="certificateType"]:checked').value;
-    
-    let certificate = '';
-    let fileData = null;
-    
-    if (certificateType === 'link') {
-        certificate = document.getElementById('courseCertificateLink').value;
-    } else {
-        const fileInput = document.getElementById('courseCertificateFile');
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            try {
-                // Converter ficheiro para Base64
-                fileData = await fileToBase64(file);
-                certificate = file.name; // Guardamos o nome do ficheiro
-            } catch (error) {
-                console.error('Erro ao processar ficheiro:', error);
-                alert('Erro ao processar o ficheiro. Tente novamente.');
+        if (!name || !description) {
+            alert('Preencha nome e descrição.');
+            return;
+        }
+
+        let certificate = '';
+        let certificateName = '';
+
+        if (certificateType === 'link') {
+            certificate = document.getElementById('courseCertificateLink').value.trim();
+        } else {
+            const fileInput = document.getElementById('courseCertificateFile');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                try {
+                    const upload = await uploadFileToServer(file);
+                    certificate = upload.url;
+                    certificateName = upload.name || file.name;
+                } catch (error) {
+                    alert('Erro ao processar o ficheiro.');
+                    return;
+                }
+            } else if (state.courseFileCache) {
+                certificate = state.courseFileCache;
+                certificateName = state.courseFileNameCache || '';
+            } else {
+                alert('Selecione um ficheiro de certificado.');
                 return;
             }
         }
-    }
-    
-    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-    
-    // Criar objeto do curso
-    const curso = {
-        name,
-        description,
-        year,
-        institution,
-        certificate,
-        certificateType,
-        fileData // Guardamos os dados do ficheiro em Base64
-    };
-    
-    cursos.push(curso);
-    localStorage.setItem('cursos', JSON.stringify(cursos));
-    
-    // Fechar modal e recarregar dados
-    bootstrap.Modal.getInstance(document.getElementById('addCourseModal')).hide();
-    document.getElementById('addCourseForm').reset();
-    document.getElementById('filePreview').innerHTML = '';
-    document.getElementById('linkField').style.display = 'block';
-    document.getElementById('fileField').style.display = 'none';
-    document.getElementById('certificateLink').checked = true;
-    
-    loadData();
-    
-    alert('Curso adicionado com sucesso!');
-});
 
-// Atualizar a função loadData para mostrar os cursos com ficheiros
-function loadData() {
-    // ... código existente para outras seções ...
-    
-    // Carregar cursos
-    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-    const cursosList = document.getElementById('cursosList');
-    cursosList.innerHTML = '';
-    
-    if (cursos.length === 0) {
-        cursosList.innerHTML = '<p class="text-muted text-center">Nenhum curso adicionado ainda.</p>';
-        return;
-    }
-    
-    cursos.forEach((curso, index) => {
-        const cursoItem = document.createElement('div');
-        cursoItem.className = 'd-flex justify-content-between align-items-center p-3 border-bottom';
-        
-        // Ícone baseado no tipo de certificado
-        let certificateIcon = 'bi bi-link-45deg';
-        let certificateText = 'Link externo';
-        
-        if (curso.certificateType === 'file') {
-            certificateIcon = 'bi bi-file-earmark';
-            certificateText = 'Ficheiro local';
+        let nameKey = null;
+        let descriptionKey = null;
+        try {
+            nameKey = await saveI18nText(name);
+            descriptionKey = await saveI18nText(description);
+        } catch (error) {
+            alert('Erro ao salvar tradução do curso.');
+            return;
         }
-        
-        cursoItem.innerHTML = `
-            <div class="flex-grow-1">
-                <h6 class="mb-1">${curso.name}</h6>
-                <small class="text-muted d-block">${curso.description.substring(0, 100)}${curso.description.length > 100 ? '...' : ''}</small>
-                <div class="mt-1">
-                    <small class="text-muted">
-                        <i class="bi bi-calendar"></i> ${curso.year} 
-                        ${curso.institution ? `• <i class="bi bi-building"></i> ${curso.institution}` : ''}
-                        • <i class="${certificateIcon}"></i> ${certificateText}
-                    </small>
-                </div>
-            </div>
-            <div class="ms-3">
-                <button class="btn btn-sm btn-outline-primary me-1 view-course" data-index="${index}" title="Ver detalhes">
-                    <i class="bi bi-eye"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-secondary me-1 edit-course" data-index="${index}" title="Editar">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger delete-course" data-index="${index}" title="Excluir">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
-        `;
-        cursosList.appendChild(cursoItem);
-    });
-    
-    // Adicionar event listeners para os novos botões
-    document.querySelectorAll('.view-course').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = this.getAttribute('data-index');
-            viewCourse(index);
-        });
-    });
-    
-    document.querySelectorAll('.edit-course').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = this.getAttribute('data-index');
-            editCourse(index);
-        });
-    });
-    
-    document.querySelectorAll('.delete-course').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = this.getAttribute('data-index');
-            deleteCourse(index);
-        });
-    });
-}
 
-// Função para visualizar curso
-function viewCourse(index) {
-    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-    const curso = cursos[index];
-    
-    let certificateContent = '';
-    if (curso.certificateType === 'link') {
-        certificateContent = `<a href="${curso.certificate}" target="_blank" class="btn btn-sm btn-outline-primary">Abrir Certificado</a>`;
-    } else {
-        // Para ficheiros, criamos um link para download
-        certificateContent = `
-            <button class="btn btn-sm btn-outline-primary download-file" data-index="${index}">
-                <i class="bi bi-download"></i> Download do Certificado
-            </button>
-        `;
+        const cursos = getStored(STORAGE_KEYS.cursos, DEFAULTS.cursos);
+        const curso = {
+            name: wrapI18n(name, nameKey),
+            description: wrapI18n(description, descriptionKey),
+            year,
+            institution,
+            certificate,
+            certificateType,
+            certificateName
+        };
+
+        const action = state.editing.course !== null ? 'edit' : 'add';
+        if (state.editing.course !== null) {
+            cursos[state.editing.course] = curso;
+        } else {
+            cursos.push(curso);
+        }
+
+        setStored(STORAGE_KEYS.cursos, cursos);
+        auditLog(action, 'curso', {
+            name,
+            year,
+            institution,
+            certificateType,
+            certificate
+        });
+        state.editing.course = null;
+        state.courseFileCache = null;
+        state.courseFileNameCache = '';
+        resetCourseForm();
+        hideModal('addCourseModal');
+        renderCoursesList();
     }
-    
-    const modalHTML = `
-        <div class="modal fade" id="viewCourseModal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">${curso.name}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+    function resetCourseForm() {
+        document.getElementById('addCourseForm').reset();
+        document.getElementById('linkField').style.display = 'block';
+        document.getElementById('fileField').style.display = 'none';
+        document.getElementById('certificateLink').checked = true;
+        const preview = document.getElementById('filePreview');
+        if (preview) preview.innerHTML = '';
+    }
+
+    function renderCoursesList() {
+        const list = document.getElementById('cursosList');
+        if (!list) return;
+
+        const cursos = getStored(STORAGE_KEYS.cursos, DEFAULTS.cursos);
+        list.innerHTML = '';
+
+        if (cursos.length === 0) {
+            list.innerHTML = '<p class="text-muted text-center">Nenhum curso adicionado.</p>';
+            return;
+        }
+
+        cursos.forEach((curso, index) => {
+            const certificateIcon = curso.certificateType === 'file' ? 'bi bi-file-earmark' : 'bi bi-link-45deg';
+            const certificateText = curso.certificateType === 'file' ? 'Ficheiro local' : 'Link externo';
+
+            const cursoItem = document.createElement('div');
+            const courseName = unwrapI18n(curso.name);
+            const courseDesc = unwrapI18n(curso.description);
+            cursoItem.className = 'd-flex justify-content-between align-items-center p-3 border-bottom';
+            cursoItem.innerHTML = `
+                <div class="flex-grow-1">
+                    <h6 class="mb-1">${courseName}</h6>
+                    <small class="text-muted d-block">${courseDesc.substring(0, 100)}${courseDesc.length > 100 ? '...' : ''}</small>
+                    <div class="mt-1">
+                        <small class="text-muted">
+                            <i class="bi bi-calendar"></i> ${curso.year || '-'} 
+                            ${curso.institution ? `• <i class="bi bi-building"></i> ${curso.institution}` : ''}
+                            • <i class="${certificateIcon}"></i> ${certificateText}
+                        </small>
                     </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <p><strong>Descrição:</strong></p>
-                                <p>${curso.description}</p>
-                                
-                                <div class="row mt-3">
-                                    <div class="col-md-6">
-                                        <p><strong>Ano:</strong> ${curso.year}</p>
+                </div>
+                <div class="ms-3">
+                    <button class="btn btn-sm btn-outline-primary me-1" data-action="view-course" data-index="${index}" title="Ver detalhes">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary me-1" data-action="edit-course" data-index="${index}" title="Editar">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" data-action="delete-course" data-index="${index}" title="Excluir">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            `;
+            list.appendChild(cursoItem);
+        });
+
+        list.querySelectorAll('[data-action="view-course"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                viewCourse(Number(this.getAttribute('data-index')));
+            });
+        });
+        list.querySelectorAll('[data-action="edit-course"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                editCourse(Number(this.getAttribute('data-index')));
+            });
+        });
+        list.querySelectorAll('[data-action="delete-course"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                deleteCourse(Number(this.getAttribute('data-index')));
+            });
+        });
+    }
+
+    function viewCourse(index) {
+        const cursos = getStored(STORAGE_KEYS.cursos, DEFAULTS.cursos);
+        const curso = cursos[index];
+        if (!curso) return;
+
+        let certificateContent = '';
+        if (curso.certificateType === 'link') {
+            certificateContent = `<a href="${curso.certificate}" target="_blank" class="btn btn-sm btn-outline-primary">Abrir Certificado</a>`;
+        } else {
+            certificateContent = `
+                <a href="${curso.certificate}" target="_blank" class="btn btn-sm btn-outline-primary download-file" data-index="${index}">
+                    <i class="bi bi-download"></i> Download do Certificado
+                </a>
+            `;
+        }
+
+        const modalHTML = `
+            <div class="modal fade" id="viewCourseModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${curso.name}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p><strong>Descrição:</strong></p>
+                                    <p>${curso.description}</p>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <p><strong>Ano:</strong> ${curso.year || '-'}</p>
+                                        </div>
+                                        ${curso.institution ? `
+                                        <div class="col-md-6">
+                                            <p><strong>Instituição:</strong> ${curso.institution}</p>
+                                        </div>
+                                        ` : ''}
                                     </div>
-                                    ${curso.institution ? `
-                                    <div class="col-md-6">
-                                        <p><strong>Instituição:</strong> ${curso.institution}</p>
-                                    </div>
-                                    ` : ''}
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-award display-4 text-warning"></i>
-                                        <h6 class="mt-2">Certificado</h6>
-                                        ${certificateContent}
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-award display-4 text-warning"></i>
+                                            <h6 class="mt-2">Certificado</h6>
+                                            ${certificateContent}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary edit-course-from-view" data-index="${index}">Editar</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button type="button" class="btn btn-primary edit-course-from-view" data-index="${index}">Editar</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    `;
-    
-    // Remover modal anterior se existir
-    const existingModal = document.getElementById('viewCourseModal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-    
-    // Adicionar novo modal ao DOM
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // Mostrar modal
-    const viewModal = new bootstrap.Modal(document.getElementById('viewCourseModal'));
-    viewModal.show();
-    
-    // Adicionar event listener para o botão de download
-    const downloadBtn = document.querySelector('.download-file');
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', function() {
-            downloadCertificate(index);
-        });
-    }
-    
-    // Adicionar event listener para editar a partir da visualização
-    document.querySelector('.edit-course-from-view').addEventListener('click', function() {
-        viewModal.hide();
-        editCourse(index);
-    });
-}
+        `;
 
-// Função para fazer download do certificado
-function downloadCertificate(index) {
-    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-    const curso = cursos[index];
-    
-    if (curso.certificateType === 'file' && curso.fileData) {
-        // Criar link de download
-        const link = document.createElement('a');
-        link.href = curso.fileData;
-        link.download = curso.certificate;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-}
+        const existingModal = document.getElementById('viewCourseModal');
+        if (existingModal) existingModal.remove();
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        showModal('viewCourseModal');
 
-// Função para excluir curso
-function deleteCourse(index) {
-    if (confirm('Tem certeza que deseja excluir este curso?')) {
-        const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-        cursos.splice(index, 1);
-        localStorage.setItem('cursos', JSON.stringify(cursos));
-        loadData();
-        alert('Curso excluído com sucesso!');
-    }
-}
+        // CODEX: Link de download já aponta para o ficheiro
 
-// Função para editar curso (será implementada posteriormente)
-function editCourse(index) {
-    alert('Funcionalidade de edição será implementada em breve!');
-    // Aqui você pode implementar a lógica para editar um curso existente
-}
-// Alternar entre link e upload de ficheiro
-document.querySelectorAll('input[name="certificateType"]').forEach(radio => {
-    radio.addEventListener('change', function() {
-        const linkField = document.getElementById('linkField');
-        const fileField = document.getElementById('fileField');
-        
-        if (this.value === 'link') {
-            linkField.style.display = 'block';
-            fileField.style.display = 'none';
-            document.getElementById('courseCertificateFile').value = '';
-            document.getElementById('filePreview').innerHTML = '';
-        } else {
-            linkField.style.display = 'none';
-            fileField.style.display = 'block';
-            document.getElementById('courseCertificateLink').value = '';
+        const editFromView = document.querySelector('.edit-course-from-view');
+        if (editFromView) {
+            editFromView.addEventListener('click', function () {
+                hideModal('viewCourseModal');
+                editCourse(Number(this.getAttribute('data-index')));
+            });
         }
-    });
-});
+    }
 
-// Preview do ficheiro selecionado
-document.getElementById('courseCertificateFile').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    const preview = document.getElementById('filePreview');
-    
-    if (file) {
-        // Validar tamanho do ficheiro (5MB máximo)
-        if (file.size > 5 * 1024 * 1024) {
-            alert('O ficheiro é muito grande. Por favor, selecione um ficheiro até 5MB.');
-            this.value = '';
-            preview.innerHTML = '';
-            return;
-        }
-        
-        // Validar tipo de ficheiro
-        const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-        if (!validTypes.includes(file.type)) {
-            alert('Tipo de ficheiro não suportado. Por favor, selecione PDF, JPG, PNG ou DOC.');
-            this.value = '';
-            preview.innerHTML = '';
-            return;
-        }
-        
-        // Mostrar preview
-        if (file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
+    function editCourse(index) {
+        const cursos = getStored(STORAGE_KEYS.cursos, DEFAULTS.cursos);
+        const curso = cursos[index];
+        if (!curso) return;
+
+        state.editing.course = index;
+        state.courseFileCache = curso.certificate || null;
+        state.courseFileNameCache = curso.certificateName || '';
+
+        document.getElementById('courseName').value = unwrapI18n(curso.name);
+        document.getElementById('courseDescription').value = unwrapI18n(curso.description);
+        document.getElementById('courseYear').value = curso.year || '';
+        document.getElementById('courseInstitution').value = curso.institution || '';
+
+        if (curso.certificateType === 'file') {
+            document.getElementById('certificateFile').checked = true;
+            toggleCertificateFields();
+            const preview = document.getElementById('filePreview');
+            if (preview && state.courseFileNameCache) {
                 preview.innerHTML = `
                     <div class="border p-2 rounded">
-                        <img src="${e.target.result}" class="img-thumbnail" style="max-height: 150px;">
+                        <i class="bi bi-file-earmark-text display-4 text-primary"></i>
                         <div class="mt-1">
-                            <small class="text-muted">${file.name} (${(file.size / 1024).toFixed(2)} KB)</small>
+                            <small class="text-muted">${state.courseFileNameCache}</small>
                         </div>
                     </div>
                 `;
-            };
-            reader.readAsDataURL(file);
+            }
         } else {
-            preview.innerHTML = `
-                <div class="border p-2 rounded">
-                    <i class="bi bi-file-earmark-text display-4 text-primary"></i>
-                    <div class="mt-1">
-                        <small class="text-muted">${file.name} (${(file.size / 1024).toFixed(2)} KB)</small>
-                    </div>
+            document.getElementById('certificateLink').checked = true;
+            toggleCertificateFields();
+            document.getElementById('courseCertificateLink').value = curso.certificate || '';
+        }
+
+        showModal('addCourseModal');
+    }
+
+    async function deleteCourse(index) {
+        if (!confirm('Tem certeza que deseja excluir este curso?')) return;
+        const cursos = getStored(STORAGE_KEYS.cursos, DEFAULTS.cursos);
+        const curso = cursos[index];
+        if (curso && curso.certificateType === 'file') {
+            await deleteFileFromServer(curso.certificate);
+        }
+        cursos.splice(index, 1);
+        setStored(STORAGE_KEYS.cursos, cursos);
+        auditLog('delete', 'curso', curso || {});
+        renderCoursesList();
+    }
+
+    // CODEX: Experiências
+    // CODEX: Ordena experiências por período (mais recente no topo)
+    function sortExperiencesByPeriodo(items) {
+        if (!Array.isArray(items)) return [];
+        const parsePeriodo = (periodo) => {
+            const text = (periodo || '').toString();
+            const numbers = text.match(/\d{4}/g) || [];
+            const start = numbers.length > 0 ? Number(numbers[0]) : 0;
+            const end = numbers.length > 1 ? Number(numbers[1]) : start;
+            const isCurrent = /presente|present|atual/i.test(text);
+            return { start, end: isCurrent ? 9999 : end, isCurrent };
+        };
+        return items.slice().sort((a, b) => {
+            const pa = parsePeriodo(a.periodo);
+            const pb = parsePeriodo(b.periodo);
+            if (pa.end !== pb.end) return pb.end - pa.end;
+            if (pa.start !== pb.start) return pb.start - pa.start;
+            if (pa.isCurrent !== pb.isCurrent) return pa.isCurrent ? -1 : 1;
+            return 0;
+        });
+    }
+
+    function initExperienceForm() {
+        const saveBtn = document.getElementById('saveExperienceBtn');
+        if (saveBtn) saveBtn.addEventListener('click', saveExperience);
+    }
+
+    function renderExperiencesList() {
+        const list = document.getElementById('experienciasList');
+        if (!list) return;
+        const stored = getStored(STORAGE_KEYS.experiencias, DEFAULTS.experiencias);
+        const experiencias = sortExperiencesByPeriodo(stored);
+        // CODEX: garante ordenação por data no armazenamento
+        setStored(STORAGE_KEYS.experiencias, experiencias);
+        list.innerHTML = '';
+
+        if (experiencias.length === 0) {
+            list.innerHTML = '<p class="text-muted text-center">Nenhuma experiência adicionada.</p>';
+            return;
+        }
+
+        experiencias.forEach((exp, index) => {
+            const expItem = document.createElement('div');
+            expItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
+            const cargoText = unwrapI18n(exp.cargo);
+            expItem.innerHTML = `
+                <div>
+                    <h6 class="mb-0">${cargoText} - ${exp.empresa}</h6>
+                    <small class="text-muted">${exp.periodo} • ${exp.localizacao}</small>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary me-1" data-action="edit-experience" data-index="${index}">Editar</button>
+                    <button class="btn btn-sm btn-outline-danger" data-action="delete-experience" data-index="${index}">Excluir</button>
                 </div>
             `;
-        }
-    } else {
-        preview.innerHTML = '';
+            list.appendChild(expItem);
+        });
+
+        list.querySelectorAll('[data-action="edit-experience"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                editExperience(Number(this.getAttribute('data-index')));
+            });
+        });
+        list.querySelectorAll('[data-action="delete-experience"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                deleteExperience(Number(this.getAttribute('data-index')));
+            });
+        });
     }
-});
 
-// Função para converter ficheiro para Base64
-function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-}
+    async function saveExperience() {
+        const periodo = document.getElementById('experiencePeriod').value.trim();
+        const cargo = document.getElementById('experiencePosition').value.trim();
+        const empresa = document.getElementById('experienceCompany').value.trim();
+        const localizacao = document.getElementById('experienceLocation').value.trim();
+        const logoTexto = document.getElementById('experienceLogo').value.trim();
+        const responsabilidades = document.getElementById('experienceResponsibilities').value
+            .split('\n')
+            .map(item => item.trim())
+            .filter(Boolean);
+        const imagensTexto = document.getElementById('experienceImages').value
+            .split('\n')
+            .map(item => item.trim())
+            .filter(Boolean);
 
-// Salvar curso (modificado para suportar ficheiros)
-document.getElementById('saveCourseBtn').addEventListener('click', async function() {
-    const name = document.getElementById('courseName').value;
-    const description = document.getElementById('courseDescription').value;
-    const year = document.getElementById('courseYear').value;
-    const institution = document.getElementById('courseInstitution').value;
-    
-    const certificateType = document.querySelector('input[name="certificateType"]:checked').value;
-    
-    let certificate = '';
-    let fileData = null;
-    
-    if (certificateType === 'link') {
-        certificate = document.getElementById('courseCertificateLink').value;
-    } else {
-        const fileInput = document.getElementById('courseCertificateFile');
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
+        if (!periodo || !cargo || !empresa || !localizacao || responsabilidades.length === 0) {
+            alert('Preencha os campos obrigatórios da experiência.');
+            return;
+        }
+
+        let cargoKey = null;
+        let responsabilidadesWrapped = [];
+        try {
+            cargoKey = await saveI18nText(cargo);
+            const respKeys = await Promise.all(
+                responsabilidades.map(item => saveI18nText(item))
+            );
+            responsabilidadesWrapped = responsabilidades.map((item, idx) => wrapI18n(item, respKeys[idx]));
+        } catch (error) {
+            alert('Erro ao salvar tradução da experiência.');
+            return;
+        }
+
+        const experiencias = getStored(STORAGE_KEYS.experiencias, DEFAULTS.experiencias);
+        const exp = {
+            periodo,
+            cargo: wrapI18n(cargo, cargoKey),
+            empresa,
+            localizacao,
+            responsabilidades: responsabilidadesWrapped,
+            logo: logoTexto,
+            imagens: imagensTexto
+        };
+
+        const fileInput = document.getElementById('experienceImagesUpload');
+        const files = fileInput ? Array.from(fileInput.files || []) : [];
+        const logoInput = document.getElementById('experienceLogoUpload');
+        const logoFile = logoInput && logoInput.files.length ? logoInput.files[0] : null;
+
+        const finalizeSave = (uploadedUrls = [], logoUrl = null) => {
+            exp.imagens = [...imagensTexto, ...uploadedUrls];
+            exp.logo = logoUrl || exp.logo;
+
+            const action = state.editing.experience !== null ? 'edit' : 'add';
+            if (state.editing.experience !== null) {
+                experiencias[state.editing.experience] = exp;
+            } else {
+                experiencias.push(exp);
+            }
+
+            // CODEX: ordenar por data antes de salvar
+            const ordered = sortExperiencesByPeriodo(experiencias);
+            setStored(STORAGE_KEYS.experiencias, ordered);
+            auditLog(action, 'experiencia', {
+                cargo,
+                empresa,
+                periodo,
+                localizacao,
+                imagens: exp.imagens,
+                logo: exp.logo
+            });
+            state.editing.experience = null;
+            document.getElementById('addExperienceForm').reset();
+            if (fileInput) fileInput.value = '';
+            if (logoInput) logoInput.value = '';
+            hideModal('addExperienceModal');
+            renderExperiencesList();
+        };
+
+        try {
+            let uploadedImages = [];
+            if (files.length > 0) {
+                uploadedImages = await uploadFilesToServer(files);
+            }
+            let uploadedLogo = null;
+            if (logoFile) {
+                const upload = await uploadFileToServer(logoFile);
+                uploadedLogo = upload.url;
+            }
+            finalizeSave(uploadedImages, uploadedLogo);
+        } catch (error) {
+            alert('Erro ao enviar imagens da experiência.');
+        }
+    }
+
+    function editExperience(index) {
+        const experiencias = getStored(STORAGE_KEYS.experiencias, DEFAULTS.experiencias);
+        const exp = experiencias[index];
+        if (!exp) return;
+
+        state.editing.experience = index;
+        document.getElementById('experiencePeriod').value = exp.periodo || '';
+        document.getElementById('experiencePosition').value = unwrapI18n(exp.cargo);
+        document.getElementById('experienceCompany').value = exp.empresa || '';
+        document.getElementById('experienceLocation').value = exp.localizacao || '';
+        document.getElementById('experienceLogo').value = exp.logo || '';
+        document.getElementById('experienceResponsibilities').value = (resolveI18nTextArray(exp.responsabilidades) || []).join('\n');
+        document.getElementById('experienceImages').value = (exp.imagens || []).join('\n');
+        const fileInput = document.getElementById('experienceImagesUpload');
+        if (fileInput) fileInput.value = '';
+        const logoInput = document.getElementById('experienceLogoUpload');
+        if (logoInput) logoInput.value = '';
+        showModal('addExperienceModal');
+    }
+
+    async function deleteExperience(index) {
+        if (!confirm('Tem certeza que deseja excluir esta experiência?')) return;
+        const experiencias = getStored(STORAGE_KEYS.experiencias, DEFAULTS.experiencias);
+        const exp = experiencias[index];
+        if (exp && exp.imagens && exp.imagens.length) {
+            await deleteManyFromServer(exp.imagens);
+        }
+        if (exp && exp.logo) {
+            await deleteFileFromServer(exp.logo);
+        }
+        experiencias.splice(index, 1);
+        setStored(STORAGE_KEYS.experiencias, experiencias);
+        auditLog('delete', 'experiencia', exp || {});
+        renderExperiencesList();
+    }
+
+    // CODEX: Projetos
+    function initProjectForm() {
+        const saveBtn = document.getElementById('saveProjectBtn');
+        if (saveBtn) saveBtn.addEventListener('click', saveProject);
+    }
+
+    function renderProjectsList() {
+        const list = document.getElementById('projetosList');
+        if (!list) return;
+        const projetos = getStored(STORAGE_KEYS.projetos, DEFAULTS.projetos);
+        list.innerHTML = '';
+
+        if (projetos.length === 0) {
+            list.innerHTML = '<p class="text-muted text-center">Nenhum projeto adicionado.</p>';
+            return;
+        }
+
+        projetos.forEach((proj, index) => {
+            const projItem = document.createElement('div');
+            const projName = unwrapI18n(proj.nome);
+            const projStatus = unwrapI18n(proj.status);
+            projItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
+            projItem.innerHTML = `
+                <div>
+                    <h6 class="mb-0">${projName}</h6>
+                    <small class="text-muted">${projStatus || ''}</small>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary me-1" data-action="edit-project" data-index="${index}">Editar</button>
+                    <button class="btn btn-sm btn-outline-danger" data-action="delete-project" data-index="${index}">Excluir</button>
+                </div>
+            `;
+            list.appendChild(projItem);
+        });
+
+        list.querySelectorAll('[data-action="edit-project"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                editProject(Number(this.getAttribute('data-index')));
+            });
+        });
+        list.querySelectorAll('[data-action="delete-project"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                deleteProject(Number(this.getAttribute('data-index')));
+            });
+        });
+    }
+
+    async function saveProject() {
+        const nome = document.getElementById('projectName').value.trim();
+        const descricao = document.getElementById('projectDescription').value.trim();
+        const imagemTexto = document.getElementById('projectImage').value.trim();
+        const link = document.getElementById('projectLink').value.trim();
+        const status = document.getElementById('projectStatus').value.trim();
+
+        if (!nome || !descricao || (!imagemTexto && !document.getElementById('projectImageUpload').files.length) || !status) {
+            alert('Preencha os campos obrigatórios do projeto.');
+            return;
+        }
+
+        let nomeKey = null;
+        let descricaoKey = null;
+        let statusKey = null;
+        try {
+            nomeKey = await saveI18nText(nome);
+            descricaoKey = await saveI18nText(descricao);
+            statusKey = await saveI18nText(status);
+        } catch (error) {
+            alert('Erro ao salvar tradução do projeto.');
+            return;
+        }
+
+        const projetos = getStored(STORAGE_KEYS.projetos, DEFAULTS.projetos);
+        const proj = {
+            nome: wrapI18n(nome, nomeKey),
+            descricao: wrapI18n(descricao, descricaoKey),
+            imagem: imagemTexto,
+            link: link || '#',
+            status: wrapI18n(status, statusKey)
+        };
+
+        const fileInput = document.getElementById('projectImageUpload');
+        const file = fileInput && fileInput.files.length ? fileInput.files[0] : null;
+
+        const finalizeSave = (finalImage) => {
+            proj.imagem = finalImage || proj.imagem;
+        const action = state.editing.project !== null ? 'edit' : 'add';
+        if (state.editing.project !== null) {
+            projetos[state.editing.project] = proj;
+        } else {
+            projetos.push(proj);
+        }
+
+        setStored(STORAGE_KEYS.projetos, projetos);
+        auditLog(action, 'projeto', {
+            nome,
+            status,
+            imagem: proj.imagem,
+            link: proj.link
+        });
+        state.editing.project = null;
+        document.getElementById('addProjectForm').reset();
+        hideModal('addProjectModal');
+        renderProjectsList();
+    };
+
+        if (file) {
             try {
-                // Converter ficheiro para Base64
-                fileData = await fileToBase64(file);
-                certificate = file.name; // Guardamos o nome do ficheiro
+                const upload = await uploadFileToServer(file);
+                finalizeSave(upload.url);
             } catch (error) {
-                console.error('Erro ao processar ficheiro:', error);
-                alert('Erro ao processar o ficheiro. Tente novamente.');
+                alert('Erro ao enviar a imagem do projeto.');
+            }
+        } else {
+            finalizeSave(proj.imagem);
+        }
+    }
+
+    function editProject(index) {
+        const projetos = getStored(STORAGE_KEYS.projetos, DEFAULTS.projetos);
+        const proj = projetos[index];
+        if (!proj) return;
+
+        state.editing.project = index;
+        document.getElementById('projectName').value = unwrapI18n(proj.nome);
+        document.getElementById('projectDescription').value = unwrapI18n(proj.descricao);
+        document.getElementById('projectImage').value = proj.imagem || '';
+        document.getElementById('projectLink').value = proj.link || '';
+        document.getElementById('projectStatus').value = unwrapI18n(proj.status);
+        const fileInput = document.getElementById('projectImageUpload');
+        if (fileInput) fileInput.value = '';
+        showModal('addProjectModal');
+    }
+
+    async function deleteProject(index) {
+        if (!confirm('Tem certeza que deseja excluir este projeto?')) return;
+        const projetos = getStored(STORAGE_KEYS.projetos, DEFAULTS.projetos);
+        const proj = projetos[index];
+        if (proj && proj.imagem) {
+            await deleteFileFromServer(proj.imagem);
+        }
+        projetos.splice(index, 1);
+        setStored(STORAGE_KEYS.projetos, projetos);
+        auditLog('delete', 'projeto', proj || {});
+        renderProjectsList();
+    }
+
+    // CODEX: Projetos de design
+    function initDesignForm() {
+        const saveBtn = document.getElementById('saveDesignBtn');
+        if (saveBtn) saveBtn.addEventListener('click', saveDesign);
+    }
+
+    function renderDesignList() {
+        const list = document.getElementById('designList');
+        if (!list) return;
+        const design = getStored(STORAGE_KEYS.design, DEFAULTS.design);
+        list.innerHTML = '';
+
+        if (design.length === 0) {
+            list.innerHTML = '<p class="text-muted text-center">Nenhum projeto de design adicionado.</p>';
+            return;
+        }
+
+        design.forEach((item, index) => {
+            const desItem = document.createElement('div');
+            const designName = unwrapI18n(item.nome);
+            const designType = unwrapI18n(item.tipo);
+            desItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
+            desItem.innerHTML = `
+                <div>
+                    <h6 class="mb-0">${designName}</h6>
+                    <small class="text-muted">${designType} • ${item.ano}</small>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary me-1" data-action="edit-design" data-index="${index}">Editar</button>
+                    <button class="btn btn-sm btn-outline-danger" data-action="delete-design" data-index="${index}">Excluir</button>
+                </div>
+            `;
+            list.appendChild(desItem);
+        });
+
+        list.querySelectorAll('[data-action="edit-design"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                editDesign(Number(this.getAttribute('data-index')));
+            });
+        });
+        list.querySelectorAll('[data-action="delete-design"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                deleteDesign(Number(this.getAttribute('data-index')));
+            });
+        });
+    }
+
+    async function saveDesign() {
+        const nome = document.getElementById('designName').value.trim();
+        const tipo = document.getElementById('designType').value.trim();
+        const descricao = document.getElementById('designDescription').value.trim();
+        const ano = document.getElementById('designYear').value.trim();
+        const tags = document.getElementById('designTags').value
+            .split(',')
+            .map(item => item.trim())
+            .filter(Boolean);
+        const imagensTexto = document.getElementById('designImages').value
+            .split('\n')
+            .map(item => item.trim())
+            .filter(Boolean);
+
+        if (!nome || !tipo || !descricao || !ano) {
+            alert('Preencha os campos obrigatórios do projeto de design.');
+            return;
+        }
+
+        let tipoKey = null;
+        let descricaoKey = null;
+        let tagsWrapped = [];
+        try {
+            tipoKey = await saveI18nText(tipo);
+            descricaoKey = await saveI18nText(descricao);
+            const tagKeys = await Promise.all(tags.map(tag => saveI18nText(tag)));
+            tagsWrapped = tags.map((tag, idx) => wrapI18n(tag, tagKeys[idx]));
+        } catch (error) {
+            alert('Erro ao salvar tradução do design.');
+            return;
+        }
+
+        const design = getStored(STORAGE_KEYS.design, DEFAULTS.design);
+        const item = {
+            nome,
+            tipo: wrapI18n(tipo, tipoKey),
+            descricao: wrapI18n(descricao, descricaoKey),
+            ano,
+            tags: tagsWrapped,
+            imagens: imagensTexto
+        };
+
+        const fileInput = document.getElementById('designImagesUpload');
+        const files = fileInput ? Array.from(fileInput.files || []) : [];
+
+        const finalizeSave = (uploadedUrls = []) => {
+            item.imagens = [...imagensTexto, ...uploadedUrls];
+
+        const action = state.editing.design !== null ? 'edit' : 'add';
+        if (state.editing.design !== null) {
+            design[state.editing.design] = item;
+        } else {
+            design.push(item);
+        }
+
+        setStored(STORAGE_KEYS.design, design);
+        auditLog(action, 'design', {
+            nome,
+            tipo,
+            ano,
+            imagens: item.imagens
+        });
+        state.editing.design = null;
+        document.getElementById('addDesignForm').reset();
+        if (fileInput) fileInput.value = '';
+            hideModal('addDesignModal');
+            renderDesignList();
+        };
+
+        if (files.length > 0) {
+            uploadFilesToServer(files)
+                .then(finalizeSave)
+                .catch(() => alert('Erro ao enviar imagens do projeto de design.'));
+        } else {
+            finalizeSave([]);
+        }
+    }
+
+    function editDesign(index) {
+        const design = getStored(STORAGE_KEYS.design, DEFAULTS.design);
+        const item = design[index];
+        if (!item) return;
+
+        state.editing.design = index;
+        document.getElementById('designName').value = item.nome || '';
+        document.getElementById('designType').value = unwrapI18n(item.tipo);
+        document.getElementById('designDescription').value = unwrapI18n(item.descricao);
+        document.getElementById('designYear').value = item.ano || '';
+        document.getElementById('designTags').value = (resolveI18nTextArray(item.tags) || []).join(', ');
+        document.getElementById('designImages').value = (item.imagens || []).join('\n');
+        const fileInput = document.getElementById('designImagesUpload');
+        if (fileInput) fileInput.value = '';
+        showModal('addDesignModal');
+    }
+
+    async function deleteDesign(index) {
+        if (!confirm('Tem certeza que deseja excluir este projeto de design?')) return;
+        const design = getStored(STORAGE_KEYS.design, DEFAULTS.design);
+        const item = design[index];
+        if (item && item.imagens && item.imagens.length) {
+            await deleteManyFromServer(item.imagens);
+        }
+        design.splice(index, 1);
+        setStored(STORAGE_KEYS.design, design);
+        auditLog('delete', 'design', item || {});
+        renderDesignList();
+    }
+
+    function loadAllData() {
+        loadPersonalInfo();
+        renderTechnologiesList();
+        renderCoursesList();
+        renderExperiencesList();
+        renderProjectsList();
+        renderDesignList();
+        renderAuditHistory();
+    }
+
+    // CODEX: Histórico de auditoria
+    async function renderAuditHistory() {
+        const list = document.getElementById('auditList');
+        if (!list) return;
+        const limit = Number(document.getElementById('auditLimit')?.value || 100);
+        const activeFilters = Array.from(document.querySelectorAll('.audit-filter:checked'))
+            .map(input => input.value);
+        saveAuditPreferences(activeFilters, limit);
+        list.innerHTML = '<div class="text-muted">Carregando...</div>';
+        try {
+            const response = await fetch(`/api/audit/history?limit=${limit}`);
+            if (!response.ok) throw new Error('Falha ao carregar histórico.');
+            const data = await response.json();
+            let items = data.items || [];
+            if (activeFilters.length > 0) {
+                items = items.filter(item => activeFilters.includes(item.action));
+            } else {
+                items = [];
+            }
+
+            if (items.length === 0) {
+                list.innerHTML = '<div class="text-muted">Sem registros ainda.</div>';
                 return;
             }
+
+            list.innerHTML = '';
+            items.slice().reverse().forEach(item => {
+                const actionClass = getAuditActionClass(item.action);
+                const entry = document.createElement('div');
+                entry.className = `list-group-item ${actionClass}`;
+                entry.innerHTML = `
+                    <div class="d-flex justify-content-between">
+                        <strong>${item.action}</strong>
+                        <small class="text-muted">${item.ts}</small>
+                    </div>
+                    <div><span class="badge bg-secondary">${item.entity}</span></div>
+                    <pre class="mt-2 mb-0" style="white-space: pre-wrap;">${JSON.stringify(item.payload || {}, null, 2)}</pre>
+                `;
+                list.appendChild(entry);
+            });
+        } catch (error) {
+            list.innerHTML = '<div class="text-danger">Erro ao carregar histórico.</div>';
         }
     }
-    
-    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-    
-    // Criar objeto do curso
-    const curso = {
-        name,
-        description,
-        year,
-        institution,
-        certificate,
-        certificateType,
-        fileData // Guardamos os dados do ficheiro em Base64
-    };
-    
-    cursos.push(curso);
-    localStorage.setItem('cursos', JSON.stringify(cursos));
-    
-    // Fechar modal e recarregar dados
-    bootstrap.Modal.getInstance(document.getElementById('addCourseModal')).hide();
-    document.getElementById('addCourseForm').reset();
-    document.getElementById('filePreview').innerHTML = '';
-    document.getElementById('linkField').style.display = 'block';
-    document.getElementById('fileField').style.display = 'none';
-    document.getElementById('certificateLink').checked = true;
-    
-    loadData();
-    
-    alert('Curso adicionado com sucesso!');
-});
 
-// Atualizar a função loadData para mostrar os cursos com ficheiros
-function loadData() {
-    // ... código existente para outras seções ...
-    
-    // Carregar cursos
-    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-    const cursosList = document.getElementById('cursosList');
-    cursosList.innerHTML = '';
-    
-    if (cursos.length === 0) {
-        cursosList.innerHTML = '<p class="text-muted text-center">Nenhum curso adicionado ainda.</p>';
-        return;
+    // CODEX: Preferências de auditoria no localStorage
+    function saveAuditPreferences(filters, limit) {
+        const data = {
+            filters: Array.isArray(filters) ? filters : [],
+            limit: Number(limit) || 100
+        };
+        localStorage.setItem('auditPreferences', JSON.stringify(data));
     }
-    
-    cursos.forEach((curso, index) => {
-        const cursoItem = document.createElement('div');
-        cursoItem.className = 'd-flex justify-content-between align-items-center p-3 border-bottom';
-        
-        // Ícone baseado no tipo de certificado
-        let certificateIcon = 'bi bi-link-45deg';
-        let certificateText = 'Link externo';
-        
-        if (curso.certificateType === 'file') {
-            certificateIcon = 'bi bi-file-earmark';
-            certificateText = 'Ficheiro local';
+
+    function loadAuditPreferences() {
+        try {
+            const raw = localStorage.getItem('auditPreferences');
+            if (!raw) return;
+            const data = JSON.parse(raw);
+            if (Array.isArray(data.filters)) {
+                document.querySelectorAll('.audit-filter').forEach(filter => {
+                    filter.checked = data.filters.includes(filter.value);
+                });
+            }
+            if (data.limit) {
+                const limitSelect = document.getElementById('auditLimit');
+                if (limitSelect) limitSelect.value = String(data.limit);
+            }
+        } catch (error) {
+            // Ignorar erro de leitura
         }
-        
-        cursoItem.innerHTML = `
-            <div class="flex-grow-1">
-                <h6 class="mb-1">${curso.name}</h6>
-                <small class="text-muted d-block">${curso.description.substring(0, 100)}${curso.description.length > 100 ? '...' : ''}</small>
-                <div class="mt-1">
-                    <small class="text-muted">
-                        <i class="bi bi-calendar"></i> ${curso.year} 
-                        ${curso.institution ? `• <i class="bi bi-building"></i> ${curso.institution}` : ''}
-                        • <i class="${certificateIcon}"></i> ${certificateText}
-                    </small>
-                </div>
-            </div>
-            <div class="ms-3">
-                <button class="btn btn-sm btn-outline-primary me-1 view-course" data-index="${index}" title="Ver detalhes">
-                    <i class="bi bi-eye"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-secondary me-1 edit-course" data-index="${index}" title="Editar">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger delete-course" data-index="${index}" title="Excluir">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
-        `;
-        cursosList.appendChild(cursoItem);
-    });
-    
-    // Adicionar event listeners para os novos botões
-    document.querySelectorAll('.view-course').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = this.getAttribute('data-index');
-            viewCourse(index);
+    }
+
+    // CODEX: Estilos por tipo de ação
+    function getAuditActionClass(action) {
+        switch (action) {
+            case 'add':
+                return 'audit-action-add';
+            case 'edit':
+                return 'audit-action-edit';
+            case 'delete':
+                return 'audit-action-delete';
+            case 'upload':
+                return 'audit-action-upload';
+            default:
+                return '';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initNavigation();
+        initLogout();
+        initPersonalInfoForm();
+        initTechForm();
+        initCourseForm();
+        initExperienceForm();
+        initProjectForm();
+        initDesignForm();
+        loadAuditPreferences();
+        loadAllData();
+
+        const migrationBtn = document.getElementById('runI18nMigration');
+        if (migrationBtn) {
+            migrationBtn.addEventListener('click', async () => {
+                const status = document.getElementById('migrationStatus');
+                if (status) status.textContent = 'Executando migração...';
+                migrationBtn.disabled = true;
+                const result = await migrateI18nStore();
+                if (status) status.textContent = `Migração concluída: ${JSON.stringify(result)}`;
+                migrationBtn.disabled = false;
+                loadAllData();
+            });
+        }
+
+        const refreshBtn = document.getElementById('refreshAuditBtn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', renderAuditHistory);
+        }
+        const limitSelect = document.getElementById('auditLimit');
+        if (limitSelect) {
+            limitSelect.addEventListener('change', renderAuditHistory);
+        }
+        document.querySelectorAll('.audit-filter').forEach(filter => {
+            filter.addEventListener('change', renderAuditHistory);
         });
     });
-    
-    document.querySelectorAll('.edit-course').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = this.getAttribute('data-index');
-            editCourse(index);
-        });
-    });
-    
-    document.querySelectorAll('.delete-course').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = this.getAttribute('data-index');
-            deleteCourse(index);
-        });
-    });
-}
+})();
 
-// Função para visualizar curso
-function viewCourse(index) {
-    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-    const curso = cursos[index];
-    
-    let certificateContent = '';
-    if (curso.certificateType === 'link') {
-        certificateContent = `<a href="${curso.certificate}" target="_blank" class="btn btn-sm btn-outline-primary">Abrir Certificado</a>`;
-    } else {
-        // Para ficheiros, criamos um link para download
-        certificateContent = `
-            <button class="btn btn-sm btn-outline-primary download-file" data-index="${index}">
-                <i class="bi bi-download"></i> Download do Certificado
-            </button>
-        `;
-    }
-    
-    const modalHTML = `
-        <div class="modal fade" id="viewCourseModal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">${curso.name}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <p><strong>Descrição:</strong></p>
-                                <p>${curso.description}</p>
-                                
-                                <div class="row mt-3">
-                                    <div class="col-md-6">
-                                        <p><strong>Ano:</strong> ${curso.year}</p>
-                                    </div>
-                                    ${curso.institution ? `
-                                    <div class="col-md-6">
-                                        <p><strong>Instituição:</strong> ${curso.institution}</p>
-                                    </div>
-                                    ` : ''}
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-award display-4 text-warning"></i>
-                                        <h6 class="mt-2">Certificado</h6>
-                                        ${certificateContent}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary edit-course-from-view" data-index="${index}">Editar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Remover modal anterior se existir
-    const existingModal = document.getElementById('viewCourseModal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-    
-    // Adicionar novo modal ao DOM
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // Mostrar modal
-    const viewModal = new bootstrap.Modal(document.getElementById('viewCourseModal'));
-    viewModal.show();
-    
-    // Adicionar event listener para o botão de download
-    const downloadBtn = document.querySelector('.download-file');
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', function() {
-            downloadCertificate(index);
-        });
-    }
-    
-    // Adicionar event listener para editar a partir da visualização
-    document.querySelector('.edit-course-from-view').addEventListener('click', function() {
-        viewModal.hide();
-        editCourse(index);
-    });
-}
 
-// Função para fazer download do certificado
-function downloadCertificate(index) {
-    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-    const curso = cursos[index];
-    
-    if (curso.certificateType === 'file' && curso.fileData) {
-        // Criar link de download
-        const link = document.createElement('a');
-        link.href = curso.fileData;
-        link.download = curso.certificate;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-}
 
-// Função para excluir curso
-function deleteCourse(index) {
-    if (confirm('Tem certeza que deseja excluir este curso?')) {
-        const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-        cursos.splice(index, 1);
-        localStorage.setItem('cursos', JSON.stringify(cursos));
-        loadData();
-        alert('Curso excluído com sucesso!');
-    }
-}
 
-// Função para editar curso (será implementada posteriormente)
-function editCourse(index) {
-    alert('Funcionalidade de edição será implementada em breve!');
-    // Aqui você pode implementar a lógica para editar um curso existente
-}
+
+
+
+

@@ -23,6 +23,9 @@
   border: 0.2rem solid var(--bg-color);
   min-width: 250px; /* evita que fique muito pequeno em telas menores */
   transition: 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cursos-container .cursos-box:hover {
@@ -30,9 +33,26 @@
   transform: scale(1.03);
 }
 
+/* CODEX: ícone centralizado e menor para não estourar o card */
 .cursos-box i {
-  font-size: 7rem;
+  font-size: 4.2rem;
   color: var(--main-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.2rem;
+  height: 4.2rem;
+  margin: 0 auto 1rem;
+  line-height: 1;
+}
+
+/* CODEX: ajuste do ícone em telas menores */
+@media (max-width: 576px) {
+  .cursos-box i {
+    font-size: 3.2rem;
+    width: 3.2rem;
+    height: 3.2rem;
+  }
 }
 
 .cursos-box h3 {
@@ -41,7 +61,13 @@
 
 .cursos-box p {
   font-size: 1.6rem;
-  margin: 1rem 0 3rem;
+  margin: 1rem 0 2rem;
+  flex-grow: 1;
+}
+
+/* CODEX: padroniza altura dos cards */
+.cursos-container .cursos-box {
+  min-height: 420px;
 }
 
 

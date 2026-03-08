@@ -26,10 +26,12 @@
   max-width: 350px; /* Limita o tamanho máximo da imagem em telas grandes */
   height: auto; /* Mantém a proporção */
   display: block; /* Remove espaço extra abaixo da imagem */
-  margin: 0 auto; /* Centraliza a imagem dentro da sua coluna */
+  margin: 0 ; /* Centraliza a imagem dentro da sua coluna */
 }
 
 .inicio-img {
+  position: relative;
+  top: -4rem; /* CODEX: deslocamento vertical mais confiável que margin neste layout */
   animation: pulse 3s infinite;
 }
 @keyframes pulse {

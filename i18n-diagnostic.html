@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>i18n Diagnóstico</title>
+  <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background: #f8f9fa;
+      padding: 24px;
+    }
+    .summary {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .summary .card {
+      min-width: 220px;
+    }
+    .missing-table td {
+      vertical-align: top;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="mb-3">Diagnóstico i18n</h1>
+  <p class="text-muted">Esta página compara as chaves usadas no <code>index.html</code> com o dicionário em <code>js/i18n.js</code>.</p>
+
+  <div class="summary">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Total de chaves</h5>
+        <p class="card-text" id="totalKeys">-</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Faltando em PT</h5>
+        <p class="card-text" id="missingPt">-</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Faltando em EN</h5>
+        <p class="card-text" id="missingEn">-</p>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-bordered table-striped missing-table">
+    <thead>
+      <tr>
+        <th>Chave</th>
+        <th>PT</th>
+        <th>EN</th>
+      </tr>
+    </thead>
+    <tbody id="missingList">
+      <tr><td colspan="3" class="text-muted">Carregando…</td></tr>
+    </tbody>
+  </table>
+
+  <iframe id="indexFrame" src="index.html" style="display:none;"></iframe>
+
+  <script src="js/i18n.js"></script>
+  <script>
+    const frame = document.getElementById('indexFrame');
+
+    function collectKeys(doc) {
+      const keys = new Set();
+      doc.querySelectorAll('[data-i18n]').forEach(el => keys.add(el.getAttribute('data-i18n')));
+      doc.querySelectorAll('[data-i18n-html]').forEach(el => keys.add(el.getAttribute('data-i18n-html')));
+      doc.querySelectorAll('[data-i18n-aria]').forEach(el => keys.add(el.getAttribute('data-i18n-aria')));
+      return Array.from(keys).filter(Boolean).sort();
+    }
+
+    function hasKey(dict, key) {
+      return dict && Object.prototype.hasOwnProperty.call(dict, key);
+    }
+
+    function render(keys, translations) {
+      const pt = translations.pt || {};
+      const en = translations.en || {};
+      const tbody = document.getElementById('missingList');
+      tbody.innerHTML = '';
+
+      let missingPtCount = 0;
+      let missingEnCount = 0;
+
+      keys.forEach(key => {
+        const hasPt = hasKey(pt, key);
+        const hasEn = hasKey(en, key);
+        if (!hasPt) missingPtCount += 1;
+        if (!hasEn) missingEnCount += 1;
+
+        if (!hasPt || !hasEn) {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${key}</td>
+            <td>${hasPt ? 'OK' : '<span class="text-danger">Falta</span>'}</td>
+            <td>${hasEn ? 'OK' : '<span class="text-danger">Falta</span>'}</td>
+          `;
+          tbody.appendChild(row);
+        }
+      });
+
+      if (tbody.children.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-success">Nenhuma chave faltando.</td></tr>';
+      }
+
+      document.getElementById('totalKeys').textContent = keys.length;
+      document.getElementById('missingPt').textContent = missingPtCount;
+      document.getElementById('missingEn').textContent = missingEnCount;
+    }
+
+    frame.addEventListener('load', () => {
+      const doc = frame.contentDocument || frame.contentWindow.document;
+      const keys = collectKeys(doc);
+      const translations = window.__i18nTranslations || { pt: {}, en: {} };
+      render(keys, translations);
+    });
+  </script>
+</body>
+</html>

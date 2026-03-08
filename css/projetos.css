@@ -24,6 +24,7 @@
   box-shadow: 0 0 1rem var(--bg-color);
   overflow: hidden;
   display: flex;
+  flex-direction: column; /* CODEX: permite o card crescer com o conteúdo */
   min-width: 250px; /* evita que fique muito pequeno */
   transition: 0.5s ease;
 }
@@ -33,22 +34,36 @@
 }
 
 .portfolio-box img {
-  width: 180%;
+  width: 100%;
+  height: 220px; /* CODEX: altura base da imagem, conteúdo cresce abaixo */
+  object-fit: cover;
 }
 
 .portfolio-box .portfolio-layer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
+  height: auto;
+  position: relative; /* CODEX: deixa o conteúdo determinar a altura */
   background: linear-gradient(rgba(0, 0, 0, 0.4), var(--bg-color));
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   text-align: center;
-  padding: 0 4rem;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* CODEX: espaçamento interno responsivo */
+@media (min-width: 768px) {
+  .portfolio-box .portfolio-layer {
+    padding: 2.5rem 3rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .portfolio-box .portfolio-layer {
+    padding: 3rem 3.5rem;
+  }
 }
 
 .portfolio-layer h4 {

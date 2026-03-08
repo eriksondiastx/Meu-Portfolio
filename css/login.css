@@ -1,22 +1,33 @@
-body {
-            background: linear-gradient(135deg, #323946, #1f242d);
+:root {
+            --bg-color: #8f3d38;
+            --second-bg-color: #cb7169;
+            --surface-color: #ffffff;
+            --accent-color: #8f3d38;
+            --main-color: #cb7169;
+            --text-color: #8f3d38;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--second-bg-color), var(--bg-color));
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .login-container {
-            background: white;
+            background: var(--surface-color);
+            border: 1px solid var(--accent-color);
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             padding: 40px;
             width: 100%;
             max-width: 400px;
+            color: var(--text-color);
         }
         .logo {
             text-align: center;
             margin-bottom: 30px;
-            color: #1f242d;
+            color: var(--main-color);
             font-weight: bold;
         }
 

@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
-
 * {
   margin: 0;
   padding: 0;
@@ -7,14 +5,17 @@
   text-decoration: none;
   border: none;
   scroll-behavior: smooth;
-  font-family: "Poppins", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 :root {
-  --bg-color: #1f242d;
-  --second-bg-color: #323946;
-  --text-color: #fff;
-  --main-color: #0ef;
+  --bg-color: #170000;
+  --second-bg-color: #350a06;
+  --text-color: #f7dfdc;
+  --main-color: #cb7169;
+  --accent-color: #8f3d38;
+  --surface-color: #56070c; /* CODEX: apoio para elementos adicionais */
+  --contrast-color: #170000;
 }
 a {
   text-decoration: none !important;
@@ -29,9 +30,71 @@ body {
   color: var(--text-color);
 }
 
+/* CODEX: manter ícones em branco em todo o portfólio */
+i.bi,
+i.bx {
+  color: #fff !important;
+}
+
 section {
   min-height: 100vh;
   padding: 10rem 9% 2rem;
+  /* CODEX: Compensa o header fixo para ancoras (dinamico via JS) */
+  scroll-margin-top: var(--header-offset, 120px);
+  opacity: 1;
+  transform: none;
+}
+
+/* CODEX: Estado visível das seções */
+section.section-visible {
+  opacity: 1;
+  transform: none;
+}
+/* CODEX: animacoes de entrada por elemento */
+.reveal,
+.reveal-up,
+.reveal-left,
+.reveal-right {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition:
+    transform 0.8s cubic-bezier(0.2, 0.65, 0.2, 1),
+    opacity 0.8s ease;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal,
+.reveal-up {
+  transform: translate3d(0, 24px, 0);
+}
+
+.reveal-left {
+  transform: translate3d(-32px, 0, 0);
+}
+
+.reveal-right {
+  transform: translate3d(32px, 0, 0);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* CODEX: Respeitar preferências de redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+  section {
+    transition: none;
+    transform: none;
+  }
+  .reveal,
+  .reveal-up,
+  .reveal-left,
+  .reveal-right {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
 }
 
 .header {
@@ -65,8 +128,8 @@ section {
 .navbar-toggler {
   outline: none !important;
   border: none !important;
-  color: white !important; /* Garante que a cor do botão seja branca */
-  background-color: white !important; /* Fundo branco */
+  color: var(--contrast-color) !important;
+  background-color: var(--main-color) !important;
   padding: 10px; /* Ajuste para dar mais espaço ao botão */
   display: flex; /* Para alinhar o conteúdo dentro */
   align-items: center; /* Centraliza verticalmente */
@@ -85,8 +148,8 @@ section {
   margin-right: 0px;
 }
 .navbar-toggler-icon {
-  filter: invert(1); /* Torna o ícone branco */
-  background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  filter: none;
+  background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23170000' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 .navbar .nav-link {
@@ -130,14 +193,14 @@ section {
 .navbar-collapse.show {
   margin-top: 5px;
   margin-left: 30px;
-  background-color: white; /* Fundo branco ao abrir */
+  background-color: var(--surface-color);
   padding: 10px; /* Ajuste opcional para espaçamento interno */
   border-radius: 5px; /* Borda arredondada opcional */
   width: 100%;
   height: 100%;
 }
 .navbar-collapse.show .nav-link {
-  color: black !important; /* Define a cor do texto background-color: var(--main-color); /* Fundo leve ao passar o mouse */
+  color: var(--text-color) !important;
 
   border-radius: 5px; /* Igual ao efeito rounded-pill */
   margin-left: 0px;
@@ -145,7 +208,7 @@ section {
   transition: all 0.3s ease-in-out;
 }
 .navbar-collapse.show .nav-link:hover {
-  background-color: var(--main-color); /* Fundo leve ao passar o mouse */
+  background-color: var(--accent-color);
 }
 
 #menu-icon {
@@ -162,7 +225,7 @@ section {
             border: none;
             border-radius: 25px;
             padding: 8px 20px;
-            color: white;
+            color: var(--text-color);
             font-weight: 500;
             transition: all 0.3s ease;
             margin-left: 10px;
@@ -464,4 +527,7 @@ p {
   color: #007bff;
   text-decoration: underline;
 }
+
+
+
 

@@ -1,0 +1,156 @@
+{"ts":"2026-02-10T22:00:45.857Z","action":"add","entity":"i18n","payload":{"key":"profile_title","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:46.127Z","action":"add","entity":"i18n","payload":{"key":"profile_description","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:46.480Z","action":"add","entity":"i18n","payload":{"key":"course_name_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:46.738Z","action":"add","entity":"i18n","payload":{"key":"course_desc_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:47.010Z","action":"add","entity":"i18n","payload":{"key":"course_name_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:47.283Z","action":"add","entity":"i18n","payload":{"key":"course_desc_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:47.558Z","action":"add","entity":"i18n","payload":{"key":"course_name_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:47.828Z","action":"add","entity":"i18n","payload":{"key":"course_desc_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:48.095Z","action":"add","entity":"i18n","payload":{"key":"course_name_4","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:48.361Z","action":"add","entity":"i18n","payload":{"key":"course_desc_4","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:48.628Z","action":"add","entity":"i18n","payload":{"key":"course_name_5","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:48.937Z","action":"add","entity":"i18n","payload":{"key":"course_desc_5","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:49.196Z","action":"add","entity":"i18n","payload":{"key":"course_name_6","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:49.471Z","action":"add","entity":"i18n","payload":{"key":"course_desc_6","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:49.739Z","action":"add","entity":"i18n","payload":{"key":"course_name_7","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:50.015Z","action":"add","entity":"i18n","payload":{"key":"course_desc_7","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:50.321Z","action":"add","entity":"i18n","payload":{"key":"course_name_8","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:50.579Z","action":"add","entity":"i18n","payload":{"key":"course_desc_8","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:50.838Z","action":"add","entity":"i18n","payload":{"key":"exp_title_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:51.100Z","action":"add","entity":"i18n","payload":{"key":"exp_1_r_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:51.364Z","action":"add","entity":"i18n","payload":{"key":"exp_1_r_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:51.626Z","action":"add","entity":"i18n","payload":{"key":"exp_1_r_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:51.885Z","action":"add","entity":"i18n","payload":{"key":"exp_1_r_4","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:52.161Z","action":"add","entity":"i18n","payload":{"key":"exp_1_r_5","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:52.428Z","action":"add","entity":"i18n","payload":{"key":"exp_title_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:52.692Z","action":"add","entity":"i18n","payload":{"key":"exp_2_r_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:52.965Z","action":"add","entity":"i18n","payload":{"key":"exp_2_r_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:53.231Z","action":"add","entity":"i18n","payload":{"key":"exp_2_r_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:53.512Z","action":"add","entity":"i18n","payload":{"key":"exp_2_r_4","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:53.774Z","action":"add","entity":"i18n","payload":{"key":"exp_2_r_5","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:54.035Z","action":"add","entity":"i18n","payload":{"key":"exp_2_r_6","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:54.320Z","action":"add","entity":"i18n","payload":{"key":"exp_title_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:54.585Z","action":"add","entity":"i18n","payload":{"key":"exp_3_r_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:54.847Z","action":"add","entity":"i18n","payload":{"key":"exp_3_r_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:55.103Z","action":"add","entity":"i18n","payload":{"key":"exp_3_r_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:55.372Z","action":"add","entity":"i18n","payload":{"key":"exp_3_r_4","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:55.633Z","action":"add","entity":"i18n","payload":{"key":"exp_3_r_5","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:55.902Z","action":"add","entity":"i18n","payload":{"key":"exp_3_r_6","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:56.240Z","action":"add","entity":"i18n","payload":{"key":"exp_3_r_7","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:56.506Z","action":"add","entity":"i18n","payload":{"key":"exp_3_r_8","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:56.768Z","action":"add","entity":"i18n","payload":{"key":"exp_title_4","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:57.041Z","action":"add","entity":"i18n","payload":{"key":"exp_4_r_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:57.313Z","action":"add","entity":"i18n","payload":{"key":"exp_4_r_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:57.600Z","action":"add","entity":"i18n","payload":{"key":"exp_4_r_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:57.867Z","action":"add","entity":"i18n","payload":{"key":"exp_4_r_4","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:58.145Z","action":"add","entity":"i18n","payload":{"key":"exp_4_r_5","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:58.409Z","action":"add","entity":"i18n","payload":{"key":"exp_4_r_6","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:58.675Z","action":"add","entity":"i18n","payload":{"key":"exp_4_r_7","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:58.934Z","action":"add","entity":"i18n","payload":{"key":"exp_4_r_8","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:59.440Z","action":"add","entity":"i18n","payload":{"key":"exp_4_r_9","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:00:59.760Z","action":"add","entity":"i18n","payload":{"key":"project_title_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:00.037Z","action":"add","entity":"i18n","payload":{"key":"project_desc_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:00.347Z","action":"add","entity":"i18n","payload":{"key":"project_status_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:00.615Z","action":"add","entity":"i18n","payload":{"key":"project_title_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:00.884Z","action":"add","entity":"i18n","payload":{"key":"project_desc_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:01.145Z","action":"add","entity":"i18n","payload":{"key":"project_status_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:01.406Z","action":"add","entity":"i18n","payload":{"key":"project_title_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:01.676Z","action":"add","entity":"i18n","payload":{"key":"project_desc_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:02.000Z","action":"add","entity":"i18n","payload":{"key":"project_status_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:02.282Z","action":"add","entity":"i18n","payload":{"key":"project_title_4","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:02.561Z","action":"add","entity":"i18n","payload":{"key":"project_desc_4","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:02.867Z","action":"add","entity":"i18n","payload":{"key":"project_status_4","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:03.143Z","action":"add","entity":"i18n","payload":{"key":"project_title_5","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:03.441Z","action":"add","entity":"i18n","payload":{"key":"project_desc_5","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:03.716Z","action":"add","entity":"i18n","payload":{"key":"project_status_5","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:03.982Z","action":"add","entity":"i18n","payload":{"key":"project_title_6","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:04.247Z","action":"add","entity":"i18n","payload":{"key":"project_desc_6","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:04.507Z","action":"add","entity":"i18n","payload":{"key":"project_status_6","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:04.778Z","action":"add","entity":"i18n","payload":{"key":"design_type_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:05.041Z","action":"add","entity":"i18n","payload":{"key":"design_desc_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:05.307Z","action":"add","entity":"i18n","payload":{"key":"design_1_tag_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:05.600Z","action":"add","entity":"i18n","payload":{"key":"design_1_tag_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:05.865Z","action":"add","entity":"i18n","payload":{"key":"design_1_tag_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:06.123Z","action":"add","entity":"i18n","payload":{"key":"design_type_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:06.565Z","action":"add","entity":"i18n","payload":{"key":"design_desc_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:06.826Z","action":"add","entity":"i18n","payload":{"key":"design_2_tag_1","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:07.086Z","action":"add","entity":"i18n","payload":{"key":"design_2_tag_2","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:07.390Z","action":"add","entity":"i18n","payload":{"key":"design_2_tag_3","lang":"pt","auto":true}}
+{"ts":"2026-02-10T22:01:07.398Z","action":"edit","entity":"i18n_migration","payload":{"personalInfo":true,"cursos":true,"experiencias":true,"projetos":true,"design":true}}
+{"ts":"2026-02-10T23:10:25.101Z","action":"add","entity":"i18n","payload":{"key":"desenvolvedor_front_end_freelancer","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:25.122Z","action":"add","entity":"i18n","payload":{"key":"desenvolvimento_de_websites_responsivos_usando_html5_css3_e_","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:25.150Z","action":"add","entity":"i18n","payload":{"key":"manutencao_e_atualizacao_de_websites_existentes","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:25.145Z","action":"add","entity":"i18n","payload":{"key":"otimizacao_de_sites_para_seo_e_performance","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:25.140Z","action":"add","entity":"i18n","payload":{"key":"implementacao_de_designs_fornecidos_pelos_clientes","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:25.134Z","action":"add","entity":"i18n","payload":{"key":"criacao_de_interfaces_modernas_com_bootstrap_e_frameworks_cs","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:25.160Z","action":"edit","entity":"experiencia","payload":{"cargo":"Desenvolvedor Front-End Freelancer","empresa":"Trabalho Autônomo","periodo":"2025 - Presente","localizacao":"Luanda, Angola","imagens":[]}}
+{"ts":"2026-02-10T23:10:41.997Z","action":"add","entity":"i18n","payload":{"key":"secretario","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:42.013Z","action":"add","entity":"i18n","payload":{"key":"organizacao_de_documentos_administrativos","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:42.022Z","action":"add","entity":"i18n","payload":{"key":"pagamento_recarga_de_saldo_para_os_motoristas_na_plataforma_","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:42.029Z","action":"add","entity":"i18n","payload":{"key":"depositos_bancarios","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:42.035Z","action":"add","entity":"i18n","payload":{"key":"compra_dos_materiais_para_manutencao_das_viaturas","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:42.040Z","action":"add","entity":"i18n","payload":{"key":"marketing_da_marca_para_angariacao_de_parceiros","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:42.048Z","action":"add","entity":"i18n","payload":{"key":"emitir_relatorios_de_actividades","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:10:42.059Z","action":"edit","entity":"experiencia","payload":{"cargo":"Secretário","empresa":"Alexa Gestão de Taxi","periodo":"2024 - 2025","localizacao":"Kilamba, Luanda, Angola","imagens":[]}}
+{"ts":"2026-02-10T23:11:12.416Z","action":"add","entity":"i18n","payload":{"key":"tecnico_de_suporte_em_ti","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:12.436Z","action":"add","entity":"i18n","payload":{"key":"suporte_tecnico_a_usuarios_finais","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:12.442Z","action":"add","entity":"i18n","payload":{"key":"suporte_tecnico_a_usuarios_finais_na_empresa_sociedade_de_de","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:12.449Z","action":"add","entity":"i18n","payload":{"key":"auxilio_ao_eng_amandio_zumba_na_gestao_de_sistemas_da_sdb","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:12.453Z","action":"add","entity":"i18n","payload":{"key":"implementar_e_normas_de_seguranca_da_informacao_na_empresa","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:12.458Z","action":"add","entity":"i18n","payload":{"key":"instalacao_e_configuracao_de_software","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:12.464Z","action":"add","entity":"i18n","payload":{"key":"manutencao_preventiva_e_corretiva_de_computadores","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:12.471Z","action":"add","entity":"i18n","payload":{"key":"configuracao_de_redes_locais","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:12.476Z","action":"add","entity":"i18n","payload":{"key":"treinamento_basico_para_usuarios","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:12.487Z","action":"edit","entity":"experiencia","payload":{"cargo":"Técnico de Suporte em TI","empresa":"Egate Cloud","periodo":"2022 - 2024","localizacao":"São Paulo, Luanda, Angola","imagens":["imagem/trabalhos/Egate1.jpg","imagem/trabalhos/egate2.jpg","imagem/trabalhos/egate3.jpg","imagem/trabalhos/egate4.jpg","imagem/trabalhos/egate6.jpg","imagem/trabalhos/egate7.jpg"]}}
+{"ts":"2026-02-10T23:11:21.421Z","action":"add","entity":"i18n","payload":{"key":"professor_de_informatica","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:21.435Z","action":"add","entity":"i18n","payload":{"key":"lecionar_a_disciplina_de_informatica_para_criancas_e_adolesc","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:21.446Z","action":"add","entity":"i18n","payload":{"key":"lecionar_a_disciplina_de_artes_plasticas","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:21.452Z","action":"add","entity":"i18n","payload":{"key":"auxiliar_os_alunos_na_resolucao_das_tarefas_escolares","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:21.458Z","action":"add","entity":"i18n","payload":{"key":"preparacao_de_material_didatico_e_avaliacoes","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:21.464Z","action":"add","entity":"i18n","payload":{"key":"acompanhamento_do_progresso_dos_alunos","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:21.468Z","action":"add","entity":"i18n","payload":{"key":"ensino_de_pacote_office_word_excel_powerpoint","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:21.473Z","action":"add","entity":"i18n","payload":{"key":"criacao_de_actividades_para_datas_comemorativas","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:21.477Z","action":"add","entity":"i18n","payload":{"key":"auxilio_ao_coordenador_na_gestao_de_disciplinas_e_professore","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:21.483Z","action":"add","entity":"i18n","payload":{"key":"suporte_tecnico_das_tics_do_centro","lang":"en","auto":false}}
+{"ts":"2026-02-10T23:11:21.492Z","action":"edit","entity":"experiencia","payload":{"cargo":"Professor de Informática","empresa":"ATL StAndrews English School","periodo":"2020 - 2022","localizacao":"Luanda, Angola","imagens":["imagem/trabalhos/StAndrews1.jpg","imagem/trabalhos/StAndrews2.jpg","imagem/trabalhos/StAndrews3.jpg","imagem/trabalhos/StAndrews4.jpg","imagem/trabalhos/StAndrews5.jpg","imagem/trabalhos/StAndrews6.jpg"]}}
+{"ts":"2026-02-11T06:41:56.439Z","action":"add","entity":"i18n","payload":{"key":"coordenador_de_ti","lang":"pt","auto":true}}
+{"ts":"2026-02-11T06:41:56.818Z","action":"add","entity":"i18n","payload":{"key":"responsavel_por_coordenar_todo_departamento_de_ti_da_empresa","lang":"pt","auto":true}}
+{"ts":"2026-02-11T06:41:56.877Z","action":"upload","entity":"file","payload":{"url":"/imagem/uploads/siafrica-logo-1770792116860-888136198.png","name":"siafrica logo.png","size":280810,"mimetype":"image/png"}}
+{"ts":"2026-02-11T06:41:56.888Z","action":"add","entity":"experiencia","payload":{"cargo":"Coordenador de TI","empresa":"Siafrica lda","periodo":"2025 - Presente","localizacao":"Mutamba, Luanda, Angola","imagens":["/imagem/uploads/siafrica-logo-1770792116860-888136198.png"]}}
+{"ts":"2026-02-11T06:43:51.610Z","action":"add","entity":"tecnologia","payload":{"name":"Trello","category":"tools","level":"60","description":"Intermediário"}}
+{"ts":"2026-02-14T20:38:10.452Z","action":"add","entity":"i18n","payload":{"key":"coordenador_de_ti_2","lang":"pt","auto":true}}
+{"ts":"2026-02-14T20:38:10.969Z","action":"add","entity":"i18n","payload":{"key":"designer_grafico","lang":"pt","auto":true}}
+{"ts":"2026-02-14T20:38:10.973Z","action":"add","entity":"i18n","payload":{"key":"suporte_tecnico_e_helpdesk","lang":"pt","auto":true}}
+{"ts":"2026-02-14T20:38:10.976Z","action":"add","entity":"i18n","payload":{"key":"auxiliar_administrativo","lang":"pt","auto":true}}
+{"ts":"2026-02-14T20:38:10.982Z","action":"add","entity":"i18n","payload":{"key":"programador","lang":"pt","auto":true}}
+{"ts":"2026-02-14T20:38:11.000Z","action":"add","entity":"experiencia","payload":{"cargo":"Coordenador de TI","empresa":"Siafrica lda","periodo":"2025 - Presente","localizacao":"Mutamba, Luanda, Angola","imagens":[]}}
+{"ts":"2026-02-14T20:49:27.776Z","action":"delete","entity":"experiencia","payload":{"periodo":"2025 - Presente","cargo":{"text":"Coordenador de TI","i18nKey":"coordenador_de_ti_2"},"empresa":"Siafrica lda","localizacao":"Mutamba, Luanda, Angola","responsabilidades":[{"text":"Suporte técnico e helpdesk","i18nKey":"suporte_tecnico_e_helpdesk"},{"text":"Designer gráfico","i18nKey":"designer_grafico"},{"text":"Programador","i18nKey":"programador"},{"text":"Auxiliar administrativo","i18nKey":"auxiliar_administrativo"}],"imagens":[]}}
+{"ts":"2026-02-14T20:50:55.153Z","action":"add","entity":"i18n","payload":{"key":"coordenador_de_ti_3","lang":"pt","auto":true}}
+{"ts":"2026-02-14T20:50:55.447Z","action":"add","entity":"i18n","payload":{"key":"suporte_tecnico_e_helpdesk","lang":"pt","auto":true}}
+{"ts":"2026-02-14T20:50:55.961Z","action":"add","entity":"i18n","payload":{"key":"auxiliar_administrativo","lang":"pt","auto":true}}
+{"ts":"2026-02-14T20:50:56.036Z","action":"add","entity":"i18n","payload":{"key":"designer_grafico","lang":"pt","auto":true}}
+{"ts":"2026-02-14T20:50:56.042Z","action":"add","entity":"i18n","payload":{"key":"programador_2","lang":"pt","auto":true}}
+{"ts":"2026-02-14T20:50:56.053Z","action":"add","entity":"experiencia","payload":{"cargo":"Coordenador de TI","empresa":"Siafrica lda","periodo":"2025 - Presente","localizacao":"Mutamba, Luanda, Angola","imagens":[],"logo":""}}
+{"ts":"2026-02-16T06:07:51.269Z","action":"add","entity":"i18n","payload":{"key":"coordenador_de_ti_4","lang":"pt","auto":true}}
+{"ts":"2026-02-16T06:07:51.296Z","action":"add","entity":"i18n","payload":{"key":"suporte_tecnico_e_helpdesk","lang":"pt","auto":true}}
+{"ts":"2026-02-16T06:07:51.300Z","action":"add","entity":"i18n","payload":{"key":"programador_3","lang":"pt","auto":true}}
+{"ts":"2026-02-16T06:07:51.308Z","action":"add","entity":"i18n","payload":{"key":"designer_grafico","lang":"pt","auto":true}}
+{"ts":"2026-02-16T06:07:51.312Z","action":"add","entity":"i18n","payload":{"key":"auxiliar_administrativo","lang":"pt","auto":true}}
+{"ts":"2026-02-16T06:07:51.360Z","action":"upload","entity":"file","payload":{"url":"/imagem/uploads/siafrica-logo-1771222071351-247331040.png","name":"siafrica logo.png","size":280810,"mimetype":"image/png"}}
+{"ts":"2026-02-16T06:07:51.370Z","action":"edit","entity":"experiencia","payload":{"cargo":"Coordenador de TI","empresa":"Siafrica lda","periodo":"2025 - Presente","localizacao":"Mutamba, Luanda, Angola","imagens":[],"logo":"/imagem/uploads/siafrica-logo-1771222071351-247331040.png"}}
+{"ts":"2026-03-08T10:30:03.426Z","action":"upload","entity":"file","payload":{"url":"/imagem/uploads/erikson-profile-1772965803417-918783491.jpg","name":"Erikson Profile.jpg","size":139237,"mimetype":"image/jpeg"}}
+{"ts":"2026-03-08T10:30:05.688Z","action":"add","entity":"i18n","payload":{"key":"desenvolvedor_front_end","lang":"pt","auto":true}}
+{"ts":"2026-03-08T10:30:06.864Z","action":"add","entity":"i18n","payload":{"key":"apaixonado_por_tecnologia_e_por_computadores_desde_os_13_ano","lang":"pt","auto":true}}
+{"ts":"2026-03-08T10:30:06.879Z","action":"edit","entity":"perfil","payload":{"nome":"Erikson Inácio Dias Teixeira","titulo":{"text":"Desenvolvedor Front-End","i18nKey":"desenvolvedor_front_end"},"descricao":{"text":"Apaixonado por tecnologia e por computadores desde os 13 anos de idade, a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário, no então renomado Centro de Formação São Domingos, em Luanda.\nDesde então, já sabia que carreira pretendia seguir.","i18nKey":"apaixonado_por_tecnologia_e_por_computadores_desde_os_13_ano"},"facebook":"https://www.facebook.com/erikson.teixeira.73/","instagram":"https://www.instagram.com/eriksonteixeira/","linkedin":"https://www.linkedin.com/in/erikson-teixeira-b912b3145","email":"eriksondiastx@gmail.com","telefone":"+244 949 100 325","whatsapp":"244949100325","localizacao":"Luanda, Angola","cvLink":"cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf","titulosRotativos":"Desenvolvedor Front-End, Professor, Criador de conteúdo, Designer Gráfico","profileImage":"/imagem/uploads/erikson-profile-1772965803417-918783491.jpg"}}
+{"ts":"2026-03-08T10:34:09.675Z","action":"add","entity":"i18n","payload":{"key":"coordenador_de_ti_5","lang":"pt","auto":true}}
+{"ts":"2026-03-08T10:34:10.904Z","action":"add","entity":"i18n","payload":{"key":"suporte_tecnico_e_helpdesk","lang":"pt","auto":true}}
+{"ts":"2026-03-08T10:34:11.625Z","action":"add","entity":"i18n","payload":{"key":"auxiliar_administrativo_2","lang":"pt","auto":true}}
+{"ts":"2026-03-08T10:34:11.641Z","action":"add","entity":"i18n","payload":{"key":"programador_3","lang":"pt","auto":true}}
+{"ts":"2026-03-08T10:34:11.652Z","action":"add","entity":"i18n","payload":{"key":"designer_grafico","lang":"pt","auto":true}}
+{"ts":"2026-03-08T10:34:11.684Z","action":"upload","entity":"file","payload":{"url":"/imagem/uploads/siafrica1-1772966051675-435265379.jpg","name":"siafrica1.jpg","size":179185,"mimetype":"image/jpeg"}}
+{"ts":"2026-03-08T10:34:11.697Z","action":"edit","entity":"experiencia","payload":{"cargo":"Coordenador de TI","empresa":"Siafrica lda","periodo":"2025 - Presente","localizacao":"Mutamba, Luanda, Angola","imagens":[],"logo":"/imagem/uploads/siafrica1-1772966051675-435265379.jpg"}}
+{"ts":"2026-03-08T10:55:53.717Z","action":"upload","entity":"file","payload":{"url":"/imagem/uploads/erikson-profile-jpg-1772967353704-54904528.png","name":"Erikson Profile.jpg.png","size":458752,"mimetype":"image/png"}}
+{"ts":"2026-03-08T10:55:53.774Z","action":"delete","entity":"file","payload":{"url":"/imagem/uploads/erikson-profile-1772965803417-918783491.jpg"}}
+{"ts":"2026-03-08T10:55:55.891Z","action":"add","entity":"i18n","payload":{"key":"desenvolvedor_front_end_2","lang":"pt","auto":true}}
+{"ts":"2026-03-08T10:55:56.211Z","action":"add","entity":"i18n","payload":{"key":"apaixonado_por_tecnologia_e_por_computadores_desde_os_13_ano_2","lang":"pt","auto":true}}
+{"ts":"2026-03-08T10:55:56.227Z","action":"edit","entity":"perfil","payload":{"nome":"Erikson Inácio Dias Teixeira","titulo":{"text":"Desenvolvedor Front-End","i18nKey":"desenvolvedor_front_end_2"},"descricao":{"text":"Apaixonado por tecnologia e por computadores desde os 13 anos de idade, a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário, no então renomado Centro de Formação São Domingos, em Luanda.\nDesde então, já sabia que carreira pretendia seguir.","i18nKey":"apaixonado_por_tecnologia_e_por_computadores_desde_os_13_ano_2"},"facebook":"https://www.facebook.com/erikson.teixeira.73/","instagram":"https://www.instagram.com/eriksonteixeira/","linkedin":"https://www.linkedin.com/in/erikson-teixeira-b912b3145","email":"eriksondiastx@gmail.com","telefone":"+244 949 100 325","whatsapp":"244949100325","localizacao":"Luanda, Angola","cvLink":"cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf","titulosRotativos":"Desenvolvedor Front-End, Professor, Criador de conteúdo, Designer Gráfico","profileImage":"/imagem/uploads/erikson-profile-jpg-1772967353704-54904528.png"}}

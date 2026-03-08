@@ -2,14 +2,57 @@
 
 // Função para carregar dados do localStorage
 function loadPortfolioData() {
+    const storedExperiencias = JSON.parse(localStorage.getItem('experiencias'));
+    const storedProjetos = JSON.parse(localStorage.getItem('projetos'));
+    const storedCursos = JSON.parse(localStorage.getItem('cursos'));
     return {
-        personalInfo: JSON.parse(localStorage.getItem('personalInfo')) || getDefaultPersonalInfo(),
+        personalInfo: mergeDefaults(
+            JSON.parse(localStorage.getItem('personalInfo')),
+            getDefaultPersonalInfo()
+        ),
         tecnologias: JSON.parse(localStorage.getItem('tecnologias')) || getDefaultTechnologies(),
-        cursos: JSON.parse(localStorage.getItem('cursos')) || getDefaultCourses(),
-        experiencias: JSON.parse(localStorage.getItem('experiencias')) || getDefaultExperiences(),
-        projetos: JSON.parse(localStorage.getItem('projetos')) || getDefaultProjects(),
+        cursos: Array.isArray(storedCursos) && storedCursos.length > 0
+            ? storedCursos
+            : getDefaultCourses(),
+        experiencias: Array.isArray(storedExperiencias) && storedExperiencias.length > 0
+            ? storedExperiencias
+            : getDefaultExperiences(),
+        projetos: Array.isArray(storedProjetos) && storedProjetos.length > 0
+            ? storedProjetos
+            : getDefaultProjects(),
         design: JSON.parse(localStorage.getItem('design')) || getDefaultDesign()
     };
+}
+
+// CODEX: Mescla dados salvos com valores padrão (evita campos vazios)
+function mergeDefaults(saved, defaults) {
+    if (!saved) return defaults;
+    return { ...defaults, ...saved };
+}
+
+// CODEX: Resolve textos com chave i18n (quando salvos pelo painel)
+function resolveI18nValue(value) {
+    if (value && typeof value === 'object' && value.i18nKey) {
+        if (typeof window !== 'undefined' && typeof window.__i18nTranslate === 'function') {
+            return window.__i18nTranslate(value.i18nKey, value.text || '');
+        }
+        return value.text || '';
+    }
+    return value;
+}
+
+function resolveI18nArray(items) {
+    if (!Array.isArray(items)) return items;
+    return items.map(item => resolveI18nValue(item));
+}
+
+// CODEX: Fallback para traduzir textos simples usando chave conhecida
+function resolveI18nFallback(value, key) {
+    const base = resolveI18nValue(value);
+    if (typeof window !== 'undefined' && typeof window.__i18nTranslate === 'function' && key) {
+        return window.__i18nTranslate(key, base || '');
+    }
+    return base;
 }
 
 // Dados padrão (fallback caso não haja dados no localStorage)
@@ -17,10 +60,18 @@ function getDefaultPersonalInfo() {
     return {
         nome: "Erikson Inácio Dias Teixeira",
         titulo: "Desenvolvedor Front-End",
-        descricao: "Apaixonado por tecnologia e por computadores desde os 13 anos de idade, a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário, no então renomado Centro de Formação São Domingos, em Luanda. Desde então, já sabia que carreira pretendia seguir.",
+        descricao: "Apaixonado por tecnologia e por computadores desde os 13 anos de idade, a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário, no então renomado Centro de Formação São Domingos, em Luanda.\nDesde então, já sabia que carreira pretendia seguir.",
+        formacao: "Engenharia Informática",
+        profileImage: "imagem/default/perfil-default.png",
         facebook: "https://www.facebook.com/erikson.teixeira.73/",
         instagram: "https://www.instagram.com/eriksonteixeira/",
-        linkedin: "https://www.linkedin.com/in/erikson-teixeira-b912b3145"
+        linkedin: "https://www.linkedin.com/in/erikson-teixeira-b912b3145",
+        email: "eriksondiastx@gmail.com",
+        telefone: "+244 949 100 325",
+        whatsapp: "244949100325",
+        localizacao: "Luanda, Angola",
+        cvLink: "cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf",
+        titulosRotativos: "Desenvolvedor Front-End, Professor, Criador de conteúdo, Designer Gráfico"
     };
 }
 
@@ -124,7 +175,7 @@ function getDefaultExperiences() {
                 "Otimização de sites para SEO e performance",
                 "Manutenção e atualização de websites existentes"
             ],
-            imagens: ["imagem/trabalhos/freelancer1.jpg", "imagem/trabalhos/freelancer2.jpg"]
+            imagens: ["imagem/portfolio1.jpg", "imagem/portfolio2.jpg"]
         },
         {
             periodo: "2024 - 2025",
@@ -139,7 +190,7 @@ function getDefaultExperiences() {
                 "Marketing da marca para angariação de parceiros",
                 "Emitir relatórios de actividades"
             ],
-            imagens: ["imagem/trabalhos/freelancer1.jpg", "imagem/trabalhos/freelancer2.jpg"]
+            imagens: ["imagem/portfolio1.jpg", "imagem/portfolio2.jpg"]
         },
         {
             periodo: "2022 - 2024",
@@ -314,6 +365,9 @@ document.addEventListener('DOMContentLoaded', animateSkillBars);
 // No script do index.html, na função renderPortfolio:
 function renderPortfolio() {
     const data = loadPortfolioData();
+
+    // CODEX: Garante dados base no localStorage para sincronizar com o painel admin
+    ensureStorageDefaults(data);
     
     // Atualizar seção Início
     updateHomeSection(data.personalInfo);
@@ -335,19 +389,71 @@ function renderPortfolio() {
     
     // Atualizar seção Design
     updateDesignSection(data.design);
+    
+    // CODEX: Atualizar seção de contactos
+    updateContactSection(data.personalInfo);
+
+    // CODEX: Notifica fim da renderização para reprocessar animações
+    document.dispatchEvent(new Event('portfolio:rendered'));
+}
+
+function ensureStorageDefaults(data) {
+    if (!localStorage.getItem('personalInfo')) {
+        localStorage.setItem('personalInfo', JSON.stringify(data.personalInfo));
+    }
+    if (!localStorage.getItem('tecnologias')) {
+        localStorage.setItem('tecnologias', JSON.stringify(data.tecnologias));
+    }
+    if (!localStorage.getItem('cursos')) {
+        localStorage.setItem('cursos', JSON.stringify(data.cursos));
+    }
+    if (!localStorage.getItem('experiencias')) {
+        localStorage.setItem('experiencias', JSON.stringify(data.experiencias));
+    }
+    if (!localStorage.getItem('projetos')) {
+        localStorage.setItem('projetos', JSON.stringify(data.projetos));
+    }
+    if (!localStorage.getItem('design')) {
+        localStorage.setItem('design', JSON.stringify(data.design));
+    }
 }
 // Funções específicas para cada seção
+// CODEX: Formatação simples para textos com quebras de linha
+function formatMultilineText(text) {
+    if (!text) return '';
+    return String(text).replace(/\n/g, '<br>');
+}
+
 function updateHomeSection(personalInfo) {
     const inicioSection = document.querySelector('.inicio');
     if (inicioSection) {
-        const h2 = inicioSection.querySelector('h2');
-        if (h2) h2.textContent = personalInfo.nome;
+        // CODEX: imagem definida no painel "Sobre" agora atualiza o bloco inicio-img
+        const homeProfileImg = inicioSection.querySelector('.inicio-img img');
+        if (homeProfileImg) {
+            homeProfileImg.src = personalInfo.profileImage || 'imagem/default/perfil-default.jpg';
+        }
+
+        const nameEl = document.getElementById('homeName') || inicioSection.querySelector('h2');
+        if (nameEl) nameEl.textContent = personalInfo.nome;
         
-        const tituloSpan = inicioSection.querySelector('.sec-text');
-        if (tituloSpan) tituloSpan.textContent = personalInfo.titulo;
+        const tituloSpan = document.getElementById('homeRole') || inicioSection.querySelector('.sec-text');
+        if (tituloSpan) tituloSpan.textContent = resolveI18nValue(personalInfo.titulo);
         
-        const descricaoP = inicioSection.querySelector('p');
-        if (descricaoP) descricaoP.textContent = personalInfo.descricao;
+        const descricaoP = document.getElementById('homeDescription') || inicioSection.querySelector('p');
+        if (descricaoP) descricaoP.innerHTML = formatMultilineText(resolveI18nFallback(personalInfo.descricao, 'home_description'));
+        
+        const degreeEl = document.getElementById('homeDegree');
+        if (degreeEl && personalInfo.formacao) {
+            const degreeText = resolveI18nFallback(personalInfo.formacao, 'home_degree');
+            if (degreeText && degreeText.includes('&lt;')) {
+                degreeEl.innerHTML = degreeText;
+            } else {
+                degreeEl.innerHTML = `&lt; <span>${degreeText}</span> /&gt;.`;
+            }
+        }
+        
+        const cvLinkEl = document.getElementById('homeCvLink');
+        if (cvLinkEl && personalInfo.cvLink) cvLinkEl.href = personalInfo.cvLink;
         
         // Atualizar links de redes sociais
         const socialMedia = inicioSection.querySelector('.social-media');
@@ -367,18 +473,16 @@ function updateHomeSection(personalInfo) {
 function updateAboutSection(personalInfo) {
     const sobreSection = document.querySelector('.sobre');
     if (sobreSection) {
-        const sobreContent = sobreSection.querySelector('.sobre-content p');
-        if (sobreContent) {
-            // Mantém as informações pessoais fixas e atualiza apenas a parte profissional
-            const parts = sobreContent.innerHTML.split('<p>Actualmente');
-            if (parts.length > 1) {
-                sobreContent.innerHTML = parts[0] + 
-                    `<p>Actualmente trilhando o caminho como <span>${personalInfo.titulo.toLowerCase()}</span>.</p>` +
-                    `<p>Sempre procurando ser melhor do que fui no dia anterior.</p>`;
-            }
+        const aboutRole = document.getElementById('aboutRole');
+        if (aboutRole) aboutRole.textContent = resolveI18nValue(personalInfo.titulo);
+
+        // CODEX: imagem de perfil da se��o sobre (Profile2)
+        const profileImg = sobreSection.querySelector('.Profile2');
+        if (profileImg) {
+            profileImg.src = personalInfo.profileImage || 'imagem/default/perfil-default.jpg';
         }
         
-        // Atualizar links de redes sociais na seção sobre
+        // Atualizar links de redes sociais na se��o sobre
         const socialMedia = sobreSection.querySelector('.social-media');
         if (socialMedia) {
             const facebookLink = socialMedia.querySelector('a[href*="facebook"]');
@@ -424,7 +528,7 @@ function updateTechnologiesSection(tecnologias) {
                 categoryIcon = 'bi bi-server';
                 break;
             case 'tools':
-                categoryTitle = 'Ferramentas & Outros';
+                categoryTitle = 'Outras Ferramentas';
                 categoryIcon = 'bi bi-tools';
                 break;
         }
@@ -499,31 +603,37 @@ function updateCoursesSection(cursos) {
         
         if (curso.certificateType === 'link') {
             certificateLink = curso.certificate || '#';
-        } else if (curso.certificateType === 'file' && curso.fileData) {
-            // Para ficheiros, usamos um link que faz download
-            certificateLink = '#';
-            certificateOnclick = `downloadCourseCertificate(${index})`;
-            certificateTarget = '_self';
+        } else if (curso.certificateType === 'file') {
+            // Para ficheiros, preferimos URL do upload; fallback para Base64 antigo
+            if (curso.certificate) {
+                certificateLink = curso.certificate;
+                certificateTarget = '_blank';
+            } else if (curso.fileData) {
+                certificateLink = '#';
+                certificateTarget = '_self';
+                certificateOnclick = `downloadCourseCertificate(${index})`;
+            }
         }
         
         // Se não tem certificado, desabilitar o botão
-        const hasCertificate = curso.certificate && 
-            (curso.certificateType === 'link' ? curso.certificate !== '#' : true);
+        const hasCertificate = curso.certificateType === 'file'
+            ? Boolean(curso.certificate || curso.fileData)
+            : Boolean(curso.certificate && curso.certificate !== '#');
         
+        const cursoName = resolveI18nValue(curso.name);
+        const cursoDescription = resolveI18nValue(curso.description);
         cursoBox.innerHTML = `
             <i class="bi bi-book-half"></i>
-            <h3>${curso.name.replace(/<br>/g, '<br>')}</h3>
-            <p>${curso.description}</p>
-            ${curso.institution ? `<p><small><i class="bi bi-building"></i> ${curso.institution}</small></p>` : ''}
-            ${curso.year ? `<p><small><i class="bi bi-calendar"></i> ${curso.year}</small></p>` : ''}
+            <h3>${String(cursoName).replace(/<br>/g, '<br>')}</h3>
+            <p>${cursoDescription}</p>
+            ${curso.institution ? `<p><small><i class="bi bi-building d-block"></i> ${curso.institution}</small></p>` : ''}
+            ${curso.year ? `<p><small><i class="bi bi-calendar d-block"></i> ${curso.year}</small></p>` : ''}
             ${hasCertificate ? `
                 <a href="${certificateLink}" 
                    ${certificateOnclick ? `onclick="${certificateOnclick}; return false;"` : ''} 
                    class="btn" 
-                   target="${certificateTarget}"
-                   ${certificateOnclick ? 'style="cursor: pointer;"' : ''}>
+                   target="${certificateTarget}">
                     Ver Certificado
-                    ${curso.certificateType === 'file' ? ' <i class="bi bi-download"></i>' : ' <i class="bi bi-box-arrow-up-right"></i>'}
                 </a>
             ` : `
                 <button class="btn" disabled style="opacity: 0.6;">
@@ -540,26 +650,15 @@ function downloadCourseCertificate(index) {
     const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
     const curso = cursos[index];
     
-    if (curso.certificateType === 'file' && curso.fileData) {
-        // Criar link de download
+    if (curso.certificateType === 'file' && curso.certificate) {
+        window.open(curso.certificate, '_blank');
+    } else if (curso.certificateType === 'file' && curso.fileData) {
         const link = document.createElement('a');
         link.href = curso.fileData;
-        link.download = curso.certificate || 'certificado.pdf';
+        link.download = curso.certificateName || 'certificado.pdf';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
-        // Feedback visual
-        const btn = event.target.closest('.btn');
-        if (btn) {
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="bi bi-check-circle"></i> Download Iniciado';
-            btn.classList.add('btn-success');
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.classList.remove('btn-success');
-            }, 2000);
-        }
     } else {
         alert('Certificado não disponível para download.');
     }
@@ -567,21 +666,54 @@ function downloadCourseCertificate(index) {
 function updateExperiencesSection(experiencias) {
     const timeline = document.querySelector('.timeline');
     if (!timeline) return;
-    
+
+    // CODEX: fallback se experiências vierem vazias
+    if (!Array.isArray(experiencias) || experiencias.length === 0) {
+        experiencias = getDefaultExperiences();
+    }
+
+    // CODEX: ordenar por data (mais recente no topo)
+    const parsePeriodo = (periodo) => {
+        const text = (periodo || '').toString();
+        const numbers = text.match(/\d{4}/g) || [];
+        const start = numbers.length > 0 ? Number(numbers[0]) : 0;
+        const end = numbers.length > 1 ? Number(numbers[1]) : start;
+        const isCurrent = /presente|present|atual/i.test(text);
+        return { start, end: isCurrent ? 9999 : end, isCurrent };
+    };
+    experiencias = experiencias.slice().sort((a, b) => {
+        const pa = parsePeriodo(a.periodo);
+        const pb = parsePeriodo(b.periodo);
+        if (pa.end !== pb.end) return pb.end - pa.end;
+        if (pa.start !== pb.start) return pb.start - pa.start;
+        if (pa.isCurrent !== pb.isCurrent) return pa.isCurrent ? -1 : 1;
+        return 0;
+    });
+
     // Limpar conteúdo existente (manter apenas o primeiro item como template se necessário)
     timeline.innerHTML = '';
-    
-    // Adicionar cada experiência
+
+    // Adicionar cada experiência (novas no topo)
     experiencias.forEach((exp, index) => {
         const expItem = document.createElement('div');
         expItem.className = 'timeline-item';
         
         // Determinar a imagem da empresa
-        let empresaImg = 'imagem/empresas/front-end.jpeg';
-        if (exp.empresa.includes('Alexa')) empresaImg = 'imagem/empresas/Alexa.jpeg';
-        if (exp.empresa.includes('Egate')) empresaImg = 'imagem/empresas/Egate-Logo.jpeg';
-        if (exp.empresa.includes('StAndrews')) empresaImg = 'imagem/empresas/StAndrews.jpg';
+        let empresaImg = 'imagem/default/experiencias-default.jpg';
+        if (exp.logo) {
+            empresaImg = exp.logo;
+        } else {
+            const empresaNome = (exp.empresa || '').toString();
+            if (empresaNome.includes('Alexa')) empresaImg = 'imagem/empresas/Alexa.jpeg';
+            if (empresaNome.includes('Egate')) empresaImg = 'imagem/empresas/Egate-Logo.jpeg';
+            if (empresaNome.includes('StAndrews')) empresaImg = 'imagem/empresas/StAndrews.jpg';
+            if (empresaNome.includes('Front') || empresaNome.includes('Aut')) {
+                empresaImg = 'imagem/empresas/front-end.jpeg';
+            }
+        }
         
+        const cargoText = resolveI18nValue(exp.cargo);
+        const responsabilidades = resolveI18nArray(exp.responsabilidades) || [];
         expItem.innerHTML = `
             <div class="timeline-dot"></div>
             <div class="timeline-date">${exp.periodo}</div>
@@ -591,7 +723,7 @@ function updateExperiencesSection(experiencias) {
                         <img src="${empresaImg}" alt="${exp.empresa}">
                     </div>
                     <div class="company-info">
-                        <h3>${exp.cargo}</h3>
+                        <h3>${cargoText}</h3>
                         <p class="company-name">${exp.empresa}</p>
                         <p class="company-location"><i class="bi bi-geo-alt"></i> ${exp.localizacao}</p>
                     </div>
@@ -600,7 +732,7 @@ function updateExperiencesSection(experiencias) {
                 <div class="job-description">
                     <h4>Responsabilidades:</h4>
                     <ul>
-                        ${exp.responsabilidades.map(resp => `<li>${resp}</li>`).join('')}
+                        ${responsabilidades.map(resp => `<li>${resp}</li>`).join('')}
                     </ul>
                 </div>
 
@@ -659,13 +791,17 @@ function updateProjectsSection(projetos) {
     
     // Adicionar cada projeto
     projetos.forEach(projeto => {
+        const projectName = resolveI18nValue(projeto.nome);
+        const projectDesc = resolveI18nValue(projeto.descricao);
+        const projectStatus = resolveI18nValue(projeto.status);
+        const statusMarkup = projectStatus ? `<br><span>${projectStatus}</span>` : '';
         const projectBox = document.createElement('div');
         projectBox.className = 'portfolio-box cursos-box';
         projectBox.innerHTML = `
             <img src="${projeto.imagem}" alt="${projeto.nome}">
             <div class="portfolio-layer">
-                <h4>${projeto.nome}</h4>
-                <p>${projeto.descricao}</p>
+                <h4>${projectName}</h4>
+                <p>${projectDesc || ''}${statusMarkup}</p>
                 <i class="bi bi-code-slash"></i>
                 ${projeto.link !== '#' ? `<a href="${projeto.link}" class="btn2">Acessar</a>` : ''}
             </div>
@@ -696,24 +832,27 @@ function updateDesignSection(design) {
         if (projeto.tipo.includes('Publicidade')) projectIcon = 'bi bi-megaphone';
         if (projeto.tipo.includes('Rebranding')) projectIcon = 'bi bi-brush';
         
+        const tipoText = resolveI18nValue(projeto.tipo);
+        const descricaoText = resolveI18nValue(projeto.descricao);
+        const tagsText = resolveI18nArray(projeto.tags) || [];
         designCard.innerHTML = `
             <div class="design-header">
                 <div class="client-logo">
                     <img src="${clientLogo}" alt="${projeto.nome} Logo">
                 </div>
                 <div class="project-info">
-                    <h3>${projeto.tipo.split('&')[0]}</h3>
+                    <h3>${String(tipoText).split('&')[0]}</h3>
                     <p class="client-name">${projeto.nome}</p>
-                    <p class="project-type"><i class="${projectIcon}"></i> ${projeto.tipo}</p>
+                    <p class="project-type"><i class="${projectIcon}"></i> ${tipoText}</p>
                     <p class="project-year"><i class="bi bi-calendar"></i> ${projeto.ano}</p>
                 </div>
             </div>
             
             <div class="project-description">
-                <p>${projeto.descricao}</p>
+                <p>${descricaoText}</p>
                 
                 <div class="project-tags">
-                    ${projeto.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    ${tagsText.map(tag => `<span class="tag">${tag}</span>`).join('')}
                 </div>
             </div>
 
@@ -762,7 +901,44 @@ function updateDesignSection(design) {
     });
 }
 
+// CODEX: Atualizar dados de contacto
+function updateContactSection(personalInfo) {
+    const emailEl = document.getElementById('contactEmail');
+    if (emailEl && personalInfo.email) {
+        emailEl.textContent = personalInfo.email;
+        emailEl.href = `mailto:${personalInfo.email}`;
+    }
+    
+    const whatsappLink = document.getElementById('contactWhatsappLink');
+    if (whatsappLink) {
+        const whatsappNumber = (personalInfo.whatsapp || '').replace(/\D/g, '');
+        if (whatsappNumber) {
+            whatsappLink.href = `https://wa.me/${whatsappNumber}`;
+        }
+        if (personalInfo.telefone || personalInfo.whatsapp) {
+            whatsappLink.textContent = personalInfo.telefone || personalInfo.whatsapp;
+        }
+    }
+    
+    const locationEl = document.getElementById('contactLocation');
+    if (locationEl && personalInfo.localizacao) {
+        locationEl.textContent = personalInfo.localizacao;
+    }
+}
+
 // Inicializar quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', function() {
     renderPortfolio();
 });
+
+// CODEX: Re-render quando idioma muda
+document.addEventListener('i18n:changed', function() {
+    renderPortfolio();
+});
+
+
+
+
+
+
+

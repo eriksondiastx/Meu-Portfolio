@@ -25,6 +25,8 @@
         <a href="#" data-section="experiencias"><i class="bi bi-briefcase"></i> Experiências</a>
         <a href="#" data-section="projetos"><i class="bi bi-folder"></i> Projetos</a>
         <a href="#" data-section="design"><i class="bi bi-palette"></i> Design</a>
+        <!-- CODEX: Auditoria -->
+        <a href="#" data-section="auditoria"><i class="bi bi-shield-check"></i> Auditoria</a>
         <a href="#" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Sair</a>
     </div>
 
@@ -33,6 +35,19 @@
         <div id="home" class="section-content active">
             <h2>Bem-vindo ao Painel Administrativo</h2>
             <p>Selecione uma seção no menu lateral para editar o conteúdo do seu portfólio.</p>
+            <!-- CODEX: Migração automática para i18n -->
+            <div class="alert alert-info mt-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="me-3">
+                        <strong>Migração i18n</strong>
+                        <div class="small">Converte textos existentes em chaves i18n automaticamente.</div>
+                    </div>
+                    <button class="btn btn-sm btn-primary" id="runI18nMigration">
+                        Executar Migração
+                    </button>
+                </div>
+                <div class="small mt-2" id="migrationStatus"></div>
+            </div>
             
             <div class="row">
                 <div class="col-md-4">
@@ -81,6 +96,21 @@
                     <label for="descricao" class="form-label">Descrição Pessoal</label>
                     <textarea class="form-control" id="descricao" rows="5">Apaixonado por tecnologia e por computadores desde os 13 anos de idade...</textarea>
                 </div>
+                <!-- CODEX: Imagem de perfil (Profile2) -->
+                <div class="mb-3">
+                    <label for="profileImage" class="form-label">Imagem de Perfil (URL)</label>
+                    <input type="text" class="form-control" id="profileImage" value="imagem/default/perfil-default.jpg">
+                </div>
+                <div class="mb-3">
+                    <label for="profileImageUpload" class="form-label">Upload de Imagem de Perfil</label>
+                    <input type="file" class="form-control" id="profileImageUpload" accept="image/*">
+                </div>
+                <!-- CODEX: Botão para remover imagem e voltar ao padrão -->
+                <div class="mb-3">
+                    <button type="button" class="btn btn-outline-danger btn-sm" id="removeProfileImageBtn">
+                        Remover imagem
+                    </button>
+                </div>
                 <div class="mb-3">
                     <label for="facebook" class="form-label">Facebook</label>
                     <input type="text" class="form-control" id="facebook" value="https://www.facebook.com/erikson.teixeira.73/">
@@ -92,6 +122,31 @@
                 <div class="mb-3">
                     <label for="linkedin" class="form-label">LinkedIn</label>
                     <input type="text" class="form-control" id="linkedin" value="https://www.linkedin.com/in/erikson-teixeira-b912b3145">
+                </div>
+                <!-- CODEX: Campos adicionais para dados de contacto e preferências do home -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" value="eriksondiastx@gmail.com">
+                </div>
+                <div class="mb-3">
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input type="text" class="form-control" id="telefone" value="+244 949 100 325">
+                </div>
+                <div class="mb-3">
+                    <label for="whatsapp" class="form-label">WhatsApp (apenas números)</label>
+                    <input type="text" class="form-control" id="whatsapp" value="244949100325">
+                </div>
+                <div class="mb-3">
+                    <label for="localizacao" class="form-label">Localização</label>
+                    <input type="text" class="form-control" id="localizacao" value="Luanda, Angola">
+                </div>
+                <div class="mb-3">
+                    <label for="cvLink" class="form-label">Link do CV</label>
+                    <input type="text" class="form-control" id="cvLink" value="cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf">
+                </div>
+                <div class="mb-3">
+                    <label for="titulosRotativos" class="form-label">Títulos Rotativos (separados por vírgula)</label>
+                    <input type="text" class="form-control" id="titulosRotativos" value="Desenvolvedor Front-End, Professor, Criador de conteúdo, Designer Gráfico">
                 </div>
                 <button type="submit" class="btn btn-primary">Salvar Alterações</button>
             </form>
@@ -299,6 +354,210 @@
         </div>
     </div>
 </div>
+
+    <!-- CODEX: Modal para Adicionar Experiência -->
+    <div class="modal fade" id="addExperienceModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Adicionar Experiência</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addExperienceForm">
+                        <div class="mb-3">
+                            <label for="experiencePeriod" class="form-label">Período</label>
+                            <input type="text" class="form-control" id="experiencePeriod" placeholder="2024 - 2025" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="experiencePosition" class="form-label">Cargo</label>
+                            <input type="text" class="form-control" id="experiencePosition" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="experienceCompany" class="form-label">Empresa</label>
+                            <input type="text" class="form-control" id="experienceCompany" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="experienceLocation" class="form-label">Localização</label>
+                            <input type="text" class="form-control" id="experienceLocation" required>
+                        </div>
+                        <!-- CODEX: Logo da empresa -->
+                        <div class="mb-3">
+                            <label for="experienceLogo" class="form-label">Logo da Empresa (URL ou caminho)</label>
+                            <input type="text" class="form-control" id="experienceLogo" placeholder="imagem/empresas/empresa.jpg">
+                        </div>
+                        <div class="mb-3">
+                            <label for="experienceLogoUpload" class="form-label">Enviar Logo da Empresa</label>
+                            <input type="file" class="form-control" id="experienceLogoUpload" accept="image/*">
+                            <div class="form-text">Se enviar, este ficheiro terá prioridade sobre o campo de texto.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="experienceResponsibilities" class="form-label">Responsabilidades (uma por linha)</label>
+                            <textarea class="form-control" id="experienceResponsibilities" rows="5" required></textarea>
+                        </div>
+                <div class="mb-3">
+                    <label for="experienceImages" class="form-label">Imagens (uma URL ou caminho por linha)</label>
+                    <textarea class="form-control" id="experienceImages" rows="3" placeholder="imagem/trabalhos/exemplo.jpg"></textarea>
+                </div>
+                <!-- CODEX: Upload real de imagens -->
+                <div class="mb-3">
+                    <label for="experienceImagesUpload" class="form-label">Enviar Imagens (múltiplas)</label>
+                    <input type="file" class="form-control" id="experienceImagesUpload" accept="image/*" multiple>
+                    <div class="form-text">As imagens enviadas serão guardadas em `imagem/uploads`.</div>
+                </div>
+            </form>
+        </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveExperienceBtn">Salvar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CODEX: Seção Auditoria -->
+        <div id="auditoria" class="section-content">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Histórico de Auditoria</h2>
+                <button class="btn btn-sm btn-outline-primary" id="refreshAuditBtn">
+                    <i class="bi bi-arrow-clockwise"></i> Atualizar
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <!-- CODEX: Filtros por tipo de ação -->
+                    <div class="mb-3">
+                        <label class="form-label">Filtrar por ação</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input audit-filter" type="checkbox" value="add" id="filterAdd" checked>
+                                <label class="form-check-label" for="filterAdd">add</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input audit-filter" type="checkbox" value="edit" id="filterEdit" checked>
+                                <label class="form-check-label" for="filterEdit">edit</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input audit-filter" type="checkbox" value="delete" id="filterDelete" checked>
+                                <label class="form-check-label" for="filterDelete">delete</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input audit-filter" type="checkbox" value="upload" id="filterUpload" checked>
+                                <label class="form-check-label" for="filterUpload">upload</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="auditLimit" class="form-label">Quantidade de registros</label>
+                        <select class="form-control" id="auditLimit">
+                            <option value="50">50</option>
+                            <option value="100" selected>100</option>
+                            <option value="200">200</option>
+                            <option value="500">500</option>
+                        </select>
+                    </div>
+                    <div id="auditList" class="list-group">
+                        <!-- Registros de auditoria serão carregados aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODEX: Modal para Adicionar Projeto -->
+    <div class="modal fade" id="addProjectModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Adicionar Projeto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProjectForm">
+                        <div class="mb-3">
+                            <label for="projectName" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="projectName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectDescription" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="projectDescription" rows="4" required></textarea>
+                        </div>
+                <div class="mb-3">
+                    <label for="projectImage" class="form-label">Imagem (URL ou caminho)</label>
+                    <input type="text" class="form-control" id="projectImage" placeholder="imagem/portfolio1.jpg" required>
+                </div>
+                <!-- CODEX: Upload real de imagem -->
+                <div class="mb-3">
+                    <label for="projectImageUpload" class="form-label">Enviar Imagem</label>
+                    <input type="file" class="form-control" id="projectImageUpload" accept="image/*">
+                    <div class="form-text">Se enviar, este ficheiro terá prioridade sobre o campo de texto.</div>
+                </div>
+                        <div class="mb-3">
+                            <label for="projectLink" class="form-label">Link</label>
+                            <input type="text" class="form-control" id="projectLink" placeholder="https://...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectStatus" class="form-label">Status</label>
+                            <input type="text" class="form-control" id="projectStatus" placeholder="Concluído, Em desenvolvimento..." required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveProjectBtn">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODEX: Modal para Adicionar Projeto de Design -->
+    <div class="modal fade" id="addDesignModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Adicionar Projeto de Design</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDesignForm">
+                        <div class="mb-3">
+                            <label for="designName" class="form-label">Nome do Cliente/Projeto</label>
+                            <input type="text" class="form-control" id="designName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="designType" class="form-label">Tipo</label>
+                            <input type="text" class="form-control" id="designType" placeholder="Branding & Identidade Visual" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="designDescription" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="designDescription" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="designYear" class="form-label">Ano</label>
+                            <input type="number" class="form-control" id="designYear" min="1990" max="2030" value="2024" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="designTags" class="form-label">Tags (separadas por vírgula)</label>
+                            <input type="text" class="form-control" id="designTags" placeholder="Logo Design, Social Media">
+                        </div>
+                <div class="mb-3">
+                    <label for="designImages" class="form-label">Imagens (uma URL ou caminho por linha)</label>
+                    <textarea class="form-control" id="designImages" rows="3" placeholder="imagem/design/exemplo.jpg"></textarea>
+                </div>
+                <!-- CODEX: Upload real de imagens -->
+                <div class="mb-3">
+                    <label for="designImagesUpload" class="form-label">Enviar Imagens (múltiplas)</label>
+                    <input type="file" class="form-control" id="designImagesUpload" accept="image/*" multiple>
+                    <div class="form-text">As imagens enviadas serão guardadas em `imagem/uploads`.</div>
+                </div>
+            </form>
+        </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveDesignBtn">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -36,7 +36,7 @@
 .timeline-item:nth-child(odd) .timeline-content {
   margin-left: 0;
   margin-right: 55%;
-  text-align: right;
+  text-align: left;
 }
 
 .timeline-item:nth-child(even) .timeline-content {
@@ -85,6 +85,43 @@
   border-color: var(--main-color);
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(14, 255, 240, 0.2);
+}
+
+/* CODEX: responsividade da timeline (mobile em coluna) */
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 20px;
+    transform: none;
+  }
+
+  .timeline-dot {
+    left: 20px;
+    transform: none;
+  }
+
+  .timeline-date {
+    position: relative;
+    left: auto;
+    transform: none;
+    top: 0;
+    margin-left: 50px;
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+
+  .timeline-item {
+    padding-left: 50px;
+  }
+
+  .timeline-item:nth-child(odd) .timeline-content,
+  .timeline-item:nth-child(even) .timeline-content {
+    margin: 0;
+    text-align: left;
+  }
+
+  .timeline-content {
+    margin-top: 1.5rem;
+  }
 }
 
 .company-header {
