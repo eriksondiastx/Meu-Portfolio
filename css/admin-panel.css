@@ -1,56 +1,79 @@
-﻿body {
-            background-color: #f8f9fa;
-        }
-        .sidebar {
-            background: #0c2461;
-            color: white;
-            height: 100vh;
-            position: fixed;
-            padding-top: 20px;
-        }
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            padding: 10px 15px;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-        .sidebar a:hover, .sidebar a.active {
-            background: #1e3799;
-        }
-        .main-content {
-            margin-left: 330px;
-            padding: 20px;
-        }
-        .section-content {
-            display: none;
-        }
-        .section-content.active {
-            display: block;
-        }
-        .card {
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+:root {
+  /* CODEX: paleta "Engenharia Informática" para o painel admin */
+  --admin-bg: #eef4ff;
+  --admin-sidebar: #0a101f;
+  --admin-sidebar-hover: #1a2947;
+  --admin-accent: #00c2ff;
+  --admin-text: #e6f0ff;
+}
 
-        /* CODEX: Cores para ações de auditoria */
-        .audit-action-add {
-            border-left: 4px solid #198754;
-            background-color: rgba(25, 135, 84, 0.06);
-        }
+body {
+  background-color: var(--admin-bg);
+}
 
-        .audit-action-edit {
-            border-left: 4px solid #0d6efd;
-            background-color: rgba(13, 110, 253, 0.06);
-        }
+.sidebar {
+  background: var(--admin-sidebar);
+  color: var(--admin-text);
+  height: 100vh;
+  position: fixed;
+  padding-top: 20px;
+}
 
-        .audit-action-delete {
-            border-left: 4px solid #dc3545;
-            background-color: rgba(220, 53, 69, 0.06);
-        }
+.sidebar a {
+  color: var(--admin-text);
+  text-decoration: none;
+  display: block;
+  padding: 10px 15px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
 
-        .audit-action-upload {
-            border-left: 4px solid #fd7e14;
-            background-color: rgba(253, 126, 20, 0.08);
-        }
+.sidebar a:hover,
+.sidebar a.active {
+  background: var(--admin-sidebar-hover);
+  border-left: 3px solid var(--admin-accent);
+}
+
+.main-content {
+  margin-left: 330px;
+  padding: 20px;
+}
+
+.section-content {
+  display: none;
+}
+
+.section-content.active {
+  display: block;
+}
+
+.card {
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* CODEX: Cores para ações de auditoria */
+.audit-action-add {
+  border-left: 4px solid #198754;
+  background-color: rgba(25, 135, 84, 0.06);
+}
+
+.audit-action-edit {
+  border-left: 4px solid #0d6efd;
+  background-color: rgba(13, 110, 253, 0.06);
+}
+
+.audit-action-delete {
+  border-left: 4px solid #dc3545;
+  background-color: rgba(220, 53, 69, 0.06);
+}
+
+.audit-action-upload {
+  border-left: 4px solid #fd7e14;
+  background-color: rgba(253, 126, 20, 0.08);
+}
+
+.audit-action-export {
+  border-left: 4px solid #20c997;
+  background-color: rgba(32, 201, 151, 0.08);
+}

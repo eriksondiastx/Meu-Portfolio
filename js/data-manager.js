@@ -436,7 +436,7 @@ function updateHomeSection(personalInfo) {
         const nameEl = document.getElementById('homeName') || inicioSection.querySelector('h2');
         if (nameEl) nameEl.textContent = personalInfo.nome;
         
-        const tituloSpan = document.getElementById('homeRole') || inicioSection.querySelector('.sec-text');
+        const tituloSpan = document.getElementById('homeRole');
         if (tituloSpan) tituloSpan.textContent = resolveI18nValue(personalInfo.titulo);
         
         const descricaoP = document.getElementById('homeDescription') || inicioSection.querySelector('p');
@@ -626,8 +626,8 @@ function updateCoursesSection(cursos) {
             <i class="bi bi-book-half"></i>
             <h3>${String(cursoName).replace(/<br>/g, '<br>')}</h3>
             <p>${cursoDescription}</p>
-            ${curso.institution ? `<p><small><i class="bi bi-building d-block"></i> ${curso.institution}</small></p>` : ''}
-            ${curso.year ? `<p><small><i class="bi bi-calendar d-block"></i> ${curso.year}</small></p>` : ''}
+            ${curso.institution ? `<p><small><i class="bi bi-building"></i> ${curso.institution}</small></p>` : ''}
+            ${curso.year ? `<p><small><i class="bi bi-calendar"></i> ${curso.year}</small></p>` : ''}
             ${hasCertificate ? `
                 <a href="${certificateLink}" 
                    ${certificateOnclick ? `onclick="${certificateOnclick}; return false;"` : ''} 
@@ -740,14 +740,37 @@ function updateExperiencesSection(experiencias) {
                 <div class="work-gallery">
                     <h4>${exp.empresa.includes('StAndrews') ? 'Momentos em sala de aula:' : 'Evidências do trabalho:'}</h4>
                     <div class="gallery-grid">
-                        ${exp.imagens.map((img, imgIndex) => `
+                        ${exp.imagens.map((img, imgIndex) => {
+                            // Helper para buscar as legendas de acordo com o ficheiro (ou fallback se for novo)
+                            const captionsMap = {
+                                "imagem/trabalhos/Egate1.jpg": "Upgrade do servidor na SDB",
+                                "imagem/trabalhos/egate2.jpg": "Manutenção preventiva",
+                                "imagem/trabalhos/egate3.jpg": "Configuração de rede",
+                                "imagem/trabalhos/egate4.jpg": "Organização de racks",
+                                "imagem/trabalhos/egate6.jpg": "Sistemas operativos",
+                                "imagem/trabalhos/egate7.jpg": "Suporte aos utilizadores",
+                                "imagem/trabalhos/StAndrews1.jpg": "Aula de TI",
+                                "imagem/trabalhos/StAndrews2.jpg": "Laboratório de informática",
+                                "imagem/trabalhos/StAndrews3.jpg": "Artes plásticas",
+                                "imagem/trabalhos/StAndrews4.jpg": "Auxílio escolar",
+                                "imagem/trabalhos/StAndrews5.jpg": "Apoio pedagógico",
+                                "imagem/trabalhos/StAndrews6.jpg": "Avaliação de projetos"
+                            };
+                            let captionText = captionsMap[img] || "Visualizar Detalhes";
+                            if (exp.legendas && exp.legendas[imgIndex] && exp.legendas[imgIndex].trim() !== "") {
+                                captionText = exp.legendas[imgIndex].trim();
+                            }
+
+                            return `
                             <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modal${index}_${imgIndex}">
                                 <img src="${img}" alt="${exp.cargo} ${imgIndex + 1}">
                                 <div class="gallery-overlay">
                                     <i class="bi bi-zoom-in"></i>
+                                    <p class="gallery-caption">${captionText}</p>
                                 </div>
                             </div>
-                        `).join('')}
+                            `;
+                        }).join('')}
                     </div>
                 </div>
                 ` : ''}

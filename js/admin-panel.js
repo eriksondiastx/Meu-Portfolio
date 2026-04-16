@@ -128,19 +128,24 @@
     // CODEX: i18n dinâmico - gerar chave no servidor
     async function saveI18nText(text) {
         if (!text || !text.trim()) return null;
-        const lang = localStorage.getItem('lang') === 'en' ? 'en' : 'pt';
-        const response = await fetch('/api/i18n/save', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                lang,
-                text: text.trim(),
-                autoTranslate: lang === 'pt'
-            })
-        });
-        if (!response.ok) throw new Error('Falha ao salvar i18n.');
-        const data = await response.json();
-        return data.key || null;
+        try {
+            const lang = localStorage.getItem('lang') === 'en' ? 'en' : 'pt';
+            const response = await fetch('/api/i18n/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    lang,
+                    text: text.trim(),
+                    autoTranslate: lang === 'pt'
+                })
+            });
+            if (!response.ok) throw new Error('Falha ao salvar i18n.');
+            const data = await response.json();
+            return data.key || null;
+        } catch (err) {
+            console.warn("API de tradução indisponível (Live Server). Salvando apenas o texto localmente:", text);
+            return null; // Omit key and keep text raw.
+        }
     }
 
     function wrapI18n(text, key) {
@@ -981,6 +986,9 @@
             .split('\n')
             .map(item => item.trim())
             .filter(Boolean);
+        const legendasTexto = (document.getElementById('experienceLegends')?.value || "")
+            .split('\n')
+            .map(item => item.trim());
 
         if (!periodo || !cargo || !empresa || !localizacao || responsabilidades.length === 0) {
             alert('Preencha os campos obrigatórios da experiência.');
@@ -1008,7 +1016,8 @@
             localizacao,
             responsabilidades: responsabilidadesWrapped,
             logo: logoTexto,
-            imagens: imagensTexto
+            imagens: imagensTexto,
+            legendas: legendasTexto
         };
 
         const fileInput = document.getElementById('experienceImagesUpload');
@@ -1036,12 +1045,15 @@
                 periodo,
                 localizacao,
                 imagens: exp.imagens,
+                legendas: exp.legendas,
                 logo: exp.logo
             });
             state.editing.experience = null;
             document.getElementById('addExperienceForm').reset();
             if (fileInput) fileInput.value = '';
             if (logoInput) logoInput.value = '';
+            const legendsInput = document.getElementById('experienceLegends');
+            if (legendsInput) legendsInput.value = '';
             hideModal('addExperienceModal');
             renderExperiencesList();
         };
@@ -1075,6 +1087,10 @@
         document.getElementById('experienceLogo').value = exp.logo || '';
         document.getElementById('experienceResponsibilities').value = (resolveI18nTextArray(exp.responsabilidades) || []).join('\n');
         document.getElementById('experienceImages').value = (exp.imagens || []).join('\n');
+        
+        const legendsInput = document.getElementById('experienceLegends');
+        if (legendsInput) legendsInput.value = (exp.legendas || []).join('\n');
+        
         const fileInput = document.getElementById('experienceImagesUpload');
         if (fileInput) fileInput.value = '';
         const logoInput = document.getElementById('experienceLogoUpload');

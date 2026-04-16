@@ -1,10 +1,11 @@
 :root {
-            --bg-color: #8f3d38;
-            --second-bg-color: #cb7169;
-            --surface-color: #ffffff;
-            --accent-color: #8f3d38;
-            --main-color: #cb7169;
-            --text-color: #8f3d38;
+            /* CODEX: paleta tech para o login administrativo */
+            --bg-color: #081021;
+            --second-bg-color: #10203c;
+            --surface-color: #f5f9ff;
+            --accent-color: #00c2ff;
+            --main-color: #1f9dff;
+            --text-color: #10203c;
         }
 
         body {

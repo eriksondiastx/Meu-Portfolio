@@ -1,0 +1,126 @@
+.atividades {
+    padding: 10rem 9% 2rem;
+    background: var(--second-bg-color);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.atividades > * {
+    position: relative;
+    z-index: 2;
+}
+
+.atividades-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 5rem;
+    padding: 0 50px; /* Espaço para os botões */
+    z-index: 2;
+}
+
+.atividades-wrapper {
+    display: flex;
+    gap: 2.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 2rem 1rem;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.atividades-wrapper::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.atividade-card {
+    min-width: 320px;
+    max-width: 320px;
+    background: var(--second-bg-color);
+    border: .2rem solid var(--bg-color);
+    border-radius: 2rem;
+    padding: 3rem 2rem;
+    transition: .5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.atividade-card:hover {
+    border-color: var(--main-color);
+    transform: translateY(-1rem);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.card-date {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--main-color);
+    color: var(--bg-color);
+    border-radius: 5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    width: fit-content;
+}
+
+.card-content h3 {
+    font-size: 2.2rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.card-content p {
+    font-size: 1.6rem;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Scroll Buttons */
+.scroll-btn {
+    position: absolute;
+    width: 5rem;
+    height: 5rem;
+    background: var(--main-color);
+    border: none;
+    border-radius: 50%;
+    color: var(--bg-color);
+    font-size: 2.5rem;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .3s ease;
+    box-shadow: 0 0 1rem var(--main-color);
+}
+
+.scroll-btn:hover {
+    background: var(--text-color);
+    transform: scale(1.1);
+}
+
+.scroll-btn.left {
+    left: 0;
+}
+
+.scroll-btn.right {
+    right: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .atividades-container {
+        padding: 0 10px;
+    }
+    
+    .scroll-btn {
+        display: none; /* Esconder botões no mobile (uso de swipe) */
+    }
+    
+    .atividade-card {
+        min-width: 280px;
+    }
+}

@@ -1,5 +1,17 @@
-
+.contactos {
+  padding-bottom: 2.4rem;
+}
 
 .contacto-item .bi {
- color:aqua;
+  color: var(--main-color) !important;
+}
+
+@media (max-width: 576px) {
+  .contactos {
+    padding-bottom: 1.4rem;
+  }
+
+  .contacto-item {
+    padding: 0.8rem 0.2rem;
+  }
 }

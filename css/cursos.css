@@ -46,6 +46,16 @@
   line-height: 1;
 }
 
+.cursos-box i.bi-calendar,
+.cursos-box i.bi-building {
+  font-size: 1.6rem;
+  width: auto;
+  height: auto;
+  margin: 0 0.5rem 0 0;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
 /* CODEX: ajuste do ícone em telas menores */
 @media (max-width: 576px) {
   .cursos-box i {
@@ -68,6 +78,51 @@
 /* CODEX: padroniza altura dos cards */
 .cursos-container .cursos-box {
   min-height: 420px;
+}
+
+/* CODEX: distribuição fluida de cards por largura da tela */
+@media (max-width: 1200px) {
+  .cursos-container .cursos-box {
+    flex-basis: calc(33.333% - 20px);
+  }
+}
+
+@media (max-width: 991px) {
+  .cursos-container .cursos-box {
+    flex-basis: calc(50% - 20px);
+    min-height: 390px;
+  }
+  .cursos-box h3 {
+    font-size: 2.3rem;
+  }
+}
+
+.cursos-box .btn {
+  padding: 0.8rem 2.2rem;
+  font-size: 1.6rem;
+  border-radius: 3rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 576px) {
+  .cursos-container .cursos-box {
+    flex-basis: 100%;
+    min-width: 0;
+    min-height: auto;
+    padding: 2.2rem 1.6rem 2.6rem;
+  }
+  .cursos-box h3 {
+    font-size: 2rem;
+  }
+  .cursos-box p {
+    font-size: 1.5rem;
+    margin: 0.8rem 0 1.4rem;
+  }
+  .cursos-box .btn {
+    padding: 0.6rem 1.8rem;
+    font-size: 1.5rem;
+    width: 100%; /* Botão ocupa toda a largura no mobile conforme padrão do site */
+  }
 }
 
 
