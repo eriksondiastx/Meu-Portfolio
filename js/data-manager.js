@@ -62,7 +62,7 @@ function getDefaultPersonalInfo() {
         titulo: "Desenvolvedor Front-End",
         descricao: "Apaixonado por tecnologia e por computadores desde os 13 anos de idade, a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário, no então renomado Centro de Formação São Domingos, em Luanda.\nDesde então, já sabia que carreira pretendia seguir.",
         formacao: "Engenharia Informática",
-        profileImage: "imagem/default/perfil-default.png",
+        profileImage: "imagem/Erikson Profile01.png",
         facebook: "https://www.facebook.com/erikson.teixeira.73/",
         instagram: "https://www.instagram.com/eriksonteixeira/",
         linkedin: "https://www.linkedin.com/in/erikson-teixeira-b912b3145",
