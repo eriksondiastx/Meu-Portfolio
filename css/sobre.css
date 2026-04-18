@@ -78,6 +78,19 @@
   line-height: 1.6;
 }
 
+/* Estilos para a legenda da Ferramenta de Trabalho */
+.sobre .tool-descript {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.sobre .tool-descript p {
+  font-family: 'Nasalization', sans-serif;
+  font-size: 1.6rem;
+  color: var(--main-color);
+  letter-spacing: 1px;
+}
+
 /* CODEX: ajuste de leitura e alinhamento em telas menores */
 @media (max-width: 991px) {
 
@@ -85,10 +98,6 @@
   .sobre-content h3,
   .sobre-content p {
     text-align: center;
-  }
-
-  .sobre .social-media {
-    justify-content: center;
   }
 }
 
