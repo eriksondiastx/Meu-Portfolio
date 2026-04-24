@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="css/Design.css">
     <link rel="stylesheet" href="css/atividades.css">
     <link rel="stylesheet" href="css/contactos.css">
+    <link rel="stylesheet" href="css/hobbies.css">
 
 </head>
 
@@ -144,17 +145,23 @@
 
             <!-- Conteúdo (coluna da direita no desktop, abaixo no mobile) -->
             <div class="sobre-content col-lg-7 col-md-12 text-center text-lg-start">
-                <h2 class="heading text-center text-lg-start" data-i18n-html="about_heading">Sobre <span>Mim</span></h2>
+                <h2 class="heading text-center text-lg-start" data-i18n-html="about_heading">Sobre<span> Mim</span>
+                </h2>
                 <!-- CODEX: Ajuste de parágrafos para facilitar atualização dinâmica -->
-                <p data-i18n-html="about_intro">Natural de Angola, Província de Luanda, Nascido aos 12 de Setembro de
+                <p class="text-center" data-i18n-html="about_intro">Natural de Angola, Província de Luanda, Nascido aos
+                    12 de
+                    Setembro de
                     1993,<br>
                     O primeiro filho de três (3) irmãos.<br>
                     Pai: Mateus Inácio Teixeira;<br>
                     Mãe: Ana Tuti Dias Ntonha Teixeira.<br>
                 </p>
-                <p data-i18n-html="about_career">Actualmente trilhando o caminho como <span id="aboutRole">desenvolvedor
+                <p class="text-center" data-i18n-html="about_career">Actualmente trilhando o caminho como <span
+                        id="aboutRole">desenvolvedor
                         Front-End.</span></p>
-                <p data-i18n="about_motto">Sempre procurando ser melhor do que fui no dia anterior.</p>
+                <p class="text-center motivacao" data-i18n="about_motto">Sempre procurando ser melhor do que fui no dia
+                    anterior.
+                </p>
             </div>
         </div>
     </section>
@@ -1228,59 +1235,45 @@
     <section class="atividades" id="atividades">
         <div class="midiaBackground">
             <img src="imagem/sobre-bg.jpg" alt="">
+            <!-- Vídeo injetado dinamicamente via js/script.js (camada acima da imagem) -->
         </div>
         <h2 class="heading" data-i18n-html="activities_heading">Actividades <span>Extras</span></h2>
 
         <div class="atividades-container">
             <button class="scroll-btn left" id="scrollLeft"><i class="bi bi-chevron-left"></i></button>
             <div class="atividades-wrapper" id="atividadesWrapper">
-                <!-- Atividade 1 -->
-                <div class="atividade-card">
-                    <div class="card-date" data-i18n="activity_1_date">Jan 2024</div>
-                    <div class="card-content">
-                        <h3 data-i18n="activity_1_title">Workshop de UI/UX</h3>
-                        <p data-i18n="activity_1_desc">Participação em workshop intensivo sobre princípios modernos de
-                            interface e experiência do usuário.</p>
-                    </div>
-                </div>
-                <!-- Atividade 2 -->
-                <div class="atividade-card">
-                    <div class="card-date" data-i18n="activity_2_date">Mar 2024</div>
-                    <div class="card-content">
-                        <h3 data-i18n="activity_2_title">Hackathon Luanda</h3>
-                        <p data-i18n="activity_2_desc">Desenvolvimento de uma solução web para mobilidade urbana em
-                            equipe durante 48 horas.</p>
-                    </div>
-                </div>
-                <!-- Atividade 3 -->
-                <div class="atividade-card">
-                    <div class="card-date" data-i18n="activity_3_date">Jun 2024</div>
-                    <div class="card-content">
-                        <h3 data-i18n="activity_3_title">Curso de React Avançado</h3>
-                        <p data-i18n="activity_3_desc">Especialização em hooks, context API e gerenciamento de estado
-                            global.</p>
-                    </div>
-                </div>
-                <!-- Atividade 4 -->
-                <div class="atividade-card">
-                    <div class="card-date" data-i18n="activity_4_date">Set 2024</div>
-                    <div class="card-content">
-                        <h3 data-i18n="activity_4_title">Mentoria em TI</h3>
-                        <p data-i18n="activity_4_desc">Auxílio a novos estudantes de programação na transição para o
-                            mercado de trabalho.</p>
-                    </div>
-                </div>
-                <!-- Atividade 5 -->
-                <div class="atividade-card">
-                    <div class="card-date" data-i18n="activity_5_date">Dez 2024</div>
-                    <div class="card-content">
-                        <h3 data-i18n="activity_5_title">Certificação AWS</h3>
-                        <p data-i18n="activity_5_desc">Estudos concluídos para certificação em fundamentos de Cloud
-                            Computing.</p>
-                    </div>
-                </div>
+                <!-- Atividades carregadas dinamicamente via JS -->
             </div>
             <button class="scroll-btn right" id="scrollRight"><i class="bi bi-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!--Hobbies section design-->
+    <section class="hobbies" id="hobbies">
+        <h2 class="heading" data-i18n-html="hobbies_heading">Meus <span>Hobbies</span></h2>
+        <div class="hobbies-container">
+            <div class="hobbies-grid" id="hobbiesGrid">
+                <div class="hobby-box">
+                    <div class="canvas-container" id="hobby-canvas-1"></div>
+                    <h3 data-i18n="hobby_1_title">Arte & Design</h3>
+                </div>
+                <div class="hobby-box">
+                    <div class="canvas-container" id="hobby-canvas-2"></div>
+                    <h3 data-i18n="hobby_2_title">Gaming</h3>
+                </div>
+                <div class="hobby-box">
+                    <div class="canvas-container" id="hobby-canvas-3"></div>
+                    <h3 data-i18n="hobby_3_title">Desporto</h3>
+                </div>
+                <div class="hobby-box">
+                    <div class="canvas-container" id="hobby-canvas-4"></div>
+                    <h3 data-i18n="hobby_4_title">Electrónica</h3>
+                </div>
+                <div class="hobby-box">
+                    <div class="canvas-container" id="hobby-canvas-5"></div>
+                    <h3 data-i18n="hobby_5_title">Investigar</h3>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1634,7 +1627,7 @@
         let revealScrollHandlerBound = false;
 
         const setupRevealAnimations = () => {
-            const sections = document.querySelectorAll('#inicio, #sobre, #tecnologias, #cursos, #projectos, #atividades');
+            const sections = document.querySelectorAll('#inicio, #sobre, #tecnologias, #cursos, #projectos, #atividades, #hobbies');
             if (sections.length === 0) return;
 
             if (revealObserver) {
@@ -1678,7 +1671,7 @@
                     el.classList.remove('reveal-visible');
                 });
 
-                const staggerGroups = section.querySelectorAll('.tecnologias-container, .cursos-container, .timeline, .portfolio-container, .design-container, .contact-container');
+                const staggerGroups = section.querySelectorAll('.tecnologias-container, .cursos-container, .timeline, .portfolio-container, .design-container, .contact-container, .hobbies-grid');
                 staggerGroups.forEach(group => {
                     const items = group.querySelectorAll('.reveal-up, .reveal-left, .reveal-right');
                     items.forEach((item, index) => {
@@ -1687,7 +1680,7 @@
                 });
             });
 
-            revealElements = Array.from(document.querySelectorAll('#inicio .reveal, #inicio .reveal-up, #inicio .reveal-left, #inicio .reveal-right, #sobre .reveal, #sobre .reveal-up, #sobre .reveal-left, #sobre .reveal-right, #tecnologias .reveal, #tecnologias .reveal-up, #tecnologias .reveal-left, #tecnologias .reveal-right, #cursos .reveal, #cursos .reveal-up, #cursos .reveal-left, #cursos .reveal-right, #projectos .reveal, #projectos .reveal-up, #projectos .reveal-left, #projectos .reveal-right'));
+            revealElements = Array.from(document.querySelectorAll('#inicio .reveal, #inicio .reveal-up, #inicio .reveal-left, #inicio .reveal-right, #sobre .reveal, #sobre .reveal-up, #sobre .reveal-left, #sobre .reveal-right, #tecnologias .reveal, #tecnologias .reveal-up, #tecnologias .reveal-left, #tecnologias .reveal-right, #cursos .reveal, #cursos .reveal-up, #cursos .reveal-left, #cursos .reveal-right, #projectos .reveal, #projectos .reveal-up, #projectos .reveal-left, #projectos .reveal-right, #hobbies .reveal-up, #hobbies .reveal-left, #hobbies .reveal-right'));
             const revealNow = () => {
                 revealElements.forEach(el => {
                     const rect = el.getBoundingClientRect();
@@ -1723,11 +1716,40 @@
         setupRevealAnimations();
     </script>
 
+    <!-- CODEX: Toggle manual do menu hamburger (evita conflitos de versões Bootstrap JS) -->
+    <script>
+        (function () {
+            const toggler = document.querySelector('.navbar-toggler');
+            const navMenu = document.getElementById('navbarNavDropdown');
+            if (!toggler || !navMenu) return;
+
+            toggler.addEventListener('click', function () {
+                const isOpen = navMenu.classList.contains('show');
+                if (isOpen) {
+                    navMenu.classList.remove('show');
+                    toggler.setAttribute('aria-expanded', 'false');
+                } else {
+                    navMenu.classList.add('show');
+                    toggler.setAttribute('aria-expanded', 'true');
+                }
+            });
+
+            // Fechar ao clicar num link do menu
+            navMenu.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('show');
+                    toggler.setAttribute('aria-expanded', 'false');
+                });
+            });
+        })();
+    </script>
+
     <!-- Three.js e Ferramentas 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="js/render3d.js"></script>
+    <script src="js/hobbies3d.js"></script>
 </body>
 
 </html>

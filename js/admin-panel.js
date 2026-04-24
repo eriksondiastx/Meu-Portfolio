@@ -6,7 +6,8 @@
         cursos: 'cursos',
         experiencias: 'experiencias',
         projetos: 'projetos',
-        design: 'design'
+        design: 'design',
+        atividades: 'atividades'
     };
 
     // CODEX: Defaults mínimos para manter o painel coerente quando o localStorage estiver vazio
@@ -30,7 +31,8 @@
         cursos: [],
         experiencias: [],
         projetos: [],
-        design: []
+        design: [],
+        atividades: []
     };
 
     const state = {
@@ -39,7 +41,8 @@
             course: null,
             experience: null,
             project: null,
-            design: null
+            design: null,
+            activity: null
         },
         courseFileCache: null,
         courseFileNameCache: ''
@@ -1415,6 +1418,145 @@
         renderDesignList();
     }
 
+    // CODEX: Atividades
+    function initActivityForm() {
+        const saveBtn = document.getElementById('saveActivityBtn');
+        if (saveBtn) saveBtn.addEventListener('click', saveActivity);
+    }
+
+    async function saveActivity() {
+        const date = document.getElementById('activityDate').value.trim();
+        const title = document.getElementById('activityTitle').value.trim();
+        const description = document.getElementById('activityDescription').value.trim();
+        const fileInput = document.getElementById('activityImageUpload');
+
+        if (!date || !title || !description) {
+            alert('Preencha os campos obrigatórios.');
+            return;
+        }
+
+        let image = '';
+        if (fileInput && fileInput.files.length > 0) {
+            try {
+                const upload = await uploadFileToServer(fileInput.files[0]);
+                image = upload.url;
+            } catch (error) {
+                alert('Erro ao enviar imagem da atividade.');
+                return;
+            }
+        } else if (state.editing.activity !== null) {
+            const atividades = getStored(STORAGE_KEYS.atividades, DEFAULTS.atividades);
+            image = atividades[state.editing.activity]?.image || '';
+        }
+
+        let titleKey = null;
+        let descKey = null;
+        try {
+            titleKey = await saveI18nText(title);
+            descKey = await saveI18nText(description);
+        } catch (error) {
+            alert('Erro ao salvar tradução da atividade.');
+            return;
+        }
+
+        const atividades = getStored(STORAGE_KEYS.atividades, DEFAULTS.atividades);
+        const action = state.editing.activity !== null ? 'edit' : 'add';
+        const activity = {
+            date,
+            title: wrapI18n(title, titleKey),
+            description: wrapI18n(description, descKey),
+            image
+        };
+
+        if (state.editing.activity !== null) {
+            atividades[state.editing.activity] = activity;
+        } else {
+            atividades.push(activity);
+        }
+
+        setStored(STORAGE_KEYS.atividades, atividades);
+        auditLog(action, 'atividade', { title, date });
+        
+        state.editing.activity = null;
+        document.getElementById('addActivityForm').reset();
+        hideModal('addActivityModal');
+        if (fileInput) fileInput.value = '';
+        renderActivitiesList();
+    }
+
+    function renderActivitiesList() {
+        const list = document.getElementById('atividadesList');
+        if (!list) return;
+
+        const atividades = getStored(STORAGE_KEYS.atividades, DEFAULTS.atividades);
+        list.innerHTML = '';
+
+        if (atividades.length === 0) {
+            list.innerHTML = '<p class="text-muted text-center">Nenhuma atividade adicionada.</p>';
+            return;
+        }
+
+        atividades.forEach((act, index) => {
+            const activityItem = document.createElement('div');
+            const titler = unwrapI18n(act.title);
+            activityItem.className = 'd-flex justify-content-between align-items-center p-2 border-bottom';
+            activityItem.innerHTML = `
+                <div>
+                    <h6 class="mb-0">${titler}</h6>
+                    <small class="text-muted">${act.date}</small>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary me-1" data-action="edit-act" data-index="${index}">Editar</button>
+                    <button class="btn btn-sm btn-outline-danger" data-action="delete-act" data-index="${index}">Excluir</button>
+                </div>
+            `;
+            list.appendChild(activityItem);
+        });
+
+        list.querySelectorAll('[data-action="edit-act"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                editActivity(Number(this.getAttribute('data-index')));
+            });
+        });
+
+        list.querySelectorAll('[data-action="delete-act"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                deleteActivity(Number(this.getAttribute('data-index')));
+            });
+        });
+    }
+
+    function editActivity(index) {
+        const atividades = getStored(STORAGE_KEYS.atividades, DEFAULTS.atividades);
+        const act = atividades[index];
+        if (!act) return;
+
+        state.editing.activity = index;
+        document.getElementById('activityDate').value = act.date || '';
+        document.getElementById('activityTitle').value = unwrapI18n(act.title);
+        document.getElementById('activityDescription').value = unwrapI18n(act.description);
+        
+        const fileInput = document.getElementById('activityImageUpload');
+        if (fileInput) fileInput.value = '';
+        
+        showModal('addActivityModal');
+    }
+
+    async function deleteActivity(index) {
+        if (!confirm('Tem certeza que deseja excluir esta atividade?')) return;
+        const atividades = getStored(STORAGE_KEYS.atividades, DEFAULTS.atividades);
+        const act = atividades[index];
+        
+        if (act && act.image && isUploadUrl(act.image)) {
+            await deleteFileFromServer(act.image);
+        }
+
+        atividades.splice(index, 1);
+        setStored(STORAGE_KEYS.atividades, atividades);
+        auditLog('delete', 'atividade', act || {});
+        renderActivitiesList();
+    }
+
     function loadAllData() {
         loadPersonalInfo();
         renderTechnologiesList();
@@ -1422,6 +1564,7 @@
         renderExperiencesList();
         renderProjectsList();
         renderDesignList();
+        renderActivitiesList();
         renderAuditHistory();
     }
 
@@ -1523,6 +1666,7 @@
         initExperienceForm();
         initProjectForm();
         initDesignForm();
+        initActivityForm();
         loadAuditPreferences();
         loadAllData();
 

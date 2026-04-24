@@ -25,6 +25,7 @@
         <a href="#" data-section="experiencias"><i class="bi bi-briefcase"></i> Experiências</a>
         <a href="#" data-section="projetos"><i class="bi bi-folder"></i> Projetos</a>
         <a href="#" data-section="design"><i class="bi bi-palette"></i> Design</a>
+        <a href="#" data-section="atividades"><i class="bi bi-calendar-event"></i> Atividades</a>
         <!-- CODEX: Auditoria -->
         <a href="#" data-section="auditoria"><i class="bi bi-shield-check"></i> Auditoria</a>
         <a href="#" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Sair</a>
@@ -237,6 +238,24 @@
                 <div class="card-body">
                     <div id="designList">
                         <!-- Lista de projetos de design será carregada aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção Atividades -->
+        <div id="atividades" class="section-content">
+            <h2>Gerenciar Atividades</h2>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Atividades Recentes</h5>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addActivityModal">
+                        <i class="bi bi-plus"></i> Adicionar Atividade
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="atividadesList">
+                        <!-- Lista de atividades será carregada aqui -->
                     </div>
                 </div>
             </div>
@@ -559,6 +578,43 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-primary" id="saveDesignBtn">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Atividade -->
+    <div class="modal fade" id="addActivityModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Adicionar Atividade</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addActivityForm">
+                        <div class="mb-3">
+                            <label for="activityDate" class="form-label">Data</label>
+                            <input type="text" class="form-control" id="activityDate" placeholder="Ex: Jan 2024" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activityTitle" class="form-label">Título</label>
+                            <input type="text" class="form-control" id="activityTitle" placeholder="Workshop de UI/UX" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activityDescription" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="activityDescription" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activityImageUpload" class="form-label">Imagem da Atividade (opcional)</label>
+                            <input type="file" class="form-control" id="activityImageUpload" accept="image/*">
+                            <div class="form-text">As imagens serão comprimidas e salvas. Opcional.</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveActivityBtn">Salvar</button>
                 </div>
             </div>
         </div>

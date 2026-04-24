@@ -20,7 +20,10 @@ function loadPortfolioData() {
         projetos: Array.isArray(storedProjetos) && storedProjetos.length > 0
             ? storedProjetos
             : getDefaultProjects(),
-        design: JSON.parse(localStorage.getItem('design')) || getDefaultDesign()
+        design: JSON.parse(localStorage.getItem('design')) || getDefaultDesign(),
+        atividades: Array.isArray(JSON.parse(localStorage.getItem('atividades'))) && JSON.parse(localStorage.getItem('atividades')).length > 0
+            ? JSON.parse(localStorage.getItem('atividades'))
+            : getDefaultAtividades()
     };
 }
 
@@ -244,6 +247,26 @@ function getDefaultExperiences() {
     ];
 }
 
+function getDefaultAtividades() {
+    return [
+        {
+            date: "Jan 2024",
+            title: "Workshop de UI/UX",
+            description: "Participação em workshop intensivo sobre princípios modernos de interface e experiência do usuário."
+        },
+        {
+            date: "Mar 2024",
+            title: "Hackathon Luanda",
+            description: "Desenvolvimento de uma solução web para mobilidade urbana em equipe durante 48 horas."
+        },
+        {
+            date: "Jun 2024",
+            title: "Curso de React Avançado",
+            description: "Especialização em hooks, context API e gerenciamento de estado global com Redux."
+        }
+    ];
+}
+
 function getDefaultProjects() {
     return [
         {
@@ -390,6 +413,9 @@ function renderPortfolio() {
     // Atualizar seção Design
     updateDesignSection(data.design);
     
+    // Atualizar seção Atividades
+    updateAtividadesSection(data.atividades);
+    
     // CODEX: Atualizar seção de contactos
     updateContactSection(data.personalInfo);
 
@@ -416,12 +442,46 @@ function ensureStorageDefaults(data) {
     if (!localStorage.getItem('design')) {
         localStorage.setItem('design', JSON.stringify(data.design));
     }
+    if (!localStorage.getItem('atividades')) {
+        localStorage.setItem('atividades', JSON.stringify(data.atividades));
+    }
 }
 // Funções específicas para cada seção
 // CODEX: Formatação simples para textos com quebras de linha
 function formatMultilineText(text) {
     if (!text) return '';
     return String(text).replace(/\n/g, '<br>');
+}
+
+function updateAtividadesSection(atividades) {
+    const wrapper = document.getElementById('atividadesWrapper');
+    if (!wrapper) return;
+
+    wrapper.innerHTML = '';
+    
+    if (!atividades || atividades.length === 0) {
+        return;
+    }
+
+    atividades.forEach((act) => {
+        const div = document.createElement('div');
+        div.className = 'atividade-card';
+        
+        let imageHtml = '';
+        if (act.image) {
+            imageHtml = `<div class="card-img"><img src="${act.image}" alt="${resolveI18nValue(act.title)}" style="width:100%; height:150px; object-fit:cover; border-radius:1rem; margin-bottom:1rem;"></div>`;
+        }
+
+        div.innerHTML = \`
+            \${imageHtml}
+            <div class="card-date">\${act.date}</div>
+            <div class="card-content">
+                <h3>\${resolveI18nValue(act.title)}</h3>
+                <p>\${formatMultilineText(resolveI18nValue(act.description))}</p>
+            </div>
+        \`;
+        wrapper.appendChild(div);
+    });
 }
 
 function updateHomeSection(personalInfo) {

@@ -91,6 +91,10 @@
   letter-spacing: 1px;
 }
 
+.sobre .motivacao {
+  font-family: 'Playwrite IE', cursive !important;
+}
+
 /* CODEX: ajuste de leitura e alinhamento em telas menores */
 @media (max-width: 991px) {
 
