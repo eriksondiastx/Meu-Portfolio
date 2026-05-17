@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/admin-panel.css">
+    <script src="../js/reusable-sync-logic.js"></script>
 </head>
 <body>
     <!-- Verificação de login -->
@@ -28,6 +29,8 @@
         <a href="#" data-section="atividades"><i class="bi bi-calendar-event"></i> Atividades</a>
         <!-- CODEX: Auditoria -->
         <a href="#" data-section="auditoria"><i class="bi bi-shield-check"></i> Auditoria</a>
+        <!-- CODEX: Sincronização GitHub -->
+        <a href="#" data-section="github-sync"><i class="bi bi-cloud-upload"></i> Sync GitHub</a>
         <a href="#" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Sair</a>
     </div>
 
@@ -485,6 +488,60 @@
                 </div>
             </div>
         </div>
+
+        <!-- CODEX: Secção Sincronização GitHub -->
+        <div id="github-sync" class="section-content">
+            <h2><i class="bi bi-cloud-upload me-2"></i>Sincronização GitHub</h2>
+            <p class="text-muted">Configure as credenciais para sincronizar os dados do portfólio com o GitHub. O token é guardado apenas no browser (localStorage) e nunca em ficheiros.</p>
+
+            <div class="alert alert-warning">
+                <i class="bi bi-shield-lock me-2"></i>
+                <strong>Segurança:</strong> O token nunca é enviado para o servidor nem guardado em ficheiros. Fica apenas no localStorage deste browser.
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header"><h5 class="mb-0">Configurações da API GitHub</h5></div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="githubToken" class="form-label">GitHub Personal Access Token</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="githubToken"
+                                placeholder="github_pat_xxxx..." autocomplete="off">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleTokenVisibility">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="form-text">Cria em: GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens. Permiss&otilde;es necess&aacute;rias: <strong>Contents (Read &amp; Write)</strong>.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="githubRepo" class="form-label">Repositório (user/repo)</label>
+                        <input type="text" class="form-control" id="githubRepo"
+                            placeholder="eriksondiastx/Meu-Portfolio">
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" id="saveGithubConfig">
+                            <i class="bi bi-save me-1"></i>Guardar Configuração
+                        </button>
+                        <button class="btn btn-outline-danger" id="clearGithubConfig">
+                            <i class="bi bi-trash me-1"></i>Limpar Token
+                        </button>
+                    </div>
+                    <div class="mt-2 small" id="githubConfigStatus"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h5 class="mb-0">Sincronização de Dados</h5></div>
+                <div class="card-body">
+                    <p>Ao sincronizar, o ficheiro <code>js/data.js</code> no GitHub é actualizado com todos os dados actuais. Na pr&oacute;xima visita de qualquer dispositivo, os dados ser&atilde;o carregados automaticamente.</p>
+                    <div class="alert alert-info small" id="lastSyncInfo">A verificar última sincronização...</div>
+                    <button class="btn btn-success btn-lg" id="syncGithubBtn">
+                        <i class="bi bi-cloud-upload me-2"></i>Sincronizar com GitHub Agora
+                    </button>
+                    <div class="mt-3" id="syncStatus"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- CODEX: Modal para Adicionar Projeto -->
@@ -622,7 +679,112 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/admin-panel.js">  
+    <script src="../js/data.js"></script>
+    <script src="../js/admin-panel.js"></script>
+    
+    <script>
+    // CODEX: Lógica da secção GitHub Sync
+    (function() {
+        function loadGithubConfig() {
+            const token = localStorage.getItem('github_token') || '';
+            const repo  = localStorage.getItem('github_repo') || '';
+            const el = document.getElementById('githubToken');
+            const repoEl = document.getElementById('githubRepo');
+            if (el) el.value = token ? '•'.repeat(Math.min(token.length, 40)) : '';
+            if (el) el.dataset.realValue = token;
+            if (repoEl) repoEl.value = repo;
+
+            // Mostrar última sincronização
+            const lastSync = localStorage.getItem('portfolio_last_updated');
+            const el2 = document.getElementById('lastSyncInfo');
+            if (el2) {
+                el2.textContent = lastSync && lastSync !== '0'
+                    ? '⏱ Última sincronização: ' + new Date(parseInt(lastSync)).toLocaleString('pt-PT')
+                    : '⚠️ Nunca sincronizado. Os dados actuais são apenas locais.';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(loadGithubConfig, 100);
+
+            // Toggle visibilidade do token
+            const toggleBtn = document.getElementById('toggleTokenVisibility');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    const input = document.getElementById('githubToken');
+                    const icon = toggleBtn.querySelector('i');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        input.value = input.dataset.realValue || '';
+                        icon.className = 'bi bi-eye-slash';
+                    } else {
+                        input.type = 'password';
+                        input.dataset.realValue = input.value;
+                        input.value = '•'.repeat(Math.min((input.value || '').length, 40));
+                        icon.className = 'bi bi-eye';
+                    }
+                });
+            }
+
+            // Guardar configuração
+            const saveBtn = document.getElementById('saveGithubConfig');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function() {
+                    const tokenInput = document.getElementById('githubToken');
+                    const repoInput  = document.getElementById('githubRepo');
+                    const status     = document.getElementById('githubConfigStatus');
+                    const token = (tokenInput.dataset.realValue && tokenInput.type === 'password')
+                        ? tokenInput.dataset.realValue
+                        : tokenInput.value.trim();
+                    const repo  = repoInput.value.trim();
+                    if (!token || !repo) {
+                        status.innerHTML = '<span class="text-danger">⚠️ Preenche ambos os campos.</span>';
+                        return;
+                    }
+                    localStorage.setItem('github_token', token);
+                    localStorage.setItem('github_repo', repo);
+                    tokenInput.dataset.realValue = token;
+                    status.innerHTML = '<span class="text-success">✅ Configuração guardada no browser.</span>';
+                    loadGithubConfig();
+                    setTimeout(() => { if (status) status.textContent = ''; }, 4000);
+                });
+            }
+
+            // Limpar token
+            const clearBtn = document.getElementById('clearGithubConfig');
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function() {
+                    if (!confirm('Tens a certeza? O token será apagado permanentemente deste browser.')) return;
+                    localStorage.removeItem('github_token');
+                    localStorage.removeItem('github_repo');
+                    const status = document.getElementById('githubConfigStatus');
+                    if (status) status.innerHTML = '<span class="text-warning">🗑️ Token apagado.</span>';
+                    loadGithubConfig();
+                });
+            }
+
+            // Botão de sincronização
+            const syncBtn = document.getElementById('syncGithubBtn');
+            if (syncBtn) {
+                syncBtn.addEventListener('click', async function() {
+                    const statusEl = document.getElementById('syncStatus');
+                    syncBtn.disabled = true;
+                    syncBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>A sincronizar...';
+                    if (statusEl) statusEl.innerHTML = '';
+                    try {
+                        await window.syncToGitHub();
+                        if (statusEl) statusEl.innerHTML = '<div class="alert alert-success mt-2">✅ Sincronizado com sucesso!</div>';
+                        loadGithubConfig();
+                    } catch(e) {
+                        if (statusEl) statusEl.innerHTML = '<div class="alert alert-danger mt-2">❌ Erro: ' + e.message + '</div>';
+                    } finally {
+                        syncBtn.disabled = false;
+                        syncBtn.innerHTML = '<i class="bi bi-cloud-upload me-2"></i>Sincronizar com GitHub Agora';
+                    }
+                });
+            }
+        });
+    })();
     </script>
 </body>
 </html>

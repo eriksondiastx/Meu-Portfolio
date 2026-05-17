@@ -1,4 +1,4 @@
-// CODEX: Script reorganizado para evitar duplicações e centralizar o CRUD do dashboard
+﻿// CODEX: Script reorganizado para evitar duplicaÃ§Ãµes e centralizar o CRUD do dashboard
 (function () {
     const STORAGE_KEYS = {
         personalInfo: 'personalInfo',
@@ -10,10 +10,10 @@
         atividades: 'atividades'
     };
 
-    // CODEX: Defaults mínimos para manter o painel coerente quando o localStorage estiver vazio
+    // CODEX: Defaults mÃ­nimos para manter o painel coerente quando o localStorage estiver vazio
     const DEFAULTS = {
         personalInfo: {
-            nome: 'Erikson Inácio Dias Teixeira',
+            nome: 'Erikson InÃ¡cio Dias Teixeira',
             titulo: 'Desenvolvedor Front-End',
             descricao: 'Apaixonado por tecnologia e por computadores desde os 13 anos de idade.',
             profileImage: 'imagem/default/perfil-default.jpg', // CODEX: imagem do perfil (Profile2)
@@ -24,8 +24,8 @@
             telefone: '+244 949 100 325',
             whatsapp: '244949100325',
             localizacao: 'Luanda, Angola',
-            cvLink: 'cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf',
-            titulosRotativos: 'Desenvolvedor Front-End, Professor, Criador de conteúdo, Designer Gráfico'
+            cvLink: 'cv/1Âº Curricuculum  Vitae Erikson 05_25_IT.pdf',
+            titulosRotativos: 'Desenvolvedor Front-End, Professor, Criador de conteÃºdo, Designer GrÃ¡fico'
         },
         tecnologias: [],
         cursos: [],
@@ -89,7 +89,7 @@
         return uploads;
     }
 
-    // CODEX: Remoção de ficheiros enviados
+    // CODEX: RemoÃ§Ã£o de ficheiros enviados
     function isUploadUrl(url) {
         return typeof url === 'string' && url.startsWith('/imagem/uploads/');
     }
@@ -103,7 +103,7 @@
                 body: JSON.stringify({ url })
             });
         } catch (error) {
-            // Ignorar erro para não bloquear a exclusão no painel
+            // Ignorar erro para nÃ£o bloquear a exclusÃ£o no painel
         }
     }
 
@@ -124,11 +124,11 @@
                 body: JSON.stringify({ action, entity, payload })
             });
         } catch (error) {
-            // Ignorar erro para não bloquear ações do painel
+            // Ignorar erro para nÃ£o bloquear aÃ§Ãµes do painel
         }
     }
 
-    // CODEX: i18n dinâmico - gerar chave no servidor
+    // CODEX: i18n dinÃ¢mico - gerar chave no servidor
     async function saveI18nText(text) {
         if (!text || !text.trim()) return null;
         try {
@@ -146,7 +146,7 @@
             const data = await response.json();
             return data.key || null;
         } catch (err) {
-            console.warn("API de tradução indisponível (Live Server). Salvando apenas o texto localmente:", text);
+            console.warn("API de traduÃ§Ã£o indisponÃ­vel (Live Server). Salvando apenas o texto localmente:", text);
             return null; // Omit key and keep text raw.
         }
     }
@@ -166,7 +166,7 @@
         return items.map(item => unwrapI18n(item));
     }
 
-    // CODEX: Migração automática de textos existentes para i18n
+    // CODEX: MigraÃ§Ã£o automÃ¡tica de textos existentes para i18n
     async function migrateI18nText(text, fixedKey) {
         if (!text || !text.trim()) return null;
         const response = await fetch('/api/i18n/save', {
@@ -348,7 +348,7 @@
         });
     }
 
-        // CODEX: Formulário de informações pessoais
+        // CODEX: FormulÃ¡rio de informaÃ§Ãµes pessoais
     function loadPersonalInfo() {
         const personalInfo = getStored(STORAGE_KEYS.personalInfo, DEFAULTS.personalInfo);
 
@@ -375,7 +375,7 @@
             removeProfileBtn.addEventListener('click', function () {
                 if (profileInput) profileInput.value = 'imagem/default/perfil-default.jpg';
                 if (profileUpload) profileUpload.value = '';
-                form.dataset.profileRemove = '1'; // CODEX: marca remoção para o submit
+                form.dataset.profileRemove = '1'; // CODEX: marca remoÃ§Ã£o para o submit
             });
         }
 
@@ -409,14 +409,14 @@
                     return;
                 }
             }
-            // CODEX: fallback para imagem padrão quando vazio
+            // CODEX: fallback para imagem padrÃ£o quando vazio
             if (!personalInfo.profileImage) {
                 if (previous && previous.profileImage && isUploadUrl(previous.profileImage)) {
                     await deleteFileFromServer(previous.profileImage);
                 }
                 personalInfo.profileImage = 'imagem/default/perfil-default.jpg';
             }
-            // CODEX: remoção explícita via botão
+            // CODEX: remoÃ§Ã£o explÃ­cita via botÃ£o
             if (form.dataset.profileRemove === '1') {
                 if (previous && previous.profileImage && isUploadUrl(previous.profileImage)) {
                     await deleteFileFromServer(previous.profileImage);
@@ -431,12 +431,12 @@
                 personalInfo.titulo = wrapI18n(personalInfo.titulo, tituloKey);
                 personalInfo.descricao = wrapI18n(personalInfo.descricao, descricaoKey);
             } catch (error) {
-                alert('Erro ao salvar tradução. Tente novamente.');
+                alert('Erro ao salvar traduÃ§Ã£o. Tente novamente.');
                 return;
             }
             setStored(STORAGE_KEYS.personalInfo, personalInfo);
             auditLog('edit', 'perfil', personalInfo);
-            alert('Informações salvas com sucesso!');
+            alert('InformaÃ§Ãµes salvas com sucesso!');
             if (profileFileInput) profileFileInput.value = ''; // CODEX: limpa o upload
         });
     }
@@ -498,7 +498,7 @@
         const description = document.getElementById('techDescription').value.trim();
 
         if (!name || !category || !level) {
-            alert('Preencha todos os campos obrigatórios.');
+            alert('Preencha todos os campos obrigatÃ³rios.');
             return;
         }
 
@@ -580,7 +580,7 @@
         if (!file) return;
 
         if (file.size > 5 * 1024 * 1024) {
-            alert('O ficheiro é muito grande. Máximo: 5MB.');
+            alert('O ficheiro Ã© muito grande. MÃ¡ximo: 5MB.');
             e.target.value = '';
             return;
         }
@@ -594,7 +594,7 @@
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         ];
         if (!validTypes.includes(file.type)) {
-            alert('Tipo de ficheiro não suportado. Use PDF, JPG, PNG ou DOC.');
+            alert('Tipo de ficheiro nÃ£o suportado. Use PDF, JPG, PNG ou DOC.');
             e.target.value = '';
             return;
         }
@@ -632,7 +632,7 @@
         const certificateType = document.querySelector('input[name="certificateType"]:checked').value;
 
         if (!name || !description) {
-            alert('Preencha nome e descrição.');
+            alert('Preencha nome e descriÃ§Ã£o.');
             return;
         }
 
@@ -668,7 +668,7 @@
             nameKey = await saveI18nText(name);
             descriptionKey = await saveI18nText(description);
         } catch (error) {
-            alert('Erro ao salvar tradução do curso.');
+            alert('Erro ao salvar traduÃ§Ã£o do curso.');
             return;
         }
 
@@ -742,8 +742,8 @@
                     <div class="mt-1">
                         <small class="text-muted">
                             <i class="bi bi-calendar"></i> ${curso.year || '-'} 
-                            ${curso.institution ? `• <i class="bi bi-building"></i> ${curso.institution}` : ''}
-                            • <i class="${certificateIcon}"></i> ${certificateText}
+                            ${curso.institution ? `â€¢ <i class="bi bi-building"></i> ${curso.institution}` : ''}
+                            â€¢ <i class="${certificateIcon}"></i> ${certificateText}
                         </small>
                     </div>
                 </div>
@@ -806,7 +806,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <p><strong>Descrição:</strong></p>
+                                    <p><strong>DescriÃ§Ã£o:</strong></p>
                                     <p>${curso.description}</p>
                                     <div class="row mt-3">
                                         <div class="col-md-6">
@@ -814,7 +814,7 @@
                                         </div>
                                         ${curso.institution ? `
                                         <div class="col-md-6">
-                                            <p><strong>Instituição:</strong> ${curso.institution}</p>
+                                            <p><strong>InstituiÃ§Ã£o:</strong> ${curso.institution}</p>
                                         </div>
                                         ` : ''}
                                     </div>
@@ -844,7 +844,7 @@
         document.body.insertAdjacentHTML('beforeend', modalHTML);
         showModal('viewCourseModal');
 
-        // CODEX: Link de download já aponta para o ficheiro
+        // CODEX: Link de download jÃ¡ aponta para o ficheiro
 
         const editFromView = document.querySelector('.edit-course-from-view');
         if (editFromView) {
@@ -905,8 +905,8 @@
         renderCoursesList();
     }
 
-    // CODEX: Experiências
-    // CODEX: Ordena experiências por período (mais recente no topo)
+    // CODEX: ExperiÃªncias
+    // CODEX: Ordena experiÃªncias por perÃ­odo (mais recente no topo)
     function sortExperiencesByPeriodo(items) {
         if (!Array.isArray(items)) return [];
         const parsePeriodo = (periodo) => {
@@ -937,12 +937,12 @@
         if (!list) return;
         const stored = getStored(STORAGE_KEYS.experiencias, DEFAULTS.experiencias);
         const experiencias = sortExperiencesByPeriodo(stored);
-        // CODEX: garante ordenação por data no armazenamento
+        // CODEX: garante ordenaÃ§Ã£o por data no armazenamento
         setStored(STORAGE_KEYS.experiencias, experiencias);
         list.innerHTML = '';
 
         if (experiencias.length === 0) {
-            list.innerHTML = '<p class="text-muted text-center">Nenhuma experiência adicionada.</p>';
+            list.innerHTML = '<p class="text-muted text-center">Nenhuma experiÃªncia adicionada.</p>';
             return;
         }
 
@@ -953,7 +953,7 @@
             expItem.innerHTML = `
                 <div>
                     <h6 class="mb-0">${cargoText} - ${exp.empresa}</h6>
-                    <small class="text-muted">${exp.periodo} • ${exp.localizacao}</small>
+                    <small class="text-muted">${exp.periodo} â€¢ ${exp.localizacao}</small>
                 </div>
                 <div>
                     <button class="btn btn-sm btn-outline-primary me-1" data-action="edit-experience" data-index="${index}">Editar</button>
@@ -994,7 +994,7 @@
             .map(item => item.trim());
 
         if (!periodo || !cargo || !empresa || !localizacao || responsabilidades.length === 0) {
-            alert('Preencha os campos obrigatórios da experiência.');
+            alert('Preencha os campos obrigatÃ³rios da experiÃªncia.');
             return;
         }
 
@@ -1007,7 +1007,7 @@
             );
             responsabilidadesWrapped = responsabilidades.map((item, idx) => wrapI18n(item, respKeys[idx]));
         } catch (error) {
-            alert('Erro ao salvar tradução da experiência.');
+            alert('Erro ao salvar traduÃ§Ã£o da experiÃªncia.');
             return;
         }
 
@@ -1073,7 +1073,7 @@
             }
             finalizeSave(uploadedImages, uploadedLogo);
         } catch (error) {
-            alert('Erro ao enviar imagens da experiência.');
+            alert('Erro ao enviar imagens da experiÃªncia.');
         }
     }
 
@@ -1102,7 +1102,7 @@
     }
 
     async function deleteExperience(index) {
-        if (!confirm('Tem certeza que deseja excluir esta experiência?')) return;
+        if (!confirm('Tem certeza que deseja excluir esta experiÃªncia?')) return;
         const experiencias = getStored(STORAGE_KEYS.experiencias, DEFAULTS.experiencias);
         const exp = experiencias[index];
         if (exp && exp.imagens && exp.imagens.length) {
@@ -1172,7 +1172,7 @@
         const status = document.getElementById('projectStatus').value.trim();
 
         if (!nome || !descricao || (!imagemTexto && !document.getElementById('projectImageUpload').files.length) || !status) {
-            alert('Preencha os campos obrigatórios do projeto.');
+            alert('Preencha os campos obrigatÃ³rios do projeto.');
             return;
         }
 
@@ -1184,7 +1184,7 @@
             descricaoKey = await saveI18nText(descricao);
             statusKey = await saveI18nText(status);
         } catch (error) {
-            alert('Erro ao salvar tradução do projeto.');
+            alert('Erro ao salvar traduÃ§Ã£o do projeto.');
             return;
         }
 
@@ -1288,7 +1288,7 @@
             desItem.innerHTML = `
                 <div>
                     <h6 class="mb-0">${designName}</h6>
-                    <small class="text-muted">${designType} • ${item.ano}</small>
+                    <small class="text-muted">${designType} â€¢ ${item.ano}</small>
                 </div>
                 <div>
                     <button class="btn btn-sm btn-outline-primary me-1" data-action="edit-design" data-index="${index}">Editar</button>
@@ -1325,7 +1325,7 @@
             .filter(Boolean);
 
         if (!nome || !tipo || !descricao || !ano) {
-            alert('Preencha os campos obrigatórios do projeto de design.');
+            alert('Preencha os campos obrigatÃ³rios do projeto de design.');
             return;
         }
 
@@ -1338,7 +1338,7 @@
             const tagKeys = await Promise.all(tags.map(tag => saveI18nText(tag)));
             tagsWrapped = tags.map((tag, idx) => wrapI18n(tag, tagKeys[idx]));
         } catch (error) {
-            alert('Erro ao salvar tradução do design.');
+            alert('Erro ao salvar traduÃ§Ã£o do design.');
             return;
         }
 
@@ -1431,7 +1431,7 @@
         const fileInput = document.getElementById('activityImageUpload');
 
         if (!date || !title || !description) {
-            alert('Preencha os campos obrigatórios.');
+            alert('Preencha os campos obrigatÃ³rios.');
             return;
         }
 
@@ -1455,7 +1455,7 @@
             titleKey = await saveI18nText(title);
             descKey = await saveI18nText(description);
         } catch (error) {
-            alert('Erro ao salvar tradução da atividade.');
+            alert('Erro ao salvar traduÃ§Ã£o da atividade.');
             return;
         }
 
@@ -1568,7 +1568,7 @@
         renderAuditHistory();
     }
 
-    // CODEX: Histórico de auditoria
+    // CODEX: HistÃ³rico de auditoria
     async function renderAuditHistory() {
         const list = document.getElementById('auditList');
         if (!list) return;
@@ -1579,7 +1579,7 @@
         list.innerHTML = '<div class="text-muted">Carregando...</div>';
         try {
             const response = await fetch(`/api/audit/history?limit=${limit}`);
-            if (!response.ok) throw new Error('Falha ao carregar histórico.');
+            if (!response.ok) throw new Error('Falha ao carregar histÃ³rico.');
             const data = await response.json();
             let items = data.items || [];
             if (activeFilters.length > 0) {
@@ -1609,11 +1609,11 @@
                 list.appendChild(entry);
             });
         } catch (error) {
-            list.innerHTML = '<div class="text-danger">Erro ao carregar histórico.</div>';
+            list.innerHTML = '<div class="text-danger">Erro ao carregar histÃ³rico.</div>';
         }
     }
 
-    // CODEX: Preferências de auditoria no localStorage
+    // CODEX: PreferÃªncias de auditoria no localStorage
     function saveAuditPreferences(filters, limit) {
         const data = {
             filters: Array.isArray(filters) ? filters : [],
@@ -1641,7 +1641,7 @@
         }
     }
 
-    // CODEX: Estilos por tipo de ação
+    // CODEX: Estilos por tipo de aÃ§Ã£o
     function getAuditActionClass(action) {
         switch (action) {
             case 'add':
@@ -1658,6 +1658,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
+        // CODEX: Garantir dados sincronizados ANTES de qualquer ediÃ§Ã£o no painel
+        if (window.initDatabase) window.initDatabase();
+
         initNavigation();
         initLogout();
         initPersonalInfoForm();
@@ -1674,10 +1677,10 @@
         if (migrationBtn) {
             migrationBtn.addEventListener('click', async () => {
                 const status = document.getElementById('migrationStatus');
-                if (status) status.textContent = 'Executando migração...';
+                if (status) status.textContent = 'Executando migraÃ§Ã£o...';
                 migrationBtn.disabled = true;
                 const result = await migrateI18nStore();
-                if (status) status.textContent = `Migração concluída: ${JSON.stringify(result)}`;
+                if (status) status.textContent = `MigraÃ§Ã£o concluÃ­da: ${JSON.stringify(result)}`;
                 migrationBtn.disabled = false;
                 loadAllData();
             });
@@ -1697,10 +1700,119 @@
     });
 })();
 
+// =============================================================================
+// CODEX: Sincronizacao GitHub - publica js/reusable-sync-logic.js e js/data.js
+// O GitHub Token deve ser guardado APENAS no localStorage do admin (nunca hardcoded)
+// =============================================================================
+async function syncToGitHub() {
+    const token = localStorage.getItem('github_token');
+    const repo = localStorage.getItem('github_repo');
 
+    if (!token || !repo) {
+        alert('Configure o GitHub Token e o Repositório no painel antes de sincronizar.\n\nVá a: Configurações → Sincronização GitHub');
+        return;
+    }
 
+    const lastUpdated = Date.now();
+    const snapshot = window.PortfolioSync && typeof window.PortfolioSync.readStoredSnapshot === 'function'
+        ? window.PortfolioSync.readStoredSnapshot()
+        : {
+            profile: JSON.parse(localStorage.getItem('personalInfo') || 'null'),
+            tecnologias: JSON.parse(localStorage.getItem('tecnologias') || 'null'),
+            cursos: JSON.parse(localStorage.getItem('cursos') || 'null'),
+            experiencias: JSON.parse(localStorage.getItem('experiencias') || 'null'),
+            projetos: JSON.parse(localStorage.getItem('projetos') || 'null'),
+            design: JSON.parse(localStorage.getItem('design') || 'null'),
+            atividades: JSON.parse(localStorage.getItem('atividades') || 'null')
+        };
 
+    const defaultData = {
+        profile: snapshot.profile,
+        tecnologias: snapshot.tecnologias,
+        cursos: snapshot.cursos,
+        experiencias: snapshot.experiencias,
+        projetos: snapshot.projetos,
+        design: snapshot.design,
+        atividades: snapshot.atividades,
+        lastUpdated
+    };
 
+    const filesToSync = [];
 
+    const dataJsContent = window.PortfolioSync && typeof window.PortfolioSync.buildDataJsContent === 'function'
+        ? window.PortfolioSync.buildDataJsContent(defaultData)
+        : `// js/data.js
+// CODEX: Single Source of Truth - snapshot gerado pelo painel admin
 
+const defaultData = ${JSON.stringify(defaultData, null, 2)};
+
+window.defaultData = defaultData;
+window.initDatabase = function () {
+  if (!window.PortfolioSync || typeof window.PortfolioSync.initDatabase !== 'function') return false;
+  return window.PortfolioSync.initDatabase(defaultData);
+};
+window.initDatabase();
+`;
+
+    filesToSync.push({
+        path: 'js/reusable-sync-logic.js',
+        message: `sync: actualizar reusable-sync-logic.js [${new Date(lastUpdated).toISOString()}]`,
+        content: null
+    });
+    filesToSync.push({
+        path: 'js/data.js',
+        message: `sync: actualizar data.js [${new Date(lastUpdated).toISOString()}]`,
+        content: dataJsContent
+    });
+
+    try {
+        const reusableResponse = await fetch('/js/reusable-sync-logic.js', { cache: 'no-store' });
+        if (!reusableResponse.ok) {
+            throw new Error('Não foi possível ler js/reusable-sync-logic.js.');
+        }
+        filesToSync[0].content = await reusableResponse.text();
+
+        for (const file of filesToSync) {
+            const shaResponse = await fetch(
+                `https://api.github.com/repos/${repo}/contents/${file.path}`,
+                { headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' } }
+            );
+            const shaData = shaResponse.ok ? await shaResponse.json() : {};
+            const sha = shaData.sha || undefined;
+
+            const body = {
+                message: file.message,
+                content: btoa(unescape(encodeURIComponent(file.content)))
+            };
+            if (sha) body.sha = sha;
+
+            const uploadResponse = await fetch(
+                `https://api.github.com/repos/${repo}/contents/${file.path}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `token ${token}`,
+                        Accept: 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                }
+            );
+
+            if (!uploadResponse.ok) {
+                const err = await uploadResponse.json();
+                throw new Error(err.message || `Erro ao sincronizar ${file.path}.`);
+            }
+        }
+
+        localStorage.setItem('portfolio_last_updated', lastUpdated.toString());
+        alert(`✅ Sincronização concluída com sucesso!\nTimestamp: ${new Date(lastUpdated).toLocaleString()}`);
+    } catch (error) {
+        console.error('[syncToGitHub] Erro:', error);
+        alert(`❌ Erro ao sincronizar: ${error.message}`);
+    }
+}
+
+// Expor globalmente
+window.syncToGitHub = syncToGitHub;
 

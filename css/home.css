@@ -32,16 +32,6 @@
 .inicio-img {
   position: relative;
   top: -4rem; /* CODEX: deslocamento vertical mais confiável que margin neste layout */
-  animation: pulse 3s infinite;
-}
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
 }
 
 .greeting-text,
