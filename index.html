@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-pt">
 
 <head>
@@ -40,6 +40,15 @@
 </head>
 
 <body>
+    <!-- CODEX: preloader fullscreen até a página e os dados ficarem prontos -->
+    <div id="pageLoader" class="page-loader" aria-live="polite" aria-busy="true">
+        <div class="page-loader-content">
+            <div class="page-loader-ring" aria-hidden="true"></div>
+            <h2>Portfólio</h2>
+            <p>Carregando conteúdo...</p>
+        </div>
+    </div>
+
     <!--Header Design-->
     <header class="header">
         <!--Navbar start-->
@@ -1550,6 +1559,9 @@
 
     <footer>
         <div class="contactos" id="contactos">
+            <div class="midiaBackground">
+                <img src="imagem/sobre-bg.jpg" alt="">
+            </div>
             <h2 class="heading" data-i18n-html="contact_heading">Meus <span>Contactos</span></h2>
 
             <div class="contato-container">
@@ -1622,6 +1634,56 @@
 
         updateHeaderOffset();
         window.addEventListener('resize', updateHeaderOffset);
+    </script>
+
+    <!-- CODEX: controlo do preloader fullscreen -->
+    <script>
+        (function () {
+            const loader = document.getElementById('pageLoader');
+            if (!loader) return;
+
+            document.body.classList.add('page-loading');
+
+            let windowReady = document.readyState === 'complete';
+            let portfolioReady = false;
+            let hidden = false;
+
+            const hideLoader = () => {
+                if (hidden || !windowReady || !portfolioReady) return;
+                hidden = true;
+
+                loader.classList.add('is-hidden');
+                document.body.classList.remove('page-loading');
+
+                window.setTimeout(() => {
+                    loader.remove();
+                }, 600);
+            };
+
+            const markWindowReady = () => {
+                windowReady = true;
+                hideLoader();
+            };
+
+            const markPortfolioReady = () => {
+                portfolioReady = true;
+                hideLoader();
+            };
+
+            if (windowReady) {
+                window.setTimeout(markWindowReady, 0);
+            } else {
+                window.addEventListener('load', markWindowReady, { once: true });
+            }
+
+            document.addEventListener('portfolio:rendered', markPortfolioReady);
+
+            window.setTimeout(() => {
+                portfolioReady = true;
+                windowReady = true;
+                hideLoader();
+            }, 5000);
+        })();
     </script>
 
     <!-- CODEX: animações de entrada por elemento -->

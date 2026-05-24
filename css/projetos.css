@@ -79,6 +79,8 @@
 .portfolio-layer a {
   display: inline-flex;
   justify-content: center;
+  min-width: 16rem;
+  min-height: 4.4rem;
 }
 
 /* CODEX: cards fluidos para desktop->mobile */
@@ -104,5 +106,10 @@
   }
   .portfolio-box .portfolio-layer {
     padding: 1.6rem;
+  }
+
+  .portfolio-layer a {
+    width: 100%;
+    min-width: 0;
   }
 }

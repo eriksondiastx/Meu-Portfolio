@@ -1,5 +1,33 @@
 .contactos {
-  padding-bottom: 2.4rem;
+  background: var(--second-bg-color);
+  padding: 7rem 9% 1.8rem;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.contactos .heading {
+  margin-bottom: 1.5rem;
+}
+
+.contactos .contato-container {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* CODEX: garante que o conteúdo fique acima do background da secção */
+.contactos > * {
+  position: relative;
+  z-index: 2;
+}
+
+.contactos .midiaBackground {
+  z-index: 0 !important;
+}
+
+.contactos .midiaBackground::after {
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.72);
 }
 
 .contacto-item .bi {
@@ -8,7 +36,7 @@
 
 @media (max-width: 576px) {
   .contactos {
-    padding-bottom: 1.4rem;
+    padding: 5.5rem 5% 1rem;
   }
 
   .contacto-item {

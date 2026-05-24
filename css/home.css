@@ -79,12 +79,31 @@ span {
   align-items: center;
   width: 4rem;
   height: 4rem;
-  background: transparent;
+  background: #000;
   border: 0.2rem solid var(--main-color);
   border-radius: 50%;
   font-size: 2rem;
-  color: var(--main-color);
+  color: #fff;
   margin: 3rem 1.5rem 3rem 0;
+  box-shadow: 0 0 0 1px rgba(255, 26, 61, 0.25);
+  transition: 0.5s ease;
+}
+
+.social-media a i {
+  color: #fff !important;
+}
+
+.social-media a:hover {
+  background: #0a0a0a;
+  border-color: var(--highlight-color);
+  box-shadow:
+    0 0 0 1px rgba(255, 77, 109, 0.45),
+    0 0 18px rgba(255, 77, 109, 0.35);
+  transform: translateY(-2px);
+}
+
+.social-media a:hover i {
+  color: #fff !important;
 }
 
 .social-media {
@@ -94,32 +113,55 @@ span {
 }
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 1rem 2.8rem;
-  background: var(--gradient-main);
+  background: #000;
+  border: 1px solid var(--main-color);
   box-shadow:
-    0 0 0 1px rgba(255, 26, 61, 0.35),
-    0 10px 22px rgba(209, 15, 47, 0.28);
+    0 0 0 1px rgba(255, 26, 61, 0.25),
+    0 10px 22px rgba(209, 15, 47, 0.18);
   border-radius: 4rem;
   font-size: 20px;
   color: var(--text-color);
   letter-spacing: 0.1rem;
   font-weight: 600;
   transition: 0.5s ease;
+  min-height: 4.6rem;
+  line-height: 1;
+}
+
+/* CODEX: estilo exclusivo do botão Download CV na secção Início */
+#homeCvLink {
+  background: #000 !important;
+  border: 1px solid var(--main-color) !important;
+  box-shadow: 0 0 0 1px rgba(255, 26, 61, 0.25);
+}
+
+#homeCvLink:hover {
+  background: #0a0a0a !important;
+  border-color: var(--highlight-color) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 77, 109, 0.45),
+    0 0 18px rgba(255, 77, 109, 0.35);
+  transform: translateY(-2px);
 }
 
 .btn:hover {
   box-shadow:
     0 0 0 1px rgba(255, 77, 109, 0.45),
-    0 0 24px rgba(255, 77, 109, 0.55);
+    0 0 24px rgba(255, 77, 109, 0.45);
   transform: translateY(-2px);
 }
 
 .btn2 {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 1rem 2.8rem;
-  background: linear-gradient(135deg, var(--main-color), var(--highlight-soft));
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #000;
+  border: 1px solid var(--main-color);
   border-radius: 4rem;
 
   font-size: 20px;
@@ -127,11 +169,19 @@ span {
   letter-spacing: 0.1rem;
   font-weight: 600;
   transition: 0.5s ease;
+  box-shadow:
+    0 0 0 1px rgba(255, 26, 61, 0.25),
+    0 10px 22px rgba(209, 15, 47, 0.18);
+  min-height: 4.6rem;
+  line-height: 1;
 }
 
-.btn2:hover:hover {
-  box-shadow: 0 0 22px rgba(255, 77, 109, 0.45);
+.btn2:hover {
+  box-shadow:
+    0 0 0 1px rgba(255, 77, 109, 0.45),
+    0 0 24px rgba(255, 77, 109, 0.45);
   color: var(--text-color);
+  transform: translateY(-2px);
 }
 
 /* CODEX: refinamento responsivo da seção início */

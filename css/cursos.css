@@ -98,10 +98,11 @@
 }
 
 .cursos-box .btn {
-  padding: 0.8rem 2.2rem;
+  padding: 0.9rem 2.2rem;
   font-size: 1.6rem;
   border-radius: 3rem;
   margin-top: 1.5rem;
+  min-width: 16rem;
 }
 
 @media (max-width: 576px) {
@@ -122,6 +123,7 @@
     padding: 0.6rem 1.8rem;
     font-size: 1.5rem;
     width: 100%; /* Botão ocupa toda a largura no mobile conforme padrão do site */
+    min-width: 0;
   }
 }
 

@@ -55,6 +55,68 @@ body {
   overflow-x: hidden;
 }
 
+body.page-loading {
+  overflow: hidden;
+}
+
+/* CODEX: preloader fullscreen da landing page */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at center, rgba(255, 26, 61, 0.12), transparent 55%),
+    linear-gradient(135deg, #000000, #121212 55%, #1a0006);
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+.page-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.page-loader-content {
+  text-align: center;
+  padding: 2.5rem 3rem;
+}
+
+.page-loader-ring {
+  width: 7rem;
+  height: 7rem;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  border: 0.4rem solid rgba(255, 255, 255, 0.12);
+  border-top-color: var(--main-color);
+  border-right-color: var(--highlight-color);
+  animation: loader-spin 0.9s linear infinite;
+  box-shadow: 0 0 22px rgba(255, 26, 61, 0.25);
+}
+
+.page-loader h2 {
+  font-family: 'Nasalization', sans-serif;
+  font-size: clamp(3rem, 4vw, 4.2rem);
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+}
+
+.page-loader p {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05rem;
+}
+
+@keyframes loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 img,
 video {
   max-width: 100%;

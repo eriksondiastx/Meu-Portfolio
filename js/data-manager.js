@@ -472,14 +472,14 @@ function updateAtividadesSection(atividades) {
             imageHtml = `<div class="card-img"><img src="${act.image}" alt="${resolveI18nValue(act.title)}" style="width:100%; height:150px; object-fit:cover; border-radius:1rem; margin-bottom:1rem;"></div>`;
         }
 
-        div.innerHTML = \`
+        div.innerHTML = `
             \${imageHtml}
             <div class="card-date">\${act.date}</div>
             <div class="card-content">
                 <h3>\${resolveI18nValue(act.title)}</h3>
                 <p>\${formatMultilineText(resolveI18nValue(act.description))}</p>
             </div>
-        \`;
+        `;
         wrapper.appendChild(div);
     });
 }
@@ -841,7 +841,27 @@ function updateExperiencesSection(experiencias) {
         
         // Adicionar modais para as imagens (se houver)
         if (exp.imagens && exp.imagens.length > 0) {
-            exp.imagens.forEach((img, imgIndex) => {
+                exp.imagens.forEach((img, imgIndex) => {
+                // CODEX: reutiliza a mesma legenda mostrada no hover para manter consistencia
+                const captionsMap = {
+                    "imagem/trabalhos/Egate1.jpg": "Upgrade do servidor na SDB",
+                    "imagem/trabalhos/egate2.jpg": "Manutenção preventiva",
+                    "imagem/trabalhos/egate3.jpg": "Configuração de rede",
+                    "imagem/trabalhos/egate4.jpg": "Organização de racks",
+                    "imagem/trabalhos/egate6.jpg": "Sistemas operativos",
+                    "imagem/trabalhos/egate7.jpg": "Suporte aos utilizadores",
+                    "imagem/trabalhos/StAndrews1.jpg": "Aula de TI",
+                    "imagem/trabalhos/StAndrews2.jpg": "Laboratório de informática",
+                    "imagem/trabalhos/StAndrews3.jpg": "Artes plásticas",
+                    "imagem/trabalhos/StAndrews4.jpg": "Auxílio escolar",
+                    "imagem/trabalhos/StAndrews5.jpg": "Apoio pedagógico",
+                    "imagem/trabalhos/StAndrews6.jpg": "Avaliação de projetos"
+                };
+                let captionText = captionsMap[img] || "Visualizar Detalhes";
+                if (exp.legendas && exp.legendas[imgIndex] && exp.legendas[imgIndex].trim() !== "") {
+                    captionText = exp.legendas[imgIndex].trim();
+                }
+
                 const modal = document.createElement('div');
                 modal.className = 'modal fade';
                 modal.id = `modal${index}_${imgIndex}`;
@@ -855,6 +875,7 @@ function updateExperiencesSection(experiencias) {
                             </div>
                             <div class="modal-body text-center">
                                 <img src="${img}" class="img-fluid modal-image-full" alt="${exp.cargo} ${imgIndex + 1}">
+                                <p class="experience-modal-caption">${captionText}</p>
                             </div>
                         </div>
                     </div>
