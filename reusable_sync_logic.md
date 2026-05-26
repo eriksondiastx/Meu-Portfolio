@@ -104,3 +104,24 @@ window.initDatabase = initDatabase;`;
 > [!TIP]
 > **Resolução de Conflitos Git**
 > Se você editar o arquivo manualmente no GitHub e depois tentar fazer um Push via Admin, poderá ocorrer um conflito. Sempre faça um `git pull` ou use a função de sincronização do painel para manter a ordem.
+
+## 4. Troubleshooting & Erros Comuns
+
+Ao implementar a sincronização GitHub via REST API no front-end, pode deparar-se com alguns erros clássicos. Abaixo encontram-se as soluções:
+
+### Erro: `Não foi possível ler js/reusable-sync-logic.js` (404 Not Found)
+**Causa:** Utilização de caminhos absolutos (ex: `/js/file.js`) num `fetch()` a partir do painel que não se encontra na raiz do servidor (ex: `/admin/admin.html` rodando em subpastas ou via Live Server).
+**Solução:** Utilize sempre caminhos relativos na sua lógica de `fetch()` quando invocar a partir de subdiretórios (ex: `../js/reusable-sync-logic.js`).
+
+### Erro: `Failed to execute 'fetch' on 'Window': Failed to read the 'headers' property from 'RequestInit': String contains non ISO-8859-1 code point.`
+**Causa:** O token do GitHub (Personal Access Token) inserido no painel contém caracteres inválidos, não-ASCII ou "espaços invisíveis" (frequentemente causados ao copiar e colar de outras aplicações web). O navegador rejeita isso nos cabeçalhos HTTP.
+**Solução:** Sanitize sempre o token antes de o injetar no cabeçalho de Autorização, filtrando tudo o que estiver fora da tabela ASCII base:
+```javascript
+const rawToken = localStorage.getItem('github_token') || '';
+// Remove qualquer caracter invisível ou não-ISO-8859-1
+const safeToken = rawToken.replace(/[^\x20-\x7E]/g, '').trim(); 
+```
+
+### Problema: Secções do Painel "Piscam" ou Não Renderizam
+**Causa:** Estrutura HTML corrompida. Geralmente, fechar precocemente a tag `<div class="main-content">` e deixar secções ou modals de fora, ou não fechar corretamente um `<div class="modal">` (o que faz com que as secções seguintes fiquem aninhadas invisivelmente dentro dele).
+**Solução:** Garanta que todas as secções da página (`.section-content`) residem perfeitamente dentro da `main-content` e que todos os modals do Bootstrap estão devidamente fechados e colocados preferencialmente no final do `<body>`.
