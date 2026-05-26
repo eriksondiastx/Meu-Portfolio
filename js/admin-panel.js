@@ -1,4 +1,4 @@
-﻿// CODEX: Script reorganizado para evitar duplicaÃ§Ãµes e centralizar o CRUD do dashboard
+// CODEX: Script reorganizado para evitar duplicaÃ§Ãµes e centralizar o CRUD do dashboard
 (function () {
     const STORAGE_KEYS = {
         personalInfo: 'personalInfo',
@@ -1766,7 +1766,7 @@ window.initDatabase();
     });
 
     try {
-        const reusableResponse = await fetch('/js/reusable-sync-logic.js', { cache: 'no-store' });
+        const reusableResponse = await fetch('../js/reusable-sync-logic.js', { cache: 'no-store' });
         if (!reusableResponse.ok) {
             throw new Error('Não foi possível ler js/reusable-sync-logic.js.');
         }
