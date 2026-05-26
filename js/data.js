@@ -100,11 +100,12 @@ const defaultData = {
   "cursos": [
     {
       "name": "Informática para Usuário",
-      "description": "O primeiro curso que fiz, aos 13 anos de idade, no Centro de Formação São Domingos. Luanda/Angola.",
+      "description": "Curso realizado no Centro de Formação São Domingos. Luanda/Angola.",
+      "year": "2006",
+      "institution": "Centro de Formação São Domingos",
       "certificate": "#",
       "certificateType": "link",
-      "year": "2006",
-      "institution": "Centro de Formação São Domingos"
+      "certificateName": ""
     },
     {
       "name": "Contabilidade Informatizada",
@@ -363,7 +364,7 @@ const defaultData = {
       "description": "Especialização em hooks, context API e gerenciamento de estado global com Redux."
     }
   ],
-  "lastUpdated": 1779814272172
+  "lastUpdated": 1779814493402
 };
 
 window.defaultData = defaultData;
