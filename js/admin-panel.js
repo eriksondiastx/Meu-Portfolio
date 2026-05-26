@@ -65,18 +65,61 @@
         localStorage.setItem(key, JSON.stringify(value));
     }
 
-    // CODEX: Upload real de ficheiros para o servidor local
-    async function uploadFileToServer(file) {
-        const formData = new FormData();
-        formData.append('file', file);
-        const response = await fetch('/api/upload', {
-            method: 'POST',
-            body: formData
+    // CODEX: Utilitário para conversão de ficheiros
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64Data = reader.result.split(',')[1];
+                resolve(base64Data);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
         });
-        if (!response.ok) {
-            throw new Error('Falha ao enviar ficheiro.');
+    }
+
+    // CODEX: Upload via GitHub ou fallback local
+    async function uploadFileToServer(file) {
+        const rawToken = localStorage.getItem('github_token') || '';
+        const token = rawToken.replace(/[^\x20-\x7E]/g, '').trim();
+        const repo = (localStorage.getItem('github_repo') || '').trim();
+
+        if (token && repo) {
+            const base64Data = await readFileAsBase64(file);
+            const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+            const path = `imagem/uploads/${Date.now()}_${safeName}`;
+            
+            const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+                method: 'PUT',
+                headers: {
+                    Authorization: `token ${token}`,
+                    Accept: 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: `Upload via painel: ${file.name}`,
+                    content: base64Data
+                })
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.message || 'Falha no upload para o GitHub.');
+            }
+            
+            return { url: path, name: file.name };
+        } else {
+            const formData = new FormData();
+            formData.append('file', file);
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+            if (!response.ok) {
+                throw new Error('Falha ao enviar ficheiro.');
+            }
+            return response.json();
         }
-        return response.json();
     }
 
     async function uploadFilesToServer(files) {
@@ -89,21 +132,52 @@
         return uploads;
     }
 
-    // CODEX: RemoÃ§Ã£o de ficheiros enviados
+    // CODEX: Remoção de ficheiros enviados
     function isUploadUrl(url) {
-        return typeof url === 'string' && url.startsWith('/imagem/uploads/');
+        return typeof url === 'string' && (url.startsWith('/imagem/uploads/') || url.startsWith('imagem/uploads/'));
     }
 
     async function deleteFileFromServer(url) {
         if (!isUploadUrl(url)) return;
-        try {
-            await fetch('/api/delete', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url })
-            });
-        } catch (error) {
-            // Ignorar erro para nÃ£o bloquear a exclusÃ£o no painel
+
+        const rawToken = localStorage.getItem('github_token') || '';
+        const token = rawToken.replace(/[^\x20-\x7E]/g, '').trim();
+        const repo = (localStorage.getItem('github_repo') || '').trim();
+        const cleanPath = url.startsWith('/') ? url.substring(1) : url;
+
+        if (token && repo) {
+            try {
+                const shaResponse = await fetch(`https://api.github.com/repos/${repo}/contents/${cleanPath}`, {
+                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+                });
+                if (shaResponse.ok) {
+                    const shaData = await shaResponse.json();
+                    await fetch(`https://api.github.com/repos/${repo}/contents/${cleanPath}`, {
+                        method: 'DELETE',
+                        headers: {
+                            Authorization: `token ${token}`,
+                            Accept: 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: `Apagar via painel: ${cleanPath}`,
+                            sha: shaData.sha
+                        })
+                    });
+                }
+            } catch (error) {
+                console.warn('Falha ao deletar arquivo do GitHub', error);
+            }
+        } else {
+            try {
+                await fetch('/api/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+            } catch (error) {
+                // Ignorar erro
+            }
         }
     }
 
