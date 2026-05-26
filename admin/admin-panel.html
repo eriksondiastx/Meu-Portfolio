@@ -263,6 +263,108 @@
                 </div>
             </div>
         </div>
+        <!-- CODEX: Seção Auditoria -->
+        <div id="auditoria" class="section-content">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Histórico de Auditoria</h2>
+                <button class="btn btn-sm btn-outline-primary" id="refreshAuditBtn">
+                    <i class="bi bi-arrow-clockwise"></i> Atualizar
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <!-- CODEX: Filtros por tipo de ação -->
+                    <div class="mb-3">
+                        <label class="form-label">Filtrar por ação</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input audit-filter" type="checkbox" value="add" id="filterAdd" checked>
+                                <label class="form-check-label" for="filterAdd">add</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input audit-filter" type="checkbox" value="edit" id="filterEdit" checked>
+                                <label class="form-check-label" for="filterEdit">edit</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input audit-filter" type="checkbox" value="delete" id="filterDelete" checked>
+                                <label class="form-check-label" for="filterDelete">delete</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input audit-filter" type="checkbox" value="upload" id="filterUpload" checked>
+                                <label class="form-check-label" for="filterUpload">upload</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="auditLimit" class="form-label">Quantidade de registros</label>
+                        <select class="form-control" id="auditLimit">
+                            <option value="50">50</option>
+                            <option value="100" selected>100</option>
+                            <option value="200">200</option>
+                            <option value="500">500</option>
+                        </select>
+                    </div>
+                    <div id="auditList" class="list-group">
+                        <!-- Registros de auditoria serão carregados aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CODEX: Secção Sincronização GitHub -->
+        <div id="github-sync" class="section-content">
+            <h2><i class="bi bi-cloud-upload me-2"></i>Sincronização GitHub</h2>
+            <p class="text-muted">Configure as credenciais para sincronizar os dados do portfólio com o GitHub. O token é guardado apenas no browser (localStorage) e nunca em ficheiros.</p>
+
+            <div class="alert alert-warning">
+                <i class="bi bi-shield-lock me-2"></i>
+                <strong>Segurança:</strong> O token nunca é enviado para o servidor nem guardado em ficheiros. Fica apenas no localStorage deste browser.
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header"><h5 class="mb-0">Configurações da API GitHub</h5></div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="githubToken" class="form-label">GitHub Personal Access Token</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="githubToken"
+                                placeholder="github_pat_xxxx..." autocomplete="off">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleTokenVisibility">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="form-text">Cria em: GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens. Permiss&otilde;es necess&aacute;rias: <strong>Contents (Read &amp; Write)</strong>.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="githubRepo" class="form-label">Repositório (user/repo)</label>
+                        <input type="text" class="form-control" id="githubRepo"
+                            placeholder="eriksondiastx/Meu-Portfolio">
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" id="saveGithubConfig">
+                            <i class="bi bi-save me-1"></i>Guardar Configuração
+                        </button>
+                        <button class="btn btn-outline-danger" id="clearGithubConfig">
+                            <i class="bi bi-trash me-1"></i>Limpar Token
+                        </button>
+                    </div>
+                    <div class="mt-2 small" id="githubConfigStatus"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h5 class="mb-0">Sincronização de Dados</h5></div>
+                <div class="card-body">
+                    <p>Ao sincronizar, o ficheiro <code>js/data.js</code> no GitHub é actualizado com todos os dados actuais. Na pr&oacute;xima visita de qualquer dispositivo, os dados ser&atilde;o carregados automaticamente.</p>
+                    <div class="alert alert-info small" id="lastSyncInfo">A verificar última sincronização...</div>
+                    <button class="btn btn-success btn-lg" id="syncGithubBtn">
+                        <i class="bi bi-cloud-upload me-2"></i>Sincronizar com GitHub Agora
+                    </button>
+                    <div class="mt-3" id="syncStatus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <!-- Modal para Adicionar Tecnologia -->
@@ -441,107 +543,6 @@
             </div>
         </div>
 
-        <!-- CODEX: Seção Auditoria -->
-        <div id="auditoria" class="section-content">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2>Histórico de Auditoria</h2>
-                <button class="btn btn-sm btn-outline-primary" id="refreshAuditBtn">
-                    <i class="bi bi-arrow-clockwise"></i> Atualizar
-                </button>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <!-- CODEX: Filtros por tipo de ação -->
-                    <div class="mb-3">
-                        <label class="form-label">Filtrar por ação</label>
-                        <div class="d-flex flex-wrap gap-2">
-                            <div class="form-check">
-                                <input class="form-check-input audit-filter" type="checkbox" value="add" id="filterAdd" checked>
-                                <label class="form-check-label" for="filterAdd">add</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input audit-filter" type="checkbox" value="edit" id="filterEdit" checked>
-                                <label class="form-check-label" for="filterEdit">edit</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input audit-filter" type="checkbox" value="delete" id="filterDelete" checked>
-                                <label class="form-check-label" for="filterDelete">delete</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input audit-filter" type="checkbox" value="upload" id="filterUpload" checked>
-                                <label class="form-check-label" for="filterUpload">upload</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="auditLimit" class="form-label">Quantidade de registros</label>
-                        <select class="form-control" id="auditLimit">
-                            <option value="50">50</option>
-                            <option value="100" selected>100</option>
-                            <option value="200">200</option>
-                            <option value="500">500</option>
-                        </select>
-                    </div>
-                    <div id="auditList" class="list-group">
-                        <!-- Registros de auditoria serão carregados aqui -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CODEX: Secção Sincronização GitHub -->
-        <div id="github-sync" class="section-content">
-            <h2><i class="bi bi-cloud-upload me-2"></i>Sincronização GitHub</h2>
-            <p class="text-muted">Configure as credenciais para sincronizar os dados do portfólio com o GitHub. O token é guardado apenas no browser (localStorage) e nunca em ficheiros.</p>
-
-            <div class="alert alert-warning">
-                <i class="bi bi-shield-lock me-2"></i>
-                <strong>Segurança:</strong> O token nunca é enviado para o servidor nem guardado em ficheiros. Fica apenas no localStorage deste browser.
-            </div>
-
-            <div class="card mb-4">
-                <div class="card-header"><h5 class="mb-0">Configurações da API GitHub</h5></div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label for="githubToken" class="form-label">GitHub Personal Access Token</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="githubToken"
-                                placeholder="github_pat_xxxx..." autocomplete="off">
-                            <button class="btn btn-outline-secondary" type="button" id="toggleTokenVisibility">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                        <div class="form-text">Cria em: GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens. Permiss&otilde;es necess&aacute;rias: <strong>Contents (Read &amp; Write)</strong>.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="githubRepo" class="form-label">Repositório (user/repo)</label>
-                        <input type="text" class="form-control" id="githubRepo"
-                            placeholder="eriksondiastx/Meu-Portfolio">
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-primary" id="saveGithubConfig">
-                            <i class="bi bi-save me-1"></i>Guardar Configuração
-                        </button>
-                        <button class="btn btn-outline-danger" id="clearGithubConfig">
-                            <i class="bi bi-trash me-1"></i>Limpar Token
-                        </button>
-                    </div>
-                    <div class="mt-2 small" id="githubConfigStatus"></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><h5 class="mb-0">Sincronização de Dados</h5></div>
-                <div class="card-body">
-                    <p>Ao sincronizar, o ficheiro <code>js/data.js</code> no GitHub é actualizado com todos os dados actuais. Na pr&oacute;xima visita de qualquer dispositivo, os dados ser&atilde;o carregados automaticamente.</p>
-                    <div class="alert alert-info small" id="lastSyncInfo">A verificar última sincronização...</div>
-                    <button class="btn btn-success btn-lg" id="syncGithubBtn">
-                        <i class="bi bi-cloud-upload me-2"></i>Sincronizar com GitHub Agora
-                    </button>
-                    <div class="mt-3" id="syncStatus"></div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- CODEX: Modal para Adicionar Projeto -->
