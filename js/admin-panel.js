@@ -1705,8 +1705,9 @@
 // O GitHub Token deve ser guardado APENAS no localStorage do admin (nunca hardcoded)
 // =============================================================================
 async function syncToGitHub() {
-    const token = localStorage.getItem('github_token');
-    const repo = localStorage.getItem('github_repo');
+    const rawToken = localStorage.getItem('github_token') || '';
+    const token = rawToken.replace(/[^\x20-\x7E]/g, '').trim();
+    const repo = (localStorage.getItem('github_repo') || '').trim();
 
     if (!token || !repo) {
         alert('Configure o GitHub Token e o Repositório no painel antes de sincronizar.\n\nVá a: Configurações → Sincronização GitHub');
