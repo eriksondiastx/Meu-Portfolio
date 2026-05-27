@@ -196,6 +196,26 @@ const defaultData = {
       ]
     },
     {
+      "periodo": "2025 - Presente",
+      "cargo": "Coordenador de TI",
+      "empresa": "SIÁFRICA",
+      "localizacao": "Mutamba, Rua Rainha Ginga, Edifício Business Box, 1º Andar",
+      "responsabilidades": [
+        "Desenvolvedor Web, responsável pelo desenvolvimento e manutenção do website",
+        "Responsável pela gestão de sistemas",
+        "Responsável pelo Suporte Técnico",
+        "Designer de conteúdo para social mídia",
+        "Responsável pela gestão de Social Midia",
+        "Help Desk aos usuários",
+        "Auxiliar Administrativo"
+      ],
+      "logo": "imagem/uploads/1779889771236_siafrica1-1772966051675-435265379.jpg",
+      "imagens": [],
+      "legendas": [
+        ""
+      ]
+    },
+    {
       "periodo": "2024 - 2025",
       "cargo": "Secretário",
       "empresa": "Alexa Gestão de Taxi",
@@ -352,7 +372,7 @@ const defaultData = {
       "description": "Especialização em hooks, context API e gerenciamento de estado global com Redux."
     }
   ],
-  "lastUpdated": 1779887909843
+  "lastUpdated": 1779889817799
 };
 
 window.defaultData = defaultData;
