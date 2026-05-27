@@ -232,7 +232,7 @@ const defaultData = {
         "Configuração de redes locais",
         "Treinamento básico para usuários"
       ],
-      "logo": "imagem/uploads/1779872477281_Egate-Logo.jpeg",
+      "logo": "imagem/uploads/1779887226388_Egate-Logo.jpeg",
       "imagens": [
         "imagem/uploads/1779887019436_Egate1.jpg",
         "imagem/uploads/1779887021381_egate2.jpg",
@@ -352,7 +352,7 @@ const defaultData = {
       "description": "Especialização em hooks, context API e gerenciamento de estado global com Redux."
     }
   ],
-  "lastUpdated": 1779887041100
+  "lastUpdated": 1779887909843
 };
 
 window.defaultData = defaultData;
