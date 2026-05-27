@@ -233,39 +233,17 @@ const defaultData = {
         "Treinamento básico para usuários"
       ],
       "logo": "imagem/uploads/1779872477281_Egate-Logo.jpeg",
-      "imagens": [],
+      "imagens": [
+        "imagem/uploads/1779887019436_Egate1.jpg",
+        "imagem/uploads/1779887021381_egate2.jpg",
+        "imagem/uploads/1779887023856_egate3.jpg",
+        "imagem/uploads/1779887026746_egate4.jpg",
+        "imagem/uploads/1779887029829_egate6.jpg",
+        "imagem/uploads/1779887031882_egate7.jpg"
+      ],
       "legendas": [
         "Implementação e manutenção de infra-estrutura de redes",
         "Suporte Técnico"
-      ]
-    },
-    {
-      "periodo": "2020 - 2022",
-      "cargo": "Professor de Informática",
-      "empresa": "ATL StAndrews English School",
-      "localizacao": "Luanda, Angola",
-      "responsabilidades": [
-        "Lecionar a disciplina de Informática para crianças e adolescentes",
-        "Lecionar a disciplina de Artes Plásticas",
-        "Auxíliar os alunos na resolução das tarefas escolares",
-        "Preparação de material didático e avaliações",
-        "Acompanhamento do progresso dos alunos",
-        "Ensino de pacote Office (Word, Excel, PowerPoint)",
-        "Criação de actividades para datas comemorativas",
-        "Auxílio ao coordenador na gestão de disciplinas e professores",
-        "Suporte técnico das TICs do centro"
-      ],
-      "logo": "imagem/uploads/1779870926224_StAndrews.jpg",
-      "imagens": [
-        "imagem/trabalhos/StAndrews1.jpg",
-        "imagem/trabalhos/StAndrews2.jpg",
-        "imagem/trabalhos/StAndrews3.jpg",
-        "imagem/trabalhos/StAndrews4.jpg",
-        "imagem/trabalhos/StAndrews5.jpg",
-        "imagem/trabalhos/StAndrews6.jpg"
-      ],
-      "legendas": [
-        ""
       ]
     }
   ],
@@ -374,7 +352,7 @@ const defaultData = {
       "description": "Especialização em hooks, context API e gerenciamento de estado global com Redux."
     }
   ],
-  "lastUpdated": 1779873117403
+  "lastUpdated": 1779887041100
 };
 
 window.defaultData = defaultData;
