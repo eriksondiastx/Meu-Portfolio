@@ -186,9 +186,13 @@ const defaultData = {
         "Otimização de sites para SEO e performance",
         "Manutenção e atualização de websites existentes"
       ],
+      "logo": "imagem/uploads/1779872573078_front-end.jpeg",
       "imagens": [
         "imagem/portfolio1.jpg",
         "imagem/portfolio2.jpg"
+      ],
+      "legendas": [
+        ""
       ]
     },
     {
@@ -204,9 +208,13 @@ const defaultData = {
         "Marketing da marca para angariação de parceiros",
         "Emitir relatórios de actividades"
       ],
+      "logo": "imagem/uploads/1779872528943_Alexa.jpeg",
       "imagens": [
         "imagem/portfolio1.jpg",
         "imagem/portfolio2.jpg"
+      ],
+      "legendas": [
+        ""
       ]
     },
     {
@@ -224,13 +232,11 @@ const defaultData = {
         "Configuração de redes locais",
         "Treinamento básico para usuários"
       ],
-      "imagens": [
-        "imagem/trabalhos/Egate1.jpg",
-        "imagem/trabalhos/egate2.jpg",
-        "imagem/trabalhos/egate3.jpg",
-        "imagem/trabalhos/egate4.jpg",
-        "imagem/trabalhos/egate6.jpg",
-        "imagem/trabalhos/egate7.jpg"
+      "logo": "imagem/uploads/1779872477281_Egate-Logo.jpeg",
+      "imagens": [],
+      "legendas": [
+        "Implementação e manutenção de infra-estrutura de redes",
+        "Suporte Técnico"
       ]
     },
     {
@@ -368,7 +374,7 @@ const defaultData = {
       "description": "Especialização em hooks, context API e gerenciamento de estado global com Redux."
     }
   ],
-  "lastUpdated": 1779870939833
+  "lastUpdated": 1779873117403
 };
 
 window.defaultData = defaultData;
