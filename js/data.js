@@ -249,6 +249,7 @@ const defaultData = {
         "Auxílio ao coordenador na gestão de disciplinas e professores",
         "Suporte técnico das TICs do centro"
       ],
+      "logo": "imagem/uploads/1779870926224_StAndrews.jpg",
       "imagens": [
         "imagem/trabalhos/StAndrews1.jpg",
         "imagem/trabalhos/StAndrews2.jpg",
@@ -256,26 +257,7 @@ const defaultData = {
         "imagem/trabalhos/StAndrews4.jpg",
         "imagem/trabalhos/StAndrews5.jpg",
         "imagem/trabalhos/StAndrews6.jpg"
-      ]
-    },
-    {
-      "periodo": "2020 - 2022",
-      "cargo": "Professor de Informática",
-      "empresa": "ATL StAndrews English School",
-      "localizacao": "Luanda, Angola",
-      "responsabilidades": [
-        "Lecionar a disciplina de Informática para crianças e adolescentes",
-        "Lecionar a disciplina de Artes Plásticas",
-        "Auxíliar os alunos na resolução das tarefas escolares",
-        "Preparação de material didático e avaliações",
-        "Acompanhamento do progresso dos alunos",
-        "Ensino de pacote Office (Word, Excel, PowerPoint)",
-        "Criação de actividades para datas comemorativas",
-        "Auxílio ao coordenador na gestão de disciplinas e professores",
-        "Suporte técnico das TICs do centro"
       ],
-      "logo": "imagem/uploads/1779870597103_StAndrews.jpg",
-      "imagens": [],
       "legendas": [
         ""
       ]
@@ -386,7 +368,7 @@ const defaultData = {
       "description": "Especialização em hooks, context API e gerenciamento de estado global com Redux."
     }
   ],
-  "lastUpdated": 1779870608871
+  "lastUpdated": 1779870939833
 };
 
 window.defaultData = defaultData;
