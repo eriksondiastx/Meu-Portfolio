@@ -351,17 +351,17 @@ const defaultData = {
     },
     {
       "nome": "Empreendedor Faixa Preta",
-      "descricao": "Projecto da plataforma de cursos online Empreendedor Faixa Preta, solicitada por: Pedro Ferreira. <br><span>Em desenvolvimento...</span>",
+      "descricao": "Projecto da plataforma de cursos online Empreendedor Faixa Preta, solicitada por: Pedro Ferreira e hospedada na plataforma Netlify. <br><span>Em desenvolvimento...</span>",
       "imagem": "imagem/portfolio5.jpg",
       "link": "https://empreendedorfaixapreta.netlify.app/",
       "status": "Em desenvolvimento"
     },
     {
-      "nome": "Web Design",
-      "descricao": "Coleção de projetos de web design mostrando princípios modernos de UI/UX. <br><span>Em desenvolvimento...</span>",
+      "nome": "Designer Portfolio",
+      "descricao": "Portfólio para Designer desenvolvido para o Sr. Joaquim Mateus e hospedado na plataforma Netlify. <br><span>Concluído</span>",
       "imagem": "imagem/portfolio6.jpg",
-      "link": "#",
-      "status": "Em desenvolvimento"
+      "link": "https://joaquinmateus.netlify.app/",
+      "status": "Concluído"
     }
   ],
   
