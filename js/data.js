@@ -323,17 +323,17 @@ const defaultData = {
   "projetos": [
     {
       "nome": "Currículum Online",
-      "descricao": "Um projecto simples do meu currículum, disponibilizado online através do GitHub Pages. <br><span>Concluído</span>",
+      "descricao": "Um projecto simples do meu currículum, disponibilizado online através do GitHub Pages.",
       "imagem": "imagem/portfolio1.jpg",
       "link": "#",
       "status": "Concluído"
     },
     {
       "nome": "Portfólio",
-      "descricao": "O projecto do meu portfólio, na qual estão tendo acesso.<br>Disponibilizado online através do GitHub Pages. <br><span>Em desenvolvimento...</span>",
+      "descricao": "O projecto do meu portfólio, na qual estão tendo acesso.<br>Disponibilizado online através do GitHub Pages.",
       "imagem": "imagem/portfolio2.jpg",
       "link": "#",
-      "status": "Em desenvolvimento"
+      "status": "Concluído"
     },
     {
       "nome": "Conheça Angola",
@@ -344,21 +344,21 @@ const defaultData = {
     },
     {
       "nome": "LisBeauty",
-      "descricao": "Este é um projecto que eu fiz para a divulgação do negócio da minha esposa. <br><span>Em desenvolvimento...</span>",
+      "descricao": "Projecto desenvolvido para a divulgação do negócio da minha esposa.",
       "imagem": "imagem/portfolio4.jpg",
       "link": "https://eriksondiastx.github.io/Lisbeauty/",
       "status": "Em desenvolvimento"
     },
     {
       "nome": "Empreendedor Faixa Preta",
-      "descricao": "Projecto da plataforma de cursos online Empreendedor Faixa Preta, solicitada por: Pedro Ferreira e hospedada na plataforma Netlify. <br><span>Em desenvolvimento...</span>",
+      "descricao": "Projecto da plataforma de cursos online Empreendedor Faixa Preta, solicitada por: Pedro Ferreira e hospedada na plataforma Netlify.",
       "imagem": "imagem/portfolio5.jpg",
       "link": "https://empreendedorfaixapreta.netlify.app/",
       "status": "Em desenvolvimento"
     },
     {
       "nome": "Designer Portfolio",
-      "descricao": "Portfólio para Designer desenvolvido para o Sr. Joaquim Mateus e hospedado na plataforma Netlify. <br><span>Concluído</span>",
+      "descricao": "Portfólio para Designer desenvolvido para o Sr. Joaquim Mateus e hospedado na plataforma Netlify.",
       "imagem": "imagem/portfolio6.jpg",
       "link": "https://joaquinmateus.netlify.app/",
       "status": "Concluído"
