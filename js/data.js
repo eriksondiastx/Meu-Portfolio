@@ -1,15 +1,22 @@
 // js/data.js
-// CODEX: Single Source of Truth - snapshot gerado pelo painel admin
-// Este ficheiro depende de js/reusable-sync-logic.js
+// Dados principais do portfólio (gerenciados diretamente via código)
 
 const defaultData = {
   "profile": {
     "nome": "Erikson Inácio Dias Teixeira",
-    "titulo": "Técnico de Informática e Desenvolvedor Web",
-    "descricao": "Apaixonado por tecnologia e por computadores desde os 13 anos de idade...",
+    "titulo": "Desenvolvedor Front-End & Técnico de Informática",
+    "descricao": "Apaixonado por tecnologia e por computadores desde os 13 anos de idade, a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário, no então renomado Centro de Formação São Domingos, em Luanda.\nDesde então, já sabia que carreira pretendia seguir.",
+    "formacao": "Engenharia Informática",
+    "profileImage": "imagem/Erikson Profile01.png",
     "facebook": "https://www.facebook.com/erikson.teixeira.73/",
     "instagram": "https://www.instagram.com/eriksonteixeira/",
-    "linkedin": "https://www.linkedin.com/in/erikson-teixeira-b912b3145"
+    "linkedin": "https://www.linkedin.com/in/erikson-teixeira-b912b3145",
+    "email": "eriksondiastx@gmail.com",
+    "telefone": "+244 949 100 325",
+    "whatsapp": "244949100325",
+    "localizacao": "Luanda, Angola",
+    "cvLink": "cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf",
+    "titulosRotativos": "Desenvolvedor Front-End, Professor, Criador de conteúdo, Designer Gráfico"
   },
   "tecnologias": [
     {
@@ -39,8 +46,20 @@ const defaultData = {
     {
       "name": "React JS",
       "category": "frontend",
-      "level": "10",
+      "level": "30",
       "description": "Iniciante"
+    },
+    {
+      "name": "Ângular",
+      "category": "frontend",
+      "level": "30",
+      "description": "Básico"
+    },
+    {
+      "name": ".NET",
+      "category": "tools",
+      "level": "50",
+      "description": "Intermediário"
     },
     {
       "name": "SQL-Server",
@@ -331,10 +350,10 @@ const defaultData = {
       "status": "Em desenvolvimento"
     },
     {
-      "nome": "Gestor de Cantinas",
-      "descricao": "Sistema de gestão para cantinas com controle de inventário e acompanhamento de vendas. <br><span>Em desenvolvimento...</span>",
+      "nome": "Empreendedor Faixa Preta",
+      "descricao": "Projecto da plataforma de cursos online Empreendedor Faixa Preta, solicitada por: Pedro Ferreira. <br><span>Em desenvolvimento...</span>",
       "imagem": "imagem/portfolio5.jpg",
-      "link": "#",
+      "link": "https://empreendedorfaixapreta.netlify.app/",
       "status": "Em desenvolvimento"
     },
     {
@@ -345,50 +364,7 @@ const defaultData = {
       "status": "Em desenvolvimento"
     }
   ],
-  "design": [
-    {
-      "nome": "TxArt",
-      "tipo": "Branding & Identidade Visual",
-      "descricao": "Desenvolvimento completo de identidade visual para página online, incluindo logotipo, cartão de visita e posts.",
-      "ano": "2019",
-      "tags": [
-        "Logo Design",
-        "Material Gráfico",
-        "Design"
-      ],
-      "imagens": [
-        "imagem/design/txart1.jpg",
-        "imagem/design/txart2.png",
-        "imagem/design/txart3.jpg",
-        "imagem/design/txart4.jpg",
-        "imagem/design/txart5.jpg",
-        "imagem/design/txart6.jpg",
-        "imagem/design/txart7.jpg",
-        "imagem/design/txart8.jpg",
-        "imagem/design/txart9.jpg",
-        "imagem/design/txart10.jpg",
-        "imagem/design/txart11.jpg",
-        "imagem/design/txart12.jpg",
-        "imagem/design/txart13.jpg"
-      ]
-    },
-    {
-      "nome": "Projeto Estamos Juntos",
-      "tipo": "Publicidade & Marketing",
-      "descricao": "Criação de campanha publicitária completa para ONG, incluindo peças para redes sociais, banners e material impresso.",
-      "ano": "2024",
-      "tags": [
-        "Social Media",
-        "Banners",
-        "Impressos"
-      ],
-      "imagens": [
-        "imagem/design/fusao de ideias1.jpg",
-        "imagem/design/fusao de ideias2.jpg",
-        "imagem/design/fusao de ideias4.jpg"
-      ]
-    }
-  ],
+  
   "atividades": [
     {
       "date": "Jan 2024",
@@ -406,11 +382,7 @@ const defaultData = {
       "description": "Especialização em hooks, context API e gerenciamento de estado global com Redux."
     }
   ],
-  "lastUpdated": 1779899000000
 };
 
 window.defaultData = defaultData;
-window.initDatabase = function () {
-  return window.PortfolioSync.initDatabase(defaultData);
-};
-window.initDatabase();
+window.portfolioData = defaultData;

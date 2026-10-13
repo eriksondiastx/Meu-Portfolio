@@ -1,50 +1,35 @@
 // js/data-manager.js
+// Gestão e renderização do portfólio diretamente via código
 
-// Função para carregar dados do localStorage
+// Limpeza preventiva de caches legadas no navegador para garantir carregamento direto via código
+try {
+    ['personalInfo', 'tecnologias', 'cursos', 'experiencias', 'projetos', 'design', 'atividades', 'portfolio_last_updated'].forEach(k => {
+        localStorage.removeItem(k);
+    });
+} catch (_) {}
+
+// Função para carregar dados do portfólio a partir do código
 function loadPortfolioData() {
-    let storedExperiencias = JSON.parse(localStorage.getItem('experiencias'));
-    const storedProjetos = JSON.parse(localStorage.getItem('projetos'));
-    const storedCursos = JSON.parse(localStorage.getItem('cursos'));
-
-    // Garantir que a experiência StAndrews não fique em falta caso o localStorage contenha cache de snapshot anterior
-    if (Array.isArray(storedExperiencias) && storedExperiencias.length > 0) {
-        const hasStAndrews = storedExperiencias.some(exp => 
-            exp && exp.empresa && exp.empresa.toLowerCase().includes('standrews')
-        );
-        if (!hasStAndrews) {
-            const defaults = getDefaultExperiences();
-            const standrewsDefault = defaults.find(exp => 
-                exp && exp.empresa && exp.empresa.toLowerCase().includes('standrews')
-            );
-            if (standrewsDefault) {
-                storedExperiencias.push(standrewsDefault);
-                try {
-                    localStorage.setItem('experiencias', JSON.stringify(storedExperiencias));
-                } catch {
-                    // Ignora erro de cota de storage
-                }
-            }
-        }
-    }
-
+    const raw = (typeof window !== 'undefined' && (window.portfolioData || window.defaultData)) || (typeof defaultData !== 'undefined' ? defaultData : null) || {};
     return {
         personalInfo: mergeDefaults(
-            JSON.parse(localStorage.getItem('personalInfo')),
+            raw.profile,
             getDefaultPersonalInfo()
         ),
-        tecnologias: JSON.parse(localStorage.getItem('tecnologias')) || getDefaultTechnologies(),
-        cursos: Array.isArray(storedCursos) && storedCursos.length > 0
-            ? storedCursos
+        tecnologias: (Array.isArray(raw.tecnologias) && raw.tecnologias.length > 0)
+            ? raw.tecnologias
+            : getDefaultTechnologies(),
+        cursos: (Array.isArray(raw.cursos) && raw.cursos.length > 0)
+            ? raw.cursos
             : getDefaultCourses(),
-        experiencias: Array.isArray(storedExperiencias) && storedExperiencias.length > 0
-            ? storedExperiencias
+        experiencias: (Array.isArray(raw.experiencias) && raw.experiencias.length > 0)
+            ? raw.experiencias
             : getDefaultExperiences(),
-        projetos: Array.isArray(storedProjetos) && storedProjetos.length > 0
-            ? storedProjetos
+        projetos: (Array.isArray(raw.projetos) && raw.projetos.length > 0)
+            ? raw.projetos
             : getDefaultProjects(),
-        design: JSON.parse(localStorage.getItem('design')) || getDefaultDesign(),
-        atividades: Array.isArray(JSON.parse(localStorage.getItem('atividades'))) && JSON.parse(localStorage.getItem('atividades')).length > 0
-            ? JSON.parse(localStorage.getItem('atividades'))
+        atividades: (Array.isArray(raw.atividades) && raw.atividades.length > 0)
+            ? raw.atividades
             : getDefaultAtividades()
     };
 }
@@ -55,7 +40,7 @@ function mergeDefaults(saved, defaults) {
     return { ...defaults, ...saved };
 }
 
-// CODEX: Resolve textos com chave i18n (quando salvos pelo painel)
+// CODEX: Resolve textos com chave i18n
 function resolveI18nValue(value) {
     if (value && typeof value === 'object' && value.i18nKey) {
         if (typeof window !== 'undefined' && typeof window.__i18nTranslate === 'function') {
@@ -80,7 +65,7 @@ function resolveI18nFallback(value, key) {
     return base;
 }
 
-// Dados padrão (fallback caso não haja dados no localStorage)
+// Dados padrão do portfólio (gerenciados via código)
 function getDefaultPersonalInfo() {
     return {
         nome: "Erikson Inácio Dias Teixeira",
@@ -106,7 +91,9 @@ function getDefaultTechnologies() {
         { name: "CSS3", category: "frontend", level: "70", description: "Avançado" },
         { name: "JavaScript", category: "frontend", level: "20", description: "Básico" },
         { name: "Bootstrap", category: "frontend", level: "50", description: "Intermediário" },
-        { name: "React JS", category: "frontend", level: "10", description: "Iniciante" },
+        { name: "React JS", category: "frontend", level: "30", description: "Iniciante" },
+        { name: "Ângular", category: "frontend", level: "30", description: "Básico" },
+        { name: ".NET", category: "tools", level: "50", description: "Intermediário" },
         { name: "SQL-Server", category: "backend", level: "50", description: "Intermediário" },
         { name: "MySQL", category: "backend", level: "30", description: "Básico" },
         { name: "Git/GitHub", category: "tools", level: "40", description: "Intermediário" },
@@ -115,8 +102,7 @@ function getDefaultTechnologies() {
         { name: "Pacote Office", category: "tools", level: "80", description: "Avançado" },
         { name: "Adobe Photoshop", category: "tools", level: "40", description: "Intermediário" },
         { name: "Adobe Premiere Pro", category: "tools", level: "20", description: "Intermediário" },
-        { name: "Ângular", category: "frontend", level: "10", description: "Básico" },
-        { name: ".Net", category: "tools", level: "40", description: "Básico" },
+        { name: "Gsap", category: "frontend", level: "10", description: "Básico" }
     ];
 }
 
@@ -343,10 +329,10 @@ function getDefaultProjects() {
             status: "Em desenvolvimento"
         },
         {
-            nome: "Gestor de Cantinas",
-            descricao: "Sistema de gestão para cantinas com controle de inventário e acompanhamento de vendas. <br><span>Em desenvolvimento...</span>",
+            nome: "Empreendedor Faixa Preta",
+            descricao: "Projecto da plataforma de cursos online Empreendedor Faixa Preta, solicitada por Pedro Ferreira. <br><span>Em desenvolvimento...</span>",
             imagem: "imagem/portfolio5.jpg",
-            link: "#",
+            link: "https://empreendedorfaixapreta.netlify.app/",
             status: "Em desenvolvimento"
         },
         {
@@ -402,9 +388,6 @@ document.addEventListener('DOMContentLoaded', animateSkillBars);
 function renderPortfolio() {
     const data = loadPortfolioData();
 
-    // CODEX: Garante dados base no localStorage para sincronizar com o painel admin
-    ensureStorageDefaults(data);
-    
     // Atualizar seção Início
     updateHomeSection(data.personalInfo);
     
@@ -414,7 +397,7 @@ function renderPortfolio() {
     // Atualizar seção Tecnologias
     updateTechnologiesSection(data.tecnologias);
     
-    // Atualizar seção Cursos ← ESTA LINHA DEVE EXISTIR
+    // Atualizar seção Cursos
     updateCoursesSection(data.cursos);
     
     // Atualizar seção Experiências
@@ -423,44 +406,17 @@ function renderPortfolio() {
     // Atualizar seção Projetos
     updateProjectsSection(data.projetos);
     
-    // Atualizar seção Design
-    updateDesignSection(data.design);
-    
     // Atualizar seção Atividades
     updateAtividadesSection(data.atividades);
     
-    // CODEX: Atualizar seção de contactos
+    // Atualizar seção de contactos
     updateContactSection(data.personalInfo);
 
-    // CODEX: Notifica fim da renderização para reprocessar animações
+    // Notifica fim da renderização para reprocessar animações
     document.dispatchEvent(new Event('portfolio:rendered'));
 }
 
-function ensureStorageDefaults(data) {
-    if (!localStorage.getItem('personalInfo')) {
-        localStorage.setItem('personalInfo', JSON.stringify(data.personalInfo));
-    }
-    if (!localStorage.getItem('tecnologias')) {
-        localStorage.setItem('tecnologias', JSON.stringify(data.tecnologias));
-    }
-    if (!localStorage.getItem('cursos')) {
-        localStorage.setItem('cursos', JSON.stringify(data.cursos));
-    }
-    if (!localStorage.getItem('experiencias')) {
-        localStorage.setItem('experiencias', JSON.stringify(data.experiencias));
-    }
-    if (!localStorage.getItem('projetos')) {
-        localStorage.setItem('projetos', JSON.stringify(data.projetos));
-    }
-    if (!localStorage.getItem('design')) {
-        localStorage.setItem('design', JSON.stringify(data.design));
-    }
-    if (!localStorage.getItem('atividades')) {
-        localStorage.setItem('atividades', JSON.stringify(data.atividades));
-    }
-}
-// Funções específicas para cada seção
-// CODEX: Formatação simples para textos com quebras de linha
+// Formatação simples para textos com quebras de linha
 function formatMultilineText(text) {
     if (!text) return '';
     return String(text).replace(/\n/g, '<br>');
@@ -485,12 +441,15 @@ function updateAtividadesSection(atividades) {
             imageHtml = `<div class="card-img"><img src="${act.image}" alt="${resolveI18nValue(act.title)}" style="width:100%; height:150px; object-fit:cover; border-radius:1rem; margin-bottom:1rem;"></div>`;
         }
 
+        const titleText = resolveI18nValue(act.title);
+        const descText = formatMultilineText(resolveI18nValue(act.description));
+
         div.innerHTML = `
-            \${imageHtml}
-            <div class="card-date">\${act.date}</div>
+            ${imageHtml}
+            <div class="card-date">${act.date}</div>
             <div class="card-content">
-                <h3>\${resolveI18nValue(act.title)}</h3>
-                <p>\${formatMultilineText(resolveI18nValue(act.description))}</p>
+                <h3>${titleText}</h3>
+                <p>${descText}</p>
             </div>
         `;
         wrapper.appendChild(div);
@@ -500,7 +459,7 @@ function updateAtividadesSection(atividades) {
 function updateHomeSection(personalInfo) {
     const inicioSection = document.querySelector('.inicio');
     if (inicioSection) {
-        // CODEX: imagem definida no painel "Sobre" agora atualiza o bloco inicio-img
+        // Imagem de perfil sincronizada com o bloco inicio-img
         const homeProfileImg = inicioSection.querySelector('.inicio-img img');
         if (homeProfileImg) {
             homeProfileImg.src = personalInfo.profileImage || 'imagem/default/perfil-default.jpg';
@@ -718,22 +677,18 @@ function updateCoursesSection(cursos) {
     });
 }
 
-// Função para fazer download de certificados de cursos
+// Função para visualizar certificados de cursos
 function downloadCourseCertificate(index) {
-    const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-    const curso = cursos[index];
-    
-    if (curso.certificateType === 'file' && curso.certificate) {
-        window.open(curso.certificate, '_blank');
-    } else if (curso.certificateType === 'file' && curso.fileData) {
+    const data = loadPortfolioData();
+    const curso = data.cursos && data.cursos[index];
+    if (curso && curso.certificate && curso.certificate !== '#') {
         const link = document.createElement('a');
-        link.href = curso.fileData;
-        link.download = curso.certificateName || 'certificado.pdf';
+        link.href = curso.certificate;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    } else {
-        alert('Certificado não disponível para download.');
     }
 }
 function updateExperiencesSection(experiencias) {

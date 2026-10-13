@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erikson Teixeira Page</title>
+    <title>Meu Portfólio - Erikson Teixeira</title>
+    <meta name="description" content="Portfólio profissional de Erikson Inácio Dias Teixeira com projetos, experiências, certificados e modelos 3D interativos.">
+    <meta property="og:title" content="Meu Portfólio - Erikson Teixeira">
+    <meta property="og:description" content="Portfólio profissional de Erikson Inácio Dias Teixeira com projetos, experiências, certificados e modelos 3D interativos.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -33,9 +36,7 @@
     <link rel="stylesheet" href="css/contactos.css">
     <link rel="stylesheet" href="css/hobbies.css">
 
-    <!-- CODEX: utilitario partilhado de sincronizacao -->
-    <script src="js/reusable-sync-logic.js"></script>
-    <!-- CODEX: data.js — deve ser carregado após o utilitario. Sincroniza localStorage com os dados do GitHub -->
+    <!-- Dados do Portfólio -->
     <script src="js/data.js"></script>
 </head>
 
@@ -69,7 +70,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#inicio" data-i18n="nav_home">Início</a></li>
                     <li class="nav-item"><a class="nav-link" href="#sobre" data-i18n="nav_about">Sobre</a></li>
-
+                    <li class="nav-item"><a class="nav-link" href="#tecnologias" data-i18n="nav_tech">Tecnologias</a></li>
                     <li class="nav-item"><a class="nav-link" href="#cursos" data-i18n="nav_courses">Cursos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#experiencias"
                             data-i18n="nav_experience">Experiências</a></li>
@@ -78,12 +79,6 @@
                     <li class="nav-item"><a class="nav-link" href="#atividades"
                             data-i18n="nav_activities">Atividades</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contactos" data-i18n="nav_contact">Contactos</a>
-                    </li>
-                    <!-- Botão de Login -->
-                    <li class="nav-item">
-                        <a class="nav-link login-btn" href="admin/admin-login.html">
-                            <i class="bi bi-person-circle"></i>
-                        </a>
                     </li>
 
                     <!-- NOVO: Link para troca de idioma -->
@@ -269,11 +264,11 @@
                         <div class="tech-info">
                             <h4>Ângular</h4>
                             <div class="skill-bar">
-                                <div class="skill-progress" data-skill="10">
-                                    <span class="skill-percentage">10%</span>
+                                <div class="skill-progress" data-skill="30">
+                                    <span class="skill-percentage">30%</span>
                                 </div>
                             </div>
-                            <p data-i18n="tech_level_beginner">Iniciante</p>
+                            <p data-i18n="tech_level_basic">Básico</p>
                         </div>
                     </div>
                 </div>
@@ -323,13 +318,13 @@
                 <div class="tech-grid">
                     <div class="tech-item">
                         <div class="tech-icon">
-                            <i class="bi bi-git"></i>
+                            <i class="bi bi-cpu"></i>
                         </div>
                         <div class="tech-info">
                             <h4>.NET</h4>
                             <div class="skill-bar">
-                                <div class="skill-progress" data-skill="40">
-                                    <span class="skill-percentage">40%</span>
+                                <div class="skill-progress" data-skill="50">
+                                    <span class="skill-percentage">50%</span>
                                 </div>
                             </div>
                             <p data-i18n="tech_level_intermediate">Intermediário</p>
@@ -1022,11 +1017,10 @@
             <div class="portfolio-box cursos-box">
                 <img src="imagem/portfolio5.jpg" alt="">
                 <div class="portfolio-layer">
-                    <h4 data-i18n="project_5_title">Gestor de Cantinas</h4>
-                    <p data-i18n-html="project_5_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Aspernatur, ad. <br><span>Em desenvolvimento...</span></p>
+                    <h4 data-i18n="project_5_title">Empreendedor Faixa Preta</h4>
+                    <p data-i18n-html="project_5_desc">Projecto da plataforma de cursos online "Empreendedor Faixa Preta", solicitado por Pedro Ferreira<br><span>Em desenvolvimento...</span></p>
                     <i class="bi bi-code-slash"></i>
-                    <a href="#" class="btn2" data-i18n="project_access">Acessar</a>
+                    <a href="https://empreendedorfaixapreta.netlify.app/" class="btn2" data-i18n="project_access">Acessar</a>
                 </div>
             </div>
 
@@ -1275,7 +1269,7 @@
                     el.classList.remove('reveal-visible');
                 });
 
-                const staggerGroups = section.querySelectorAll('.tecnologias-container, .cursos-container, .timeline, .portfolio-container, .design-container, .contact-container, .hobbies-grid');
+                const staggerGroups = section.querySelectorAll('.tecnologias-container, .cursos-container, .timeline, .portfolio-container, .atividades-wrapper, .design-container, .contact-container, .hobbies-grid');
                 staggerGroups.forEach(group => {
                     const items = group.querySelectorAll('.reveal-up, .reveal-left, .reveal-right');
                     items.forEach((item, index) => {
@@ -1284,7 +1278,7 @@
                 });
             });
 
-            revealElements = Array.from(document.querySelectorAll('#inicio .reveal, #inicio .reveal-up, #inicio .reveal-left, #inicio .reveal-right, #sobre .reveal, #sobre .reveal-up, #sobre .reveal-left, #sobre .reveal-right, #tecnologias .reveal, #tecnologias .reveal-up, #tecnologias .reveal-left, #tecnologias .reveal-right, #cursos .reveal, #cursos .reveal-up, #cursos .reveal-left, #cursos .reveal-right, #projectos .reveal, #projectos .reveal-up, #projectos .reveal-left, #projectos .reveal-right, #hobbies .reveal-up, #hobbies .reveal-left, #hobbies .reveal-right'));
+            revealElements = Array.from(document.querySelectorAll('#inicio .reveal, #inicio .reveal-up, #inicio .reveal-left, #inicio .reveal-right, #sobre .reveal, #sobre .reveal-up, #sobre .reveal-left, #sobre .reveal-right, #tecnologias .reveal, #tecnologias .reveal-up, #tecnologias .reveal-left, #tecnologias .reveal-right, #cursos .reveal, #cursos .reveal-up, #cursos .reveal-left, #cursos .reveal-right, #projectos .reveal, #projectos .reveal-up, #projectos .reveal-left, #projectos .reveal-right, #atividades .reveal, #atividades .reveal-up, #atividades .reveal-left, #atividades .reveal-right, #hobbies .reveal-up, #hobbies .reveal-left, #hobbies .reveal-right'));
             const revealNow = () => {
                 revealElements.forEach(el => {
                     const rect = el.getBoundingClientRect();

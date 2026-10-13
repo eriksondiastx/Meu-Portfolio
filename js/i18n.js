@@ -145,6 +145,16 @@
       contact_email_label: "Email:",
       contact_phone_label: "Telefone / WhatsApp:",
       contact_location_label: "Localização:",
+      activities_heading: "Actividades <span>Extras</span>",
+      activity_1_date: "Jan 2024",
+      activity_1_title: "Workshop de UI/UX",
+      activity_1_desc: "Participação em workshop intensivo sobre princípios modernos de interface e experiência do usuário.",
+      activity_2_date: "Mar 2024",
+      activity_2_title: "Hackathon Luanda",
+      activity_2_desc: "Desenvolvimento de uma solução web para mobilidade urbana em equipe durante 48 horas.",
+      activity_3_date: "Jun 2024",
+      activity_3_title: "Curso de React Avançado",
+      activity_3_desc: "Especialização em hooks, context API e gerenciamento de estado global com Redux.",
       rotatives: ["Front-End Dev.", "Professor.", "Criador de conteúdo.", "Designer Gráfico."]
     },
     en: {
@@ -291,6 +301,16 @@
       contact_email_label: "Email:",
       contact_phone_label: "Phone / WhatsApp:",
       contact_location_label: "Location:",
+      activities_heading: "Extra <span>Activities</span>",
+      activity_1_date: "Jan 2024",
+      activity_1_title: "UI/UX Workshop",
+      activity_1_desc: "Participation in an intensive workshop on modern interface principles and user experience.",
+      activity_2_date: "Mar 2024",
+      activity_2_title: "Luanda Hackathon",
+      activity_2_desc: "Development of a web solution for urban mobility in a team for 48 hours.",
+      activity_3_date: "Jun 2024",
+      activity_3_title: "Advanced React Course",
+      activity_3_desc: "Specialization in hooks, context API and global state management with Redux.",
       rotatives: ["Front-End Dev.", "Teacher.", "Content Creator.", "Designer."]
     }
   };

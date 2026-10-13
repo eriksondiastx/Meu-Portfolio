@@ -341,39 +341,7 @@ section.section-visible {
   display: none;
 }
 
-/* Estilo do botão de login */
-        .login-btn {
-            /* The `background: linear-gradient(45deg, #0c2461, #1e3799);` property is creating a
-            linear gradient background for an element. */
-            /*background: linear-gradient(45deg, #0c2461, #1e3799);*/
-            border: none;
-            border-radius: 25px;
-            padding: 8px 20px;
-            color: var(--text-color);
-            font-weight: 500;
-            transition: all 0.3s ease;
-            margin-left: 10px;
-        }
-        
-        /*.login-btn:hover {
-            background: linear-gradient(45deg, #1e3799, #0c2461);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        */
-        .login-btn i {
-          
-          margin-right: 15px;
-        }
-        
-        /* Para mobile */
-        @media (max-width: 991px) {
-            .login-btn {
-                margin: 10px 0;
-                width: 100%;
-                text-align: center;
-            }
-        }
+
 
 /* Estilo para o botão de troca de idioma */
 .language-toggle {
