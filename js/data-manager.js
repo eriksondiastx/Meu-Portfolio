@@ -857,6 +857,9 @@ function updateProjectsSection(projetos) {
         const projectDesc = resolveI18nValue(projeto.descricao);
         const projectStatus = resolveI18nValue(projeto.status);
         const statusMarkup = projectStatus ? `<br><span>${projectStatus}</span>` : '';
+        const accessText = (typeof window !== 'undefined' && typeof window.__i18nTranslate === 'function')
+            ? window.__i18nTranslate('project_access', 'Acessar')
+            : 'Acessar';
         const projectBox = document.createElement('div');
         projectBox.className = 'portfolio-box cursos-box';
         projectBox.innerHTML = `
@@ -865,7 +868,7 @@ function updateProjectsSection(projetos) {
                 <h4>${projectName}</h4>
                 <p>${projectDesc || ''}${statusMarkup}</p>
                 <i class="bi bi-code-slash"></i>
-                ${projeto.link !== '#' ? `<a href="${projeto.link}" class="btn2">Acessar</a>` : ''}
+                <a href="${projeto.link || '#'}" class="btn2" ${projeto.link && projeto.link !== '#' ? 'target="_blank" rel="noopener noreferrer"' : ''} data-i18n="project_access">${accessText}</a>
             </div>
         `;
         portfolioContainer.appendChild(projectBox);
