@@ -337,7 +337,7 @@ const defaultData = {
     },
     {
       "nome": "Conheça Angola",
-      "descricao": "Projecto pessoal, com o objectivo de divulgar Angola, navegando pela história. Desenvolvido usando React 19, TypeScript 5.8, Tailwind CSS v4 e hospedada na plataforma Netlify",
+      "descricao": "Projecto pessoal, com o objectivo de divulgar Angola, navegando pela história. Desenvolvido usando React 19, TypeScript 5.8, Tailwind CSS v4 e Vibe Coding, hospedada na plataforma Netlify",
       "imagem": "imagem/portfolio3.jpg",
       "link": "https://conheca-angola.netlify.app/",
       "status": "Em desenvolvimento"
