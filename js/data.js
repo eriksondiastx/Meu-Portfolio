@@ -336,8 +336,8 @@ const defaultData = {
       "status": "Em desenvolvimento"
     },
     {
-      "nome": "Calculadora",
-      "descricao": "Calculadora web interativa com design moderno e funcionalidade completa. <br><span>Em desenvolvimento...</span>",
+      "nome": "Conheça Angola",
+      "descricao": "Projecto pessoal, com o objectivo de divulgar Angola, navegando pela história. Desenvolvido usando React 19, TypeScript 5.8, Tailwind CSS v4 e hospedada na plataforma Netlify",
       "imagem": "imagem/portfolio3.jpg",
       "link": "#",
       "status": "Em desenvolvimento"
