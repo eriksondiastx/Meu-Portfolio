@@ -114,7 +114,9 @@ function getDefaultTechnologies() {
         { name: "Figma", category: "tools", level: "30", description: "Básico" },
         { name: "Pacote Office", category: "tools", level: "80", description: "Avançado" },
         { name: "Adobe Photoshop", category: "tools", level: "40", description: "Intermediário" },
-        { name: "Adobe Premiere Pro", category: "tools", level: "20", description: "Intermediário" }
+        { name: "Adobe Premiere Pro", category: "tools", level: "20", description: "Intermediário" },
+        { name: "Ângular", category: "frontend", level: "10", description: "Básico" },
+        { name: ".Net", category: "tools", level: "40", description: "Básico" },
     ];
 }
 
@@ -359,40 +361,8 @@ function getDefaultProjects() {
 
 function getDefaultDesign() {
     return [
-        {
-            nome: "TxArt",
-            tipo: "Branding & Identidade Visual",
-            descricao: "Desenvolvimento completo de identidade visual para página online, incluindo logotipo, cartão de visita e posts.",
-            ano: "2019",
-            tags: ["Logo Design", "Material Gráfico", "Design"],
-            imagens: [
-                "imagem/design/txart1.jpg",
-                "imagem/design/txart2.png",
-                "imagem/design/txart3.jpg",
-                "imagem/design/txart4.jpg",
-                "imagem/design/txart5.jpg",
-                "imagem/design/txart6.jpg",
-                "imagem/design/txart7.jpg",
-                "imagem/design/txart8.jpg",
-                "imagem/design/txart9.jpg",
-                "imagem/design/txart10.jpg",
-                "imagem/design/txart11.jpg",
-                "imagem/design/txart12.jpg",
-                "imagem/design/txart13.jpg"
-            ]
-        },
-        {
-            nome: "Projeto Estamos Juntos",
-            tipo: "Publicidade & Marketing",
-            descricao: "Criação de campanha publicitária completa para ONG, incluindo peças para redes sociais, banners e material impresso.",
-            ano: "2024",
-            tags: ["Social Media", "Banners", "Impressos"],
-            imagens: [
-                "imagem/design/fusao de ideias1.jpg",
-                "imagem/design/fusao de ideias2.jpg",
-                "imagem/design/fusao de ideias4.jpg"
-            ]
-        }       
+        
+               
     ];
 }
 // Animação das barras de progresso
