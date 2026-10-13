@@ -5,6 +5,9 @@
   "description": "Servidor simples para upload de imagens e certificados do portfólio.",
   "main": "server.js",
   "scripts": {
+    "dev": "node server.js",
+    "build": "echo 'Build step not required for Express static server'",
+    "lint": "node --check server.js",
     "start": "node server.js"
   },
   "dependencies": {

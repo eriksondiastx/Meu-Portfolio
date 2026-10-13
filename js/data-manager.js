@@ -2,9 +2,31 @@
 
 // Função para carregar dados do localStorage
 function loadPortfolioData() {
-    const storedExperiencias = JSON.parse(localStorage.getItem('experiencias'));
+    let storedExperiencias = JSON.parse(localStorage.getItem('experiencias'));
     const storedProjetos = JSON.parse(localStorage.getItem('projetos'));
     const storedCursos = JSON.parse(localStorage.getItem('cursos'));
+
+    // Garantir que a experiência StAndrews não fique em falta caso o localStorage contenha cache de snapshot anterior
+    if (Array.isArray(storedExperiencias) && storedExperiencias.length > 0) {
+        const hasStAndrews = storedExperiencias.some(exp => 
+            exp && exp.empresa && exp.empresa.toLowerCase().includes('standrews')
+        );
+        if (!hasStAndrews) {
+            const defaults = getDefaultExperiences();
+            const standrewsDefault = defaults.find(exp => 
+                exp && exp.empresa && exp.empresa.toLowerCase().includes('standrews')
+            );
+            if (standrewsDefault) {
+                storedExperiencias.push(standrewsDefault);
+                try {
+                    localStorage.setItem('experiencias', JSON.stringify(storedExperiencias));
+                } catch {
+                    // Ignora erro de cota de storage
+                }
+            }
+        }
+    }
+
     return {
         personalInfo: mergeDefaults(
             JSON.parse(localStorage.getItem('personalInfo')),
@@ -178,7 +200,25 @@ function getDefaultExperiences() {
                 "Otimização de sites para SEO e performance",
                 "Manutenção e atualização de websites existentes"
             ],
+            logo: "imagem/uploads/1779872573078_front-end.jpeg",
             imagens: ["imagem/portfolio1.jpg", "imagem/portfolio2.jpg"]
+        },
+        {
+            periodo: "2025 - Presente",
+            cargo: "Coordenador de TI",
+            empresa: "SIÁFRICA",
+            localizacao: "Mutamba, Rua Rainha Ginga, Edifício Business Box, 1º Andar",
+            responsabilidades: [
+                "Desenvolvedor Web, responsável pelo desenvolvimento e manutenção do website",
+                "Responsável pela gestão de sistemas",
+                "Responsável pelo Suporte Técnico",
+                "Designer de conteúdo para social mídia",
+                "Responsável pela gestão de Social Midia",
+                "Help Desk aos usuários",
+                "Auxiliar Administrativo"
+            ],
+            logo: "imagem/uploads/1779889771236_siafrica1-1772966051675-435265379.jpg",
+            imagens: []
         },
         {
             periodo: "2024 - 2025",
@@ -193,6 +233,7 @@ function getDefaultExperiences() {
                 "Marketing da marca para angariação de parceiros",
                 "Emitir relatórios de actividades"
             ],
+            logo: "imagem/uploads/1779872528943_Alexa.jpeg",
             imagens: ["imagem/portfolio1.jpg", "imagem/portfolio2.jpg"]
         },
         {
@@ -210,6 +251,7 @@ function getDefaultExperiences() {
                 "Configuração de redes locais",
                 "Treinamento básico para usuários"
             ],
+            logo: "imagem/uploads/1779887226388_Egate-Logo.jpeg",
             imagens: [
                 "imagem/trabalhos/Egate1.jpg",
                 "imagem/trabalhos/egate2.jpg",
@@ -235,6 +277,7 @@ function getDefaultExperiences() {
                 "Auxílio ao coordenador na gestão de disciplinas e professores",
                 "Suporte técnico das TICs do centro"
             ],
+            logo: "imagem/Empresas/StAndrews.jpg",
             imagens: [
                 "imagem/trabalhos/StAndrews1.jpg",
                 "imagem/trabalhos/StAndrews2.jpg",
@@ -750,8 +793,33 @@ function updateExperiencesSection(experiencias) {
         return 0;
     });
 
-    // Limpar conteúdo existente (manter apenas o primeiro item como template se necessário)
+    // Limpar conteúdo existente
     timeline.innerHTML = '';
+    // Limpar modais dinâmicos anteriores para não duplicar no DOM
+    document.querySelectorAll('.dynamic-experience-modal').forEach(m => m.remove());
+
+    const defaultCaptions = {
+        "egate1.jpg": "Upgrade do servidor na SDB",
+        "egate2.jpg": "Manutenção preventiva de computadores",
+        "egate3.jpg": "Configuração de rede e infraestrutura",
+        "egate4.jpg": "Organização de racks e cabos",
+        "egate6.jpg": "Instalação de sistemas operativos",
+        "egate7.jpg": "Suporte direto aos utilizadores",
+        "standrews1.jpg": "Aula de introdução à informática",
+        "standrews2.jpg": "Prática no laboratório de TI",
+        "standrews3.jpg": "Dinâmica e artes plásticas",
+        "standrews4.jpg": "Auxílio nas tarefas escolares",
+        "standrews5.jpg": "Apoio em projetos didáticos",
+        "standrews6.jpg": "Avaliação do progresso dos alunos"
+    };
+
+    const getCaption = (img, exp, imgIndex) => {
+        if (exp.legendas && exp.legendas[imgIndex] && exp.legendas[imgIndex].trim() !== "") {
+            return exp.legendas[imgIndex].trim();
+        }
+        const file = (img || '').split('/').pop().toLowerCase();
+        return defaultCaptions[file] || "Visualizar Detalhes";
+    };
 
     // Adicionar cada experiência (novas no topo)
     experiencias.forEach((exp, index) => {
@@ -763,17 +831,20 @@ function updateExperiencesSection(experiencias) {
         if (exp.logo) {
             empresaImg = exp.logo;
         } else {
-            const empresaNome = (exp.empresa || '').toString();
-            if (empresaNome.includes('Alexa')) empresaImg = 'imagem/empresas/Alexa.jpeg';
-            if (empresaNome.includes('Egate')) empresaImg = 'imagem/empresas/Egate-Logo.jpeg';
-            if (empresaNome.includes('StAndrews')) empresaImg = 'imagem/empresas/StAndrews.jpg';
-            if (empresaNome.includes('Front') || empresaNome.includes('Aut')) {
-                empresaImg = 'imagem/empresas/front-end.jpeg';
+            const empresaNome = (exp.empresa || '').toString().toLowerCase();
+            if (empresaNome.includes('alexa')) empresaImg = 'imagem/Empresas/Alexa.jpeg';
+            else if (empresaNome.includes('egate')) empresaImg = 'imagem/Empresas/Egate-Logo.jpeg';
+            else if (empresaNome.includes('standrews')) empresaImg = 'imagem/Empresas/StAndrews.jpg';
+            else if (empresaNome.includes('siafrica') || empresaNome.includes('siáfrica')) empresaImg = 'imagem/uploads/1779889771236_siafrica1-1772966051675-435265379.jpg';
+            else if (empresaNome.includes('front') || empresaNome.includes('aut')) {
+                empresaImg = 'imagem/Empresas/front-end.jpeg';
             }
         }
         
         const cargoText = resolveI18nValue(exp.cargo);
         const responsabilidades = resolveI18nArray(exp.responsabilidades) || [];
+        const isStAndrews = (exp.empresa || '').toLowerCase().includes('standrews');
+
         expItem.innerHTML = `
             <div class="timeline-dot"></div>
             <div class="timeline-date">${exp.periodo}</div>
@@ -798,29 +869,10 @@ function updateExperiencesSection(experiencias) {
 
                 ${exp.imagens && exp.imagens.length > 0 ? `
                 <div class="work-gallery">
-                    <h4>${exp.empresa.includes('StAndrews') ? 'Momentos em sala de aula:' : 'Evidências do trabalho:'}</h4>
+                    <h4>${isStAndrews ? 'Momentos em sala de aula:' : 'Evidências do trabalho:'}</h4>
                     <div class="gallery-grid">
                         ${exp.imagens.map((img, imgIndex) => {
-                            // Helper para buscar as legendas de acordo com o ficheiro (ou fallback se for novo)
-                            const captionsMap = {
-                                "imagem/trabalhos/Egate1.jpg": "Upgrade do servidor na SDB",
-                                "imagem/trabalhos/egate2.jpg": "Manutenção preventiva",
-                                "imagem/trabalhos/egate3.jpg": "Configuração de rede",
-                                "imagem/trabalhos/egate4.jpg": "Organização de racks",
-                                "imagem/trabalhos/egate6.jpg": "Sistemas operativos",
-                                "imagem/trabalhos/egate7.jpg": "Suporte aos utilizadores",
-                                "imagem/trabalhos/StAndrews1.jpg": "Aula de TI",
-                                "imagem/trabalhos/StAndrews2.jpg": "Laboratório de informática",
-                                "imagem/trabalhos/StAndrews3.jpg": "Artes plásticas",
-                                "imagem/trabalhos/StAndrews4.jpg": "Auxílio escolar",
-                                "imagem/trabalhos/StAndrews5.jpg": "Apoio pedagógico",
-                                "imagem/trabalhos/StAndrews6.jpg": "Avaliação de projetos"
-                            };
-                            let captionText = captionsMap[img] || "Visualizar Detalhes";
-                            if (exp.legendas && exp.legendas[imgIndex] && exp.legendas[imgIndex].trim() !== "") {
-                                captionText = exp.legendas[imgIndex].trim();
-                            }
-
+                            const captionText = getCaption(img, exp, imgIndex);
                             return `
                             <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#modal${index}_${imgIndex}">
                                 <img src="${img}" alt="${exp.cargo} ${imgIndex + 1}">
@@ -841,29 +893,10 @@ function updateExperiencesSection(experiencias) {
         
         // Adicionar modais para as imagens (se houver)
         if (exp.imagens && exp.imagens.length > 0) {
-                exp.imagens.forEach((img, imgIndex) => {
-                // CODEX: reutiliza a mesma legenda mostrada no hover para manter consistencia
-                const captionsMap = {
-                    "imagem/trabalhos/Egate1.jpg": "Upgrade do servidor na SDB",
-                    "imagem/trabalhos/egate2.jpg": "Manutenção preventiva",
-                    "imagem/trabalhos/egate3.jpg": "Configuração de rede",
-                    "imagem/trabalhos/egate4.jpg": "Organização de racks",
-                    "imagem/trabalhos/egate6.jpg": "Sistemas operativos",
-                    "imagem/trabalhos/egate7.jpg": "Suporte aos utilizadores",
-                    "imagem/trabalhos/StAndrews1.jpg": "Aula de TI",
-                    "imagem/trabalhos/StAndrews2.jpg": "Laboratório de informática",
-                    "imagem/trabalhos/StAndrews3.jpg": "Artes plásticas",
-                    "imagem/trabalhos/StAndrews4.jpg": "Auxílio escolar",
-                    "imagem/trabalhos/StAndrews5.jpg": "Apoio pedagógico",
-                    "imagem/trabalhos/StAndrews6.jpg": "Avaliação de projetos"
-                };
-                let captionText = captionsMap[img] || "Visualizar Detalhes";
-                if (exp.legendas && exp.legendas[imgIndex] && exp.legendas[imgIndex].trim() !== "") {
-                    captionText = exp.legendas[imgIndex].trim();
-                }
-
+            exp.imagens.forEach((img, imgIndex) => {
+                const captionText = getCaption(img, exp, imgIndex);
                 const modal = document.createElement('div');
-                modal.className = 'modal fade';
+                modal.className = 'modal fade dynamic-experience-modal';
                 modal.id = `modal${index}_${imgIndex}`;
                 modal.tabIndex = '-1';
                 modal.innerHTML = `

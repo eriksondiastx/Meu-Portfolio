@@ -265,6 +265,40 @@ const defaultData = {
         "Implementação e manutenção de infra-estrutura de redes",
         "Suporte Técnico"
       ]
+    },
+    {
+      "periodo": "2020 - 2022",
+      "cargo": "Professor de Informática",
+      "empresa": "ATL StAndrews English School",
+      "localizacao": "Luanda, Angola",
+      "responsabilidades": [
+        "Lecionar a disciplina de Informática para crianças e adolescentes",
+        "Lecionar a disciplina de Artes Plásticas",
+        "Auxíliar os alunos na resolução das tarefas escolares",
+        "Preparação de material didático e avaliações",
+        "Acompanhamento do progresso dos alunos",
+        "Ensino de pacote Office (Word, Excel, PowerPoint)",
+        "Criação de actividades para datas comemorativas",
+        "Auxílio ao coordenador na gestão de disciplinas e professores",
+        "Suporte técnico das TICs do centro"
+      ],
+      "logo": "imagem/Empresas/StAndrews.jpg",
+      "imagens": [
+        "imagem/Trabalhos/StAndrews1.jpg",
+        "imagem/Trabalhos/StAndrews2.jpg",
+        "imagem/Trabalhos/StAndrews3.jpg",
+        "imagem/Trabalhos/StAndrews4.jpg",
+        "imagem/Trabalhos/StAndrews5.jpg",
+        "imagem/Trabalhos/StAndrews6.jpg"
+      ],
+      "legendas": [
+        "Aula de introdução à informática",
+        "Prática no laboratório de TI",
+        "Dinâmica e artes plásticas",
+        "Auxílio nas tarefas escolares",
+        "Apoio em projetos didáticos",
+        "Avaliação do progresso dos alunos"
+      ]
     }
   ],
   "projetos": [
@@ -372,7 +406,7 @@ const defaultData = {
       "description": "Especialização em hooks, context API e gerenciamento de estado global com Redux."
     }
   ],
-  "lastUpdated": 1779889817799
+  "lastUpdated": 1779899000000
 };
 
 window.defaultData = defaultData;

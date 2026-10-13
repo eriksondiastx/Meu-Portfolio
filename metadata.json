@@ -1,0 +1,8 @@
+{
+  "name": "Meu Portfólio - Erikson Teixeira",
+  "description": "Portfólio profissional de Erikson Inácio Dias Teixeira com projetos, experiências, certificados e modelos 3D interativos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
