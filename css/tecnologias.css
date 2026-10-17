@@ -73,8 +73,17 @@
   justify-content: center;
   background: var(--main-color);
   border-radius: 50%;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   color: var(--bg-color);
+}
+
+.tech-icon i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 2.8rem;
+  color: inherit;
 }
 
 .tech-info {

@@ -4,7 +4,7 @@
 const defaultData = {
   "profile": {
     "nome": "Erikson Inácio Dias Teixeira",
-    "titulo": "Desenvolvedor Front-End & Técnico de Informática",
+    "titulo": "Desenvolvedor Web & Técnico de Informática",
     "descricao": "Apaixonado por tecnologia e por computadores desde os 13 anos de idade, a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário, no então renomado Centro de Formação São Domingos, em Luanda.\nDesde então, já sabia que carreira pretendia seguir.",
     "formacao": "Engenharia Informática",
     "profileImage": "imagem/Erikson Profile01.png",

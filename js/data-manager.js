@@ -571,7 +571,7 @@ function updateTechnologiesSection(tecnologias) {
                 ${techs.map(tech => `
                     <div class="tech-item">
                         <div class="tech-icon">
-                            <i class="${getTechIcon(tech.name)}"></i>
+                            <i class="${tech.icon || getTechIcon(tech.name)}"></i>
                         </div>
                         <div class="tech-info">
                             <h4>${tech.name}</h4>
@@ -595,23 +595,44 @@ function updateTechnologiesSection(tecnologias) {
 }
 
 function getTechIcon(techName) {
-    const icons = {
-        'HTML5': 'bi bi-filetype-html',
-        'CSS3': 'bi bi-filetype-css',
-        'JavaScript': 'bi bi-filetype-js',
-        'Bootstrap': 'bi bi-bootstrap',
-        'React JS': 'bi bi-bootstrap',
-        'SQL-Server': 'bi bi-filetype-php',
-        'MySQL': 'bi bi-database',
-        'Git/GitHub': 'bi bi-git',
-        'VS Code': 'bi bi-code-square',
-        'Figma': 'bi bi-palette',
-        'Pacote Office': 'bi bi-palette',
-        'Adobe Photoshop': 'bi bi-palette',
-        'Adobe Premiere Pro': 'bi bi-palette'
-    };
+    const raw = (techName || '').toString().trim();
+    const name = raw.toLowerCase();
     
-    return icons[techName] || 'bi bi-code-slash';
+    // Front-End
+    if (name.includes('html')) return 'devicon-html5-plain';
+    if (name.includes('css')) return 'devicon-css3-plain';
+    if (name.includes('javascript') || name === 'js') return 'devicon-javascript-plain';
+    if (name.includes('typescript') || name === 'ts') return 'devicon-typescript-plain';
+    if (name.includes('bootstrap')) return 'devicon-bootstrap-plain';
+    if (name.includes('tailwind')) return 'devicon-tailwindcss-plain';
+    if (name.includes('react')) return 'devicon-react-original';
+    if (name.includes('ngular')) return 'devicon-angular-plain';
+    if (name.includes('vue')) return 'devicon-vuejs-plain';
+    if (name.includes('gsap') || name.includes('greensock')) return 'bi bi-lightning-charge-fill';
+    
+    // Back-End & Databases
+    if (name.includes('sql-server') || name.includes('sql server') || name.includes('mssql')) return 'devicon-microsoftsqlserver-plain';
+    if (name.includes('mysql')) return 'devicon-mysql-plain';
+    if (name.includes('postgres')) return 'devicon-postgresql-plain';
+    if (name.includes('mongo')) return 'devicon-mongodb-plain';
+    if (name.includes('node')) return 'devicon-nodejs-plain';
+    if (name.includes('php')) return 'devicon-php-plain';
+    if (name.includes('python')) return 'devicon-python-plain';
+    
+    // Ferramentas & Outros
+    if (name.includes('.net') || name === 'dotnet') return 'devicon-dot-net-plain';
+    if (name.includes('github')) return 'devicon-github-original';
+    if (name.includes('git')) return 'devicon-git-plain';
+    if (name.includes('vs code') || name.includes('vscode')) return 'devicon-vscode-plain';
+    if (name.includes('figma')) return 'devicon-figma-plain';
+    if (name.includes('office') || name.includes('pacote office')) return 'bi bi-microsoft';
+    if (name.includes('photoshop')) return 'devicon-photoshop-plain';
+    if (name.includes('premiere')) return 'devicon-premierepro-plain';
+    if (name.includes('illustrator')) return 'devicon-illustrator-plain';
+    if (name.includes('docker')) return 'devicon-docker-plain';
+    if (name.includes('linux')) return 'devicon-linux-plain';
+    
+    return 'bi bi-code-slash';
 }
 
 // js/data-manager.js - FUNÇÃO QUE ESTAVA FALTANDO
