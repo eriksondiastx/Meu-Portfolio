@@ -362,6 +362,13 @@ const defaultData = {
       "imagem": "imagem/portfolio6.jpg",
       "link": "https://joaquinmateus.netlify.app/",
       "status": "Concluído"
+    },
+    {
+      "nome": "TXART",
+      "descricao": "Web Portfólio para da minha marca, desenvolvido usando programação assistida por agente de IA (VibeCoding) na plataforma Google IA Studio",
+      "imagem": "imagem/portfolio6.jpg",
+      "link": "https://joaquinmateus.netlify.app/",
+      "status": "Concluído"
     }
   ],
   
