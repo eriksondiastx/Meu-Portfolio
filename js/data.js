@@ -204,9 +204,9 @@ const defaultData = {
   ],
   "experiencias": [
     {
-      "periodo": "2025 - Presente",
-      "cargo": "Desenvolvedor Front-End Freelancer",
-      "empresa": "Trabalho Autônomo",
+      "periodo": "2023 - Presente",
+      "cargo": "Designer & Desenvolvedor-Freelancer",
+      "empresa": "TXART",
       "localizacao": "Luanda, Angola",
       "responsabilidades": [
         "Desenvolvimento de websites responsivos usando HTML5, CSS3 e JavaScript",
