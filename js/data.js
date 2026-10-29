@@ -5,8 +5,12 @@ const defaultData = {
   "profile": {
     "nome": "Erikson Inácio Dias Teixeira",
     "titulo": "Desenvolvedor Web & Técnico de Informática",
-    "descricao": "Apaixonado por tecnologia e por computadores desde os 13 anos de idade, a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário, no então renomado Centro de Formação São Domingos, em Luanda.\nDesde então, já sabia que carreira pretendia seguir.",
-    "formacao": "Engenharia Informática",
+    "descricao": [
+      "A minha paixão pela tecnologia e pelos computadores começou aos 13 anos, dando início a uma jornada de aprendizagem e descoberta que viria a definir o meu percurso profissional. O primeiro passo foi a formação em Informática na Óptica do Utilizador, no Centro de Formação São Domingos, em Luanda.",
+      "Desde então, tenho vindo a aprofundar os meus conhecimentos e a desenvolver competências em diferentes áreas das Tecnologias de Informação, com especial enfoque no desenvolvimento Web, suporte técnico e soluções informáticas.",
+      "Acredito que a tecnologia vai muito além do código: é uma ferramenta para resolver problemas, optimizar processos e transformar ideias em soluções práticas. É essa visão que orienta o meu trabalho e a minha evolução contínua como profissional de TI."
+    ],
+    "formacao": "Desenvolvimento Web | Sistemas | Soluções Tecnológicas",
     "profileImage": "imagem/Erikson Profile01.png",
     "facebook": "https://www.facebook.com/erikson.teixeira.73/",
     "instagram": "https://www.instagram.com/eriksonteixeira/",
@@ -16,7 +20,13 @@ const defaultData = {
     "whatsapp": "244949100325",
     "localizacao": "Luanda, Angola",
     "cvLink": "cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf",
-    "titulosRotativos": "Desenvolvedor Front-End, Professor, Criador de conteúdo, Designer Gráfico"
+    "titulosRotativos": "Desenvolvedor Web, Técnico de Informática, Criador de conteúdo, Designer Gráfico",
+    "sobre": {
+      "intro": "Natural de Angola, Província de Luanda, Nascido aos 12 de Setembro de 1993,<br>O primeiro filho de três (3) irmãos.<br>Pai: Mateus Inácio Teixeira;<br>Mãe: Ana Tuti Dias Ntonha Teixeira.",
+      
+      "carreira": "Actualmente trilhando o caminho como Desenvolvedor Web & Técnico de Informática.",
+      "motivacao": "Sempre procurando ser melhor do que fui no dia anterior."
+    }
   },
   "tecnologias": [
     {
@@ -259,23 +269,43 @@ const defaultData = {
     {
       "periodo": "2022 - 2024",
       "cargo": "Técnico de Suporte em TI",
-      "empresa": "Egate Cloud",
-      "localizacao": "São Paulo, Luanda, Angola",
+      "empresa": "Sociedade de Desenvolvimento da Barra do Dande",
+      "localizacao": "Torres Luanda, Kinaxixi, Luanda",
       "responsabilidades": [
-        "Suporte técnico a usuários finais",
-        "Suporte técnico a usuários finais na empresa Sociedade de Desenvolvimento da Barra do Dande(SDB)",
-        "Auxílio ao Engº Amandio Zumba na gestão de sistemas da SDB",
-        "Implementar e normas de Segurança da Informação na empresa",
+        "Suporte técnico/helpdesk a usuários finais",
+        "Auxílio ao coordenador Amandio Zumba na administração de sistemas",
         "Instalação e configuração de software",
         "Manutenção preventiva e corretiva de computadores",
         "Configuração de redes locais",
         "Treinamento básico para usuários"
       ],
-      "logo": "imagem/uploads/1779887226388_Egate-Logo.jpeg",
+      "logo": "imagem/Empresas/SDBD_logo.png",
       "imagens": [
         "imagem/uploads/1779887019436_Egate1.jpg",
         "imagem/uploads/1779887021381_egate2.jpg",
         "imagem/uploads/1779887023856_egate3.jpg",
+        
+      ],
+      "legendas": [
+        "Administração de Sistemas",
+        "Suporte Técnico"
+      ]
+    },
+    {
+      "periodo": "2022 - 2024",
+      "cargo": "Técnico de Suporte em TI",
+      "empresa": "Egate Cloud",
+      "localizacao": "São Paulo, Luanda, Angola",
+      "responsabilidades": [
+        "Suporte técnico a usuários finais",
+        "Implementar e normas de Segurança da Informação na empresa",
+        "Instalação e configuração de software",
+        "Manutenção preventiva e corretiva de computadores",
+        "Configuração de redes locais",
+        "Técnico de CCTV"
+      ],
+      "logo": "imagem/uploads/1779887226388_Egate-Logo.jpeg",
+      "imagens": [
         "imagem/uploads/1779887026746_egate4.jpg",
         "imagem/uploads/1779887029829_egate6.jpg",
         "imagem/uploads/1779887031882_egate7.jpg"
@@ -367,8 +397,8 @@ const defaultData = {
       "nome": "TXART",
       "descricao": "Web Portfólio para da minha marca, desenvolvido usando programação assistida por agente de IA (VibeCoding) na plataforma Google IA Studio",
       "imagem": "imagem/portfolio6.jpg",
-      "link": "https://joaquinmateus.netlify.app/",
-      "status": "Concluído"
+      "link": "https://txart-797079839889.us-west1.run.app/",
+      "status": "Em desenvolvimento"
     }
   ],
   

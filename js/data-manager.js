@@ -60,7 +60,11 @@ function resolveI18nArray(items) {
 function resolveI18nFallback(value, key) {
     const base = resolveI18nValue(value);
     if (typeof window !== 'undefined' && typeof window.__i18nTranslate === 'function' && key) {
-        return window.__i18nTranslate(key, base || '');
+        const lang = (typeof window.__i18nGetLang === 'function') ? window.__i18nGetLang() : (localStorage.getItem('lang') || 'pt');
+        if (lang === 'en') {
+            const translated = window.__i18nTranslate(key, '');
+            if (translated) return translated;
+        }
     }
     return base;
 }
@@ -69,9 +73,9 @@ function resolveI18nFallback(value, key) {
 function getDefaultPersonalInfo() {
     return {
         nome: "Erikson Inácio Dias Teixeira",
-        titulo: "Desenvolvedor Front-End",
-        descricao: "Apaixonado por tecnologia e por computadores desde os 13 anos de idade, a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário, no então renomado Centro de Formação São Domingos, em Luanda.\nDesde então, já sabia que carreira pretendia seguir.",
-        formacao: "Engenharia Informática",
+        titulo: "Desenvolvedor Web & Técnico de Informática",
+        descricao: "A minha paixão pela tecnologia e pelos computadores começou aos 13 anos, dando início a uma jornada de aprendizagem e descoberta que viria a definir o meu percurso profissional. O primeiro passo foi a formação em Informática na Óptica do Utilizador, no Centro de Formação São Domingos, em Luanda. Desde então, tenho vindo a aprofundar os meus conhecimentos e a desenvolver competências em diferentes áreas das Tecnologias de Informação, com especial enfoque no desenvolvimento Web, suporte técnico e soluções informáticas. Acredito que a tecnologia vai muito além do código: é uma ferramenta para resolver problemas, optimizar processos e transformar ideias em soluções práticas. É essa visão que orienta o meu trabalho e a minha evolução contínua como profissional de TI.",
+        formacao: "Desenvolvimento Web | Sistemas | Soluções Tecnológicas",
         profileImage: "imagem/Erikson Profile01.png",
         facebook: "https://www.facebook.com/erikson.teixeira.73/",
         instagram: "https://www.instagram.com/eriksonteixeira/",
@@ -81,7 +85,13 @@ function getDefaultPersonalInfo() {
         whatsapp: "244949100325",
         localizacao: "Luanda, Angola",
         cvLink: "cv/1º Curricuculum  Vitae Erikson 05_25_IT.pdf",
-        titulosRotativos: "Desenvolvedor Front-End, Professor, Criador de conteúdo, Designer Gráfico"
+        titulosRotativos: "Desenvolvedor Web, Técnico de Informática, Criador de conteúdo, Designer Gráfico",
+        sobre: {
+            intro: "Natural de Angola, Província de Luanda, Nascido aos 12 de Setembro de 1993,<br>O primeiro filho de três (3) irmãos.<br>Pai: Mateus Inácio Teixeira;<br>Mãe: Ana Tuti Dias Ntonha Teixeira.",
+            descricao: "A minha paixão pela tecnologia e pelos computadores começou aos 13 anos, dando início a uma jornada de aprendizagem e descoberta que viria a definir o meu percurso profissional. O primeiro passo foi a formação em Informática na Óptica do Utilizador, no Centro de Formação São Domingos, em Luanda. Desde então, tenho vindo a aprofundar os meus conhecimentos e a desenvolver competências em diferentes áreas das Tecnologias de Informação, com especial enfoque no desenvolvimento Web, suporte técnico e soluções informáticas. Acredito que a tecnologia vai muito além do código: é uma ferramenta para resolver problemas, optimizar processos e transformar ideias em soluções práticas. É essa visão que orienta o meu trabalho e a minha evolução contínua como profissional de TI.",
+            carreira: "Actualmente trilhando o caminho como Desenvolvedor Web & Técnico de Informática.",
+            motivacao: "Sempre procurando ser melhor do que fui no dia anterior."
+        }
     };
 }
 
@@ -416,10 +426,20 @@ function renderPortfolio() {
     document.dispatchEvent(new Event('portfolio:rendered'));
 }
 
-// Formatação simples para textos com quebras de linha
+// Formatação flexível para textos com múltiplos parágrafos ou quebras de linha
 function formatMultilineText(text) {
     if (!text) return '';
-    return String(text).replace(/\n/g, '<br>');
+    // Suporte a lista/array de parágrafos: ["Parágrafo 1", "Parágrafo 2"]
+    if (Array.isArray(text)) {
+        return text
+            .map(item => String(item || '').trim())
+            .filter(Boolean)
+            .join('<br><br>');
+    }
+    return String(text)
+        .replace(/\r\n/g, '\n')
+        .replace(/\n\n+/g, '<br><br>')
+        .replace(/\n/g, '<br>');
 }
 
 function updateAtividadesSection(atividades) {
@@ -469,10 +489,12 @@ function updateHomeSection(personalInfo) {
         if (nameEl) nameEl.textContent = personalInfo.nome;
         
         const tituloSpan = document.getElementById('homeRole');
-        if (tituloSpan) tituloSpan.textContent = resolveI18nValue(personalInfo.titulo);
+        if (tituloSpan) tituloSpan.textContent = resolveI18nFallback(personalInfo.titulo, 'home_role');
         
         const descricaoP = document.getElementById('homeDescription') || inicioSection.querySelector('p');
-        if (descricaoP) descricaoP.innerHTML = formatMultilineText(resolveI18nFallback(personalInfo.descricao, 'home_description'));
+        if (descricaoP && personalInfo.descricao) {
+            descricaoP.innerHTML = formatMultilineText(resolveI18nFallback(personalInfo.descricao, 'home_description'));
+        }
         
         const degreeEl = document.getElementById('homeDegree');
         if (degreeEl && personalInfo.formacao) {
@@ -503,26 +525,60 @@ function updateHomeSection(personalInfo) {
 }
 
 function updateAboutSection(personalInfo) {
-    const sobreSection = document.querySelector('.sobre');
-    if (sobreSection) {
-        const aboutRole = document.getElementById('aboutRole');
-        if (aboutRole) aboutRole.textContent = resolveI18nValue(personalInfo.titulo);
+    const sobreSection = document.querySelector(".sobre");
+    if (!sobreSection) return;
 
-        // CODEX: imagem de perfil da se��o sobre (Profile2)
-        const profileImg = sobreSection.querySelector('.Profile2');
-        if (profileImg) {
-            profileImg.src = personalInfo.profileImage || 'imagem/default/perfil-default.jpg';
+    // Papel / Cargo
+    const aboutRole = document.getElementById("aboutRole");
+    if (aboutRole) aboutRole.textContent = resolveI18nFallback(personalInfo.titulo, 'home_role');
+
+    // Intro / Naturalidade no Sobre
+    const aboutIntroEl = document.getElementById("aboutIntro");
+    const introText = personalInfo.sobreIntro || (personalInfo.sobre && personalInfo.sobre.intro);
+    if (aboutIntroEl && introText) {
+        aboutIntroEl.innerHTML = formatMultilineText(resolveI18nValue(introText));
+    }
+
+    // Descrição principal no Sobre
+    const aboutDescEl = document.getElementById("aboutDescription");
+    const descText = personalInfo.sobreDescricao || (personalInfo.sobre && personalInfo.sobre.descricao);
+    if (aboutDescEl && descText) {
+        aboutDescEl.innerHTML = formatMultilineText(resolveI18nFallback(descText, 'home_description'));
+        aboutDescEl.style.display = "block";
+    }
+
+    // Carreira no Sobre
+    const aboutCareerEl = document.getElementById("aboutCareer");
+    const careerText = personalInfo.sobreCarreira || (personalInfo.sobre && personalInfo.sobre.carreira);
+    if (aboutCareerEl) {
+        if (careerText) {
+            aboutCareerEl.innerHTML = formatMultilineText(resolveI18nFallback(careerText, 'about_career'));
+        } else {
+            aboutCareerEl.innerHTML = resolveI18nFallback(`Actualmente trilhando o caminho como <span id="aboutRole">${resolveI18nValue(personalInfo.titulo)}</span>.`, 'about_career');
         }
+    }
+
+    // Motivação no Sobre
+    const aboutMottoEl = document.getElementById("aboutMotto");
+    const mottoText = personalInfo.sobreMotivacao || (personalInfo.sobre && personalInfo.sobre.motivacao);
+    if (aboutMottoEl && mottoText) {
+        aboutMottoEl.textContent = resolveI18nValue(mottoText);
+    }
+
+    // Imagem de perfil da seção sobre
+    const profileImg = sobreSection.querySelector(".Profile2");
+    if (profileImg) {
+        profileImg.src = personalInfo.profileImage || "imagem/default/perfil-default.jpg";
+    }
+    
+    // Atualizar links de redes sociais na seção sobre
+    const socialMedia = sobreSection.querySelector(".social-media");
+    if (socialMedia) {
+        const facebookLink = socialMedia.querySelector("a[href*=\"facebook\"]");
+        if (facebookLink) facebookLink.href = personalInfo.facebook;
         
-        // Atualizar links de redes sociais na se��o sobre
-        const socialMedia = sobreSection.querySelector('.social-media');
-        if (socialMedia) {
-            const facebookLink = socialMedia.querySelector('a[href*="facebook"]');
-            if (facebookLink) facebookLink.href = personalInfo.facebook;
-            
-            const instagramLink = socialMedia.querySelector('a[href*="instagram"]');
-            if (instagramLink) instagramLink.href = personalInfo.instagram;
-        }
+        const instagramLink = socialMedia.querySelector("a[href*=\"instagram\"]");
+        if (instagramLink) instagramLink.href = personalInfo.instagram;
     }
 }
 
@@ -873,10 +929,15 @@ function updateProjectsSection(projetos) {
     portfolioContainer.innerHTML = '';
     
     // Adicionar cada projeto
-    projetos.forEach(projeto => {
-        const projectName = resolveI18nValue(projeto.nome);
-        const projectDesc = resolveI18nValue(projeto.descricao);
-        const projectStatus = resolveI18nValue(projeto.status);
+    projetos.forEach((projeto, index) => {
+        const pNum = index + 1;
+        const projectName = resolveI18nFallback(projeto.nome, `project_${pNum}_title`);
+        const projectDesc = resolveI18nFallback(projeto.descricao, `project_${pNum}_desc`);
+        let projectStatus = resolveI18nValue(projeto.status);
+        if (typeof window !== 'undefined' && typeof window.__i18nTranslate === 'function') {
+            if (projeto.status === 'Concluído') projectStatus = window.__i18nTranslate('status_completed', 'Concluído');
+            if (projeto.status === 'Em desenvolvimento') projectStatus = window.__i18nTranslate('status_in_progress', 'Em desenvolvimento');
+        }
         const statusMarkup = projectStatus ? `<br><span>${projectStatus}</span>` : '';
         const accessText = (typeof window !== 'undefined' && typeof window.__i18nTranslate === 'function')
             ? window.__i18nTranslate('project_access', 'Acessar')
@@ -884,7 +945,7 @@ function updateProjectsSection(projetos) {
         const projectBox = document.createElement('div');
         projectBox.className = 'portfolio-box cursos-box';
         projectBox.innerHTML = `
-            <img src="${projeto.imagem}" alt="${projeto.nome}">
+            <img src="${projeto.imagem}" alt="${projectName}">
             <div class="portfolio-layer">
                 <h4>${projectName}</h4>
                 <p>${projectDesc || ''}${statusMarkup}</p>

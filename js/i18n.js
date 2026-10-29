@@ -15,12 +15,12 @@
       home_greeting: "Olá, <span>chamo-me</span>",
       home_role_prefix: "Sou",
       home_description:
-        "Apaixonado por tecnologia e por computadores desde os 13 anos de idade, a minha jornada começou após ter feito o curso de Informática na Óptica do Usuário, no então renomado Centro de Formação São Domingos, em Luanda.<br>Desde então, já sabia que carreira pretendia seguir.<br>",
-      home_degree: "&lt; <span>Engenharia Informática</span> /&gt;.",
+        "A minha paixão pela tecnologia e pelos computadores começou aos 13 anos, dando início a uma jornada de aprendizagem e descoberta que viria a definir o meu percurso profissional. O primeiro passo foi a formação em Informática na Óptica do Utilizador, no Centro de Formação São Domingos, em Luanda.<br><br>Desde então, tenho vindo a aprofundar os meus conhecimentos e a desenvolver competências em diferentes áreas das Tecnologias de Informação, com especial enfoque no desenvolvimento Web, suporte técnico e soluções informáticas.<br><br>Acredito que a tecnologia vai muito além do código: é uma ferramenta para resolver problemas, optimizar processos e transformar ideias em soluções práticas. É essa visão que orienta o meu trabalho e a minha evolução contínua como profissional de TI.",
+      home_degree: "&lt; <span>Desenvolvimento Web | Sistemas | Soluções Tecnológicas</span> /&gt;.",
       home_download_cv: "Download CV",
       about_heading: "Sobre <span>Mim</span>",
       about_intro: "Natural de Angola, Província de Luanda, Nascido aos 12 de Setembro de 1993,<br>O primeiro filho de três (3) irmãos.<br>Pai: Mateus Inácio Teixeira;<br>Mãe: Ana Tuti Dias Ntonha Teixeira.<br>",
-      about_career: "Actualmente trilhando o caminho como <span id=\"aboutRole\">desenvolvedor Front-End.</span>",
+      about_career: "Actualmente trilhando o caminho como <span id=\"aboutRole\">Desenvolvedor Web & Técnico de Informática.</span>",
       about_motto: "Sempre procurando ser melhor do que fui no dia anterior.",
       tech_heading: "Domínio de <span>Ferramentas</span>",
       courses_heading: "Cursos <span>Feitos</span>",
@@ -54,18 +54,22 @@
       course_8_title: "Iniciação Bancária <br>para Assistente de Clientes",
       course_8_desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
       project_access: "Acessar",
+      status_completed: "Concluído",
+      status_in_progress: "Em desenvolvimento",
       project_1_title: "Currículum Online",
-      project_1_desc: "Um projecto simples do meu currículum, disponibilizado online através do GitHub Pages. <br><span>Concluído</span>",
+      project_1_desc: "Um projecto simples do meu currículum, disponibilizado online através do GitHub Pages.",
       project_2_title: "Portfólio",
-      project_2_desc: "O projecto do meu portfólio, na qual estão tendo acesso.<br>Disponibilizado online através do GitHub Pages. <br><span>Em desenvolvimento...</span>",
-      project_3_title: "Calculadora",
-      project_3_desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>Em desenvolvimento...</span>",
+      project_2_desc: "O projecto do meu portfólio, na qual estão tendo acesso.<br>Disponibilizado online através do GitHub Pages.",
+      project_3_title: "Conheça Angola",
+      project_3_desc: "Projecto pessoal, com o objectivo de divulgar Angola, navegando pela história. Desenvolvido usando React 19, TypeScript 5.8, Tailwind CSS v4 e Vibe Coding, hospedada na plataforma Netlify",
       project_4_title: "LisBeauty",
-      project_4_desc: "Este é um projecto que eu fiz para a divulgação do negócio da minha esposa. <br><span>Em desenvolvimento...</span>",
-      project_5_title: "Gestor de Cantinas",
-      project_5_desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>Em desenvolvimento...</span>",
-      project_6_title: "Web Design",
-      project_6_desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>Em desenvolvimento...</span>",
+      project_4_desc: "Projecto desenvolvido para a divulgação do negócio da minha esposa.",
+      project_5_title: "Empreendedor Faixa Preta",
+      project_5_desc: "Projecto da plataforma de cursos online Empreendedor Faixa Preta, solicitada por: Pedro Ferreira e hospedada na plataforma Netlify.",
+      project_6_title: "Designer Portfolio",
+      project_6_desc: "Portfólio para Designer desenvolvido para o Sr. Joaquim Mateus e hospedado na plataforma Netlify.",
+      project_7_title: "TXART",
+      project_7_desc: "Web Portfólio para da minha marca, desenvolvido usando programação assistida por agente de IA (VibeCoding) na plataforma Google IA Studio",
       exp_responsibilities: "Responsabilidades:",
       exp_work_evidence: "Evidências do trabalho:",
       exp3_gallery: "Trabalho técnico:",
@@ -155,7 +159,7 @@
       activity_3_date: "Jun 2024",
       activity_3_title: "Curso de React Avançado",
       activity_3_desc: "Especialização em hooks, context API e gerenciamento de estado global com Redux.",
-      rotatives: ["Front-End Dev.", "Professor.", "Criador de conteúdo.", "Designer Gráfico."]
+      rotatives: ["Desenvolvedor Web.", "Técnico de Informática.", "Criador de conteúdo.", "Designer Gráfico."]
     },
     en: {
       brand_title: "My Portfolio",
@@ -171,12 +175,12 @@
       home_greeting: "Hello, <span>my name is</span>",
       home_role_prefix: "I'm a",
       home_description:
-        "Passionate about technology and computers since I was 13 years old, my journey began after completing the Computer User course at the renowned São Domingos Training Center in Luanda.<br>Since then, I already knew which career path I wanted to follow.<br>",
-      home_degree: "&lt; <span>Computer Engineering</span> /&gt;.",
+        "My passion for technology and computers began at age 13, launching a journey of learning and discovery that would define my career path. The first step was training in Computer Use at the São Domingos Training Center in Luanda.<br><br>Since then, I have been deepening my knowledge and developing skills across different fields of Information Technology, with a focus on Web development, technical support, and IT solutions.<br><br>I believe technology goes far beyond code: it is a tool to solve problems, optimize processes, and turn ideas into practical solutions. This vision guides my work and continuous growth as an IT professional.",
+      home_degree: "&lt; <span>Web Development | Systems | Tech Solutions</span> /&gt;.",
       home_download_cv: "Download CV",
       about_heading: "About <span>Me</span>",
       about_intro: "Born in Angola, Luanda Province, on September 12, 1993,<br>The first of three (3) siblings.<br>Father: Mateus Inácio Teixeira;<br>Mother: Ana Tuti Dias Ntonha Teixeira.<br>",
-      about_career: "Currently paving my way as a <span id=\"aboutRole\">Front-End developer.</span>",
+      about_career: "Currently paving my way as a <span id=\"aboutRole\">Web Developer & IT Technician.</span>",
       about_motto: "Always striving to be better than I was the day before.",
       tech_heading: "My <span>Tools</span>",
       courses_heading: "Courses <span>Completed</span>",
@@ -210,18 +214,22 @@
       course_8_title: "Banking Initiation <br>for Customer Assistants",
       course_8_desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
       project_access: "Access",
+      status_completed: "Completed",
+      status_in_progress: "In development",
       project_1_title: "Online Resume",
-      project_1_desc: "A simple online resume hosted on GitHub Pages. <br><span>Completed</span>",
+      project_1_desc: "A simple online resume hosted on GitHub Pages.",
       project_2_title: "Portfolio",
-      project_2_desc: "My portfolio project you are viewing.<br>Hosted on GitHub Pages. <br><span>In development...</span>",
-      project_3_title: "Calculator",
-      project_3_desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>In development...</span>",
+      project_2_desc: "My portfolio project you are viewing.<br>Hosted on GitHub Pages.",
+      project_3_title: "Know Angola",
+      project_3_desc: "Personal project aimed at sharing Angola and navigating through history. Built with React 19, TypeScript 5.8, Tailwind CSS v4, and Vibe Coding, hosted on Netlify.",
       project_4_title: "LisBeauty",
-      project_4_desc: "A project I made to promote my wife's business. <br><span>In development...</span>",
-      project_5_title: "Canteen Manager",
-      project_5_desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>In development...</span>",
-      project_6_title: "Web Design",
-      project_6_desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, ad. <br><span>In development...</span>",
+      project_4_desc: "Project developed to promote my wife's business.",
+      project_5_title: "Black Belt Entrepreneur",
+      project_5_desc: "Online course platform project Black Belt Entrepreneur, requested by Pedro Ferreira and hosted on Netlify.",
+      project_6_title: "Designer Portfolio",
+      project_6_desc: "Portfolio for Designer developed for Mr. Joaquim Mateus and hosted on Netlify.",
+      project_7_title: "TXART",
+      project_7_desc: "Brand web portfolio developed using AI agent-assisted programming (VibeCoding) on Google AI Studio platform.",
       exp_responsibilities: "Responsibilities:",
       exp_work_evidence: "Work evidence:",
       exp3_gallery: "Technical work:",
@@ -311,7 +319,7 @@
       activity_3_date: "Jun 2024",
       activity_3_title: "Advanced React Course",
       activity_3_desc: "Specialization in hooks, context API and global state management with Redux.",
-      rotatives: ["Front-End Dev.", "Teacher.", "Content Creator.", "Designer."]
+      rotatives: ["Web Developer.", "IT Technician.", "Content Creator.", "Graphic Designer."]
     }
   };
 
@@ -417,6 +425,7 @@
   // CODEX: Expor dicionário para diagnóstico
   window.__i18nTranslations = translations;
   window.__i18nTranslate = translateKey;
+  window.__i18nGetLang = getCurrentLang;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
